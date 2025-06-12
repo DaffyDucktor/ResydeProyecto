@@ -1,0 +1,35 @@
+<div class="col-span-12 lg:col-span-6 xl:col-span-3">
+  <div class="card mb-0">
+    <h2>Carga Masiva - Recibo</h2>
+    <div class="flex gap-4 flex-wrap">
+      <div class="row" style="text-align: center;">
+        <p-fileupload #fu mode="basic" chooseLabel="Subir" chooseIcon="pi pi-upload" name="demo[]"
+          url="https://www.primefaces.org/cdn/api/upload.php" accept="image/*" maxFileSize="1000000"
+          />
+        <p-button label="Subir Archivo" severity="secondary"/>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col">
+          <table style="width: 100%;">
+            <thead>
+              <th>Mes</th>
+              <th>Año</th>
+              <th>Total</th>
+              <th>Departamento</th>
+              <th>Estado</th>
+            </thead>
+            <tbody style="text-align: center;">
+              <tr>
+                <td>Febrero</td>
+                <td>2025</td>
+                <td>S/. 544.50</td>
+                <td>404</td>
+                <td>Correcto</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
