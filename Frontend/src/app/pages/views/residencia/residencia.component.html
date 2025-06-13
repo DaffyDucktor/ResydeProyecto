@@ -21,14 +21,20 @@
             <th colspan="2">Acciones</th>
           </thead>
           <tbody style="text-align: center;">
+            @for (residencia of this.residencias; track residencia.id) {
             <tr>
-              <td>Front Tower</td>
-              <td>Av. Bolviar 530</td>
-              <td>48</td>
-              <td>Edificio</td>
+              <td>{{residencia.nombre}}</td>
+              <td>{{residencia.direccion}}</td>
+              <td>{{residencia.nDep}}</td>
+              <td>{{residencia.idTipoResidencia.codigo}}</td>
               <td><p-button>Ver</p-button></td>
               <td><p-button>Modificar</p-button></td>
             </tr>
+            }@empty {
+              <tr>
+                <td>No se encuentran residencias</td>
+              </tr>
+            }
           </tbody>
         </table>
       </div>

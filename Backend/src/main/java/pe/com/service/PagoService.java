@@ -18,4 +18,6 @@ public interface PagoService {
     void delete (Pago obj);
 
     Integer cargaMasiva (List<PagoRequest> obj);
+
+    void NetWorthExport();
 }

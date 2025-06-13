@@ -38,4 +38,5 @@ public class MantenimientoServiceImpl implements MantenimientoService {
     public void delete(Mantenimiento obj) {
         mantenimientoRepository.delete(obj);
     }
+
 }

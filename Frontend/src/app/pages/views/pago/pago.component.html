@@ -23,16 +23,22 @@
             <th colspan="2">Acciones</th>
           </thead>
           <tbody style="text-align: center;">
+            @for (pago of this.pagos; track pago.id) {
             <tr>
-              <td>245</td>
-              <td>S/. 547.50</td>
-              <td>S/. 544.50</td>
-              <td>S/. 3.00</td>
-              <td>20/02/2025</td>
-              <td>Mes de Febrero 2025</td>
+              <td>{{pago.idRecibo.id}}</td>
+              <td>{{pago.paidAmount}}</td>
+              <td>{{pago.balance}}</td>
+              <td>{{pago.mora}}</td>
+              <td>{{pago.fecha}}</td>
+              <td>{{pago.comments}}</td>
               <td><p-button>Ver</p-button></td>
               <td><p-button>Modificar</p-button></td>
             </tr>
+            }@empty {
+              <tr>
+                <td>No se encuentran pagos</td>
+              </tr>
+            }
           </tbody>
         </table>
       </div>

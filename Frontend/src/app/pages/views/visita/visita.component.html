@@ -22,15 +22,21 @@
             <th colspan="2">Acciones</th>
           </thead>
           <tbody style="text-align: center;">
+            @for (visita of this.visitas; track visita.id) {
             <tr>
-              <td>Fernando Visurraga</td>
-              <td>404</td>
-              <td>06/06/2025</td>
-              <td>18:30</td>
-              <td>Padre del Residente</td>
+              <td>{{visita.name}}</td>
+              <td>{{visita.idDepartamento.codigo}}</td>
+              <td>{{visita.fecha}}</td>
+              <td>{{visita.hora}}</td>
+              <td>{{visita.comentario}}</td>
               <td><p-button>Ver</p-button></td>
               <td><p-button>Modificar</p-button></td>
             </tr>
+            }@empty {
+              <tr>
+                <td>No se encuentran visitas</td>
+              </tr>
+            }
           </tbody>
         </table>
       </div>

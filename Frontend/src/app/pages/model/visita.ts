@@ -1,3 +1,5 @@
+import { Departamento } from "./departamento";
+
 export interface Visita {
   id: number;
   name: string;
@@ -9,5 +11,5 @@ export interface Visita {
   usuCreacion: string;
   fecModifica: string;
   usuModifica: string;
-  idDepartamento: string;
+  idDepartamento: Departamento;
 }

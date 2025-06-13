@@ -5,6 +5,9 @@ import org.springframework.web.bind.annotation.*;
 import pe.com.model.Departamento;
 import pe.com.service.DepartamentoService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 
 @RestController
@@ -12,31 +15,38 @@ import java.util.List;
 @CrossOrigin("http://localhost:4200/")
 public class DepartamentoController {
 
+    private static final Logger logger = LoggerFactory.getLogger(DepartamentoController.class);
+
     @Autowired
     DepartamentoService departamentoService;
 
     @GetMapping
     private List<Departamento> listAll(){
+        logger.info("Listando departamentos...");
         return departamentoService.listAll();
     }
 
     @GetMapping("/{id}")
     private Departamento listOne(@PathVariable Integer id){
+        logger.info("Listando un departamento...");
         return departamentoService.listOne(id);
     }
 
     @PostMapping
     private Departamento insert(Departamento obj){
+        logger.info("Creando un departamento...");
         return departamentoService.insert(obj);
     }
 
     @PutMapping
     private Departamento update(Departamento obj) {
+        logger.info("Modificando un departamento...");
         return departamentoService.update(obj);
     }
 
     @DeleteMapping
     private void delete(Departamento obj){
+        logger.info("Eliminando un departamento...");
         departamentoService.delete(obj);
     }
 }

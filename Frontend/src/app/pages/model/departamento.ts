@@ -1,4 +1,5 @@
 import { EstadoDepartamento } from "./estadoDepartamento";
+import { Residencia } from "./residencia";
 
 export interface Departamento {
     id:number,
@@ -7,6 +8,6 @@ export interface Departamento {
     usuCreacion:string,
     fecModifica:string,
     usuModifica:string,
-    idResidencia:string,
+    idResidencia:Residencia,
     idEstadoDepartamento:EstadoDepartamento
 }

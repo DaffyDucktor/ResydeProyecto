@@ -1,5 +1,7 @@
 package pe.com.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pe.com.model.Rol;
@@ -12,31 +14,38 @@ import java.util.List;
 @CrossOrigin("http://localhost:4200/")
 public class RolController {
 
+    private static final Logger logger = LoggerFactory.getLogger(RolController.class);
+
     @Autowired
     RolService rolService;
 
     @GetMapping
     private List<Rol> listAll(){
+        logger.info("Listando Roles...");
         return rolService.listAll();
     }
 
     @GetMapping("/{id}")
     private Rol listOne(@PathVariable Integer id){
+        logger.info("Listando un Rol...");
         return rolService.listOne(id);
     }
 
     @PostMapping
     private Rol insert(Rol obj){
+        logger.info("Creando un Rol...");
         return rolService.insert(obj);
     }
 
     @PutMapping
     private Rol update(Rol obj) {
+        logger.info("Modificando un Rol...");
         return rolService.update(obj);
     }
 
     @DeleteMapping
     private void delete(Rol obj){
+        logger.info("Eliminando un Rol...");
         rolService.delete(obj);
     }
 }

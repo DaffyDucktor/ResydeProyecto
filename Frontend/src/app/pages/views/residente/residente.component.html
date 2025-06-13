@@ -21,14 +21,20 @@
             <th colspan="2">Acciones</th>
           </thead>
           <tbody style="text-align: center;">
+            @for (residente of this.residentes; track residente.id) {
             <tr>
-              <td>Lucas Visurraga</td>
-              <td>952138291</td>
-              <td>lucas.vg.5425&#64;gmail.com</td>
-              <td>404</td>
+              <td>{{residente.nombre + ' ' + residente.apellido}}</td>
+              <td>{{residente.telefono}}</td>
+              <td>{{residente.correo}}</td>
+              <td>{{residente.idDepartamento.codigo}}</td>
               <td><p-button>Ver</p-button></td>
               <td><p-button>Modificar</p-button></td>
             </tr>
+            }@empty {
+              <tr>
+                <td>No se encuentran residentes</td>
+              </tr>
+            }
           </tbody>
         </table>
       </div>

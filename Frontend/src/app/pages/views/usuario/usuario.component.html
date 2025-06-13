@@ -21,14 +21,20 @@
             <th colspan="2">Acciones</th>
           </thead>
           <tbody style="text-align: center;">
+            @for (usuario of this.usuarios; track usuario.id) {
             <tr>
-              <td>admin</td>
-              <td>******</td>
-              <td>FrontTower</td>
-              <td>Administrador</td>
+              <td>{{usuario.user}}</td>
+              <td>{{usuario.password}}</td>
+              <td>{{usuario.idResidencia.nombre}}</td>
+              <td>{{usuario.idRol.nombre}}</td>
               <td><p-button>Ver</p-button></td>
               <td><p-button>Modificar</p-button></td>
             </tr>
+            }@empty {
+              <tr>
+                <td>No se encuentran usuarios</td>
+              </tr>
+            }
           </tbody>
         </table>
       </div>

@@ -15,18 +15,24 @@
         <table style="width: 100%;">
           <thead>
             <th>N° Departamento</th>
-            <th>Residente</th>
+            <th>Residencia</th>
             <th>Estado Departamento</th>
             <th colspan="2">Acciones</th>
           </thead>
           <tbody style="text-align: center;">
+            @for (departamento of this.departamentos; track departamento.id) {
             <tr>
-              <td>404</td>
-              <td>Lucas Visurraga</td>
-              <td>Ocupado</td>
+              <td>{{departamento.codigo}}</td>
+              <td>{{departamento.idResidencia.nombre}}</td>
+              <td>{{departamento.idEstadoDepartamento.estado}}</td>
               <td><p-button>Ver</p-button></td>
               <td><p-button>Modificar</p-button></td>
             </tr>
+            }@empty {
+            <tr>
+              <td>No se encuentran departamentos</td>
+            </tr>
+            }
           </tbody>
         </table>
       </div>

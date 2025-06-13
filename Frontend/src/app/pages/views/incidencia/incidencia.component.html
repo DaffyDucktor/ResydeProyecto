@@ -21,14 +21,20 @@
             <th colspan="2">Acciones</th>
           </thead>
           <tbody style="text-align: center;">
+            @for (incidencia of this.incidencias; track incidencia.id) {
             <tr>
-              <td>256</td>
-              <td>Falla de ascensor</td>
-              <td>03/03/2025</td>
-              <td>04:30</td>
+              <td>{{incidencia.id}}</td>
+              <td>{{incidencia.detalle}}</td>
+              <td>{{incidencia.fecha}}</td>
+              <td>{{incidencia.hora}}</td>
               <td><p-button>Ver</p-button></td>
               <td><p-button>Modificar</p-button></td>
             </tr>
+            }@empty {
+              <tr>
+                <td>No se encuentran incidencias</td>
+              </tr>
+            }
           </tbody>
         </table>
       </div>

@@ -19,12 +19,18 @@
             <th colspan="2">Acciones</th>
           </thead>
           <tbody style="text-align: center;">
+            @for (rol of this.roles; track rol.id) {
             <tr>
-              <td>1</td>
-              <td>Administrador</td>
+              <td>{{rol.id}}</td>
+              <td>{{rol.nombre}}</td>
               <td><p-button>Ver</p-button></td>
               <td><p-button>Modificar</p-button></td>
             </tr>
+            }@empty {
+              <tr>
+                <td>No se encuentran roles</td>
+              </tr>
+            }
           </tbody>
         </table>
       </div>

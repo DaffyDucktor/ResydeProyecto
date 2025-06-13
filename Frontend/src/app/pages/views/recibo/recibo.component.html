@@ -23,16 +23,22 @@
             <th colspan="2">Acciones</th>
           </thead>
           <tbody style="text-align: center;">
+            @for (recibo of this.recibos; track recibo.id) {
             <tr>
-              <td>245</td>
-              <td>Febrero</td>
-              <td>2025</td>
-              <td>S/. 544.50</td>
-              <td>404</td>
-              <td>Pagado</td>
+              <td>{{recibo.id}}</td>
+              <td>{{recibo.month}}</td>
+              <td>{{recibo.year}}</td>
+              <td>{{recibo.particulars}}</td>
+              <td>{{recibo.idDepartamento.codigo}}</td>
+              <td>{{recibo.idEstadoRecibo.estado}}</td>
               <td><p-button>Ver</p-button></td>
               <td><p-button>Modificar</p-button></td>
             </tr>
+            }@empty {
+              <tr>
+                <td>No se encuentran recibos</td>
+              </tr>
+            }
           </tbody>
         </table>
       </div>

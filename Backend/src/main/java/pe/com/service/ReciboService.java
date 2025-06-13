@@ -17,4 +17,6 @@ public interface ReciboService {
     void delete (Recibo obj);
 
     Integer creacionMasiva(String month, String year, String residence);
+
+    void NetWorthExport();
 }

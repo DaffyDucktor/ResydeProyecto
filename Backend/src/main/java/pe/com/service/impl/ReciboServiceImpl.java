@@ -1,5 +1,10 @@
 package pe.com.service.impl;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +14,9 @@ import pe.com.repository.DepartamentoRepository;
 import pe.com.repository.ReciboRepository;
 import pe.com.service.ReciboService;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -56,5 +64,30 @@ public class ReciboServiceImpl implements ReciboService {
         });
 
         return null;
+    }
+
+    @Override
+    public void NetWorthExport(){
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Datos");
+
+        Row row = sheet.createRow(0);
+        Cell cell = row.createCell(0);
+        cell.setCellValue("Promedio de Ingresos");
+
+        try (FileOutputStream fileOut = new FileOutputStream("reporte.xlsx")) {
+            workbook.write(fileOut);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            workbook.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        log.info("Archivo creado exitosamente.");
     }
 }

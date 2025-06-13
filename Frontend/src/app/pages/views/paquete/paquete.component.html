@@ -17,16 +17,26 @@
             <th>N° Paquete</th>
             <th>Fecha</th>
             <th>Departamento</th>
+            <th>Estado</th>
+            <th>Codigo</th>
             <th colspan="2">Acciones</th>
           </thead>
           <tbody style="text-align: center;">
+            @for (paquete of this.paquetes; track paquete.id) {
             <tr>
-              <td>130</td>
-              <td>02/03/2025</td>
-              <td>404</td>
+              <td>{{paquete.id}}</td>
+              <td>{{paquete.fecha}}</td>
+              <td>{{paquete.idDepartamento.codigo}}</td>
+              <td>{{paquete.idEstadoPaquete.estado}}</td>
+              <td>{{paquete.codigo}}</td>
               <td><p-button>Ver</p-button></td>
               <td><p-button>Modificar</p-button></td>
             </tr>
+            }@empty {
+              <tr>
+                <td>No se encuentran paquetes</td>
+              </tr>
+            }
           </tbody>
         </table>
       </div>
