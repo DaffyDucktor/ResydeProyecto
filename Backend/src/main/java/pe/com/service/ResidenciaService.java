@@ -2,6 +2,7 @@ package pe.com.service;
 
 import pe.com.model.Recibo;
 import pe.com.model.Residencia;
+import pe.com.model.request.ResidenciaRequest;
 
 import java.util.List;
 
@@ -10,9 +11,9 @@ public interface ResidenciaService {
 
     Residencia listOne(Integer id);
 
-    Residencia insert (Residencia obj);
+    Residencia insert (ResidenciaRequest obj);
 
-    Residencia update (Residencia obj);
+    Residencia update (ResidenciaRequest obj);
 
-    void delete (Residencia obj);
+    void delete (ResidenciaRequest obj);
 }

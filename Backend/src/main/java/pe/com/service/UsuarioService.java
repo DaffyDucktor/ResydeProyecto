@@ -1,6 +1,7 @@
 package pe.com.service;
 
 import pe.com.model.Usuario;
+import pe.com.model.request.UsuarioRequest;
 
 import java.util.List;
 
@@ -10,10 +11,10 @@ public interface UsuarioService {
 
     Usuario listOne(Integer id);
 
-    Usuario insert (Usuario obj);
+    Usuario insert (UsuarioRequest obj);
 
-    Usuario update (Usuario obj);
+    Usuario update (UsuarioRequest obj);
 
-    void delete (Usuario obj);
+    void delete (UsuarioRequest obj);
 
 }

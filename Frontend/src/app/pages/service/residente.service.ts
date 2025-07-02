@@ -7,27 +7,31 @@ import { Residente } from '../model/residente';
   providedIn: 'root'
 })
 export class ResidenteService {
-  private apiUrl = 'http://localhost:8080/residente';
+  private apiUrl = 'http://localhost:8080/resyde/residente';
 
   constructor(private http: HttpClient) { }
 
-    getResidentes(): Observable<Residente[]> {
-      return this.http.get<Residente[]>(this.apiUrl);
-    }
-  
-    getResidenteById(id: number): Observable<Residente> {
-      return this.http.get<Residente>(`${this.apiUrl}/${id}`);
-    }
-  
-    createResidente(dep: Residente) {
-      return this.http.post(this.apiUrl, dep);
-    }
-  
-    updateResidente(dep: Residente) {
-      return this.http.put(this.apiUrl, dep);
-    }
-  
-    deleteResidente(id: number) {
-      return this.http.delete(`${this.apiUrl}/${id}`);
-    }
+  getResidentes(): Observable<Residente[]> {
+    return this.http.get<Residente[]>(this.apiUrl);
+  }
+
+  getResidenteById(id: number): Observable<Residente> {
+    return this.http.get<Residente>(`${this.apiUrl}/${id}`);
+  }
+
+  createResidente(residente: Residente): Observable<Residente> {
+    const formData = new FormData();
+
+    formData.append('residencia', new Blob([JSON.stringify(residente)], { type: 'application/json' }));
+
+    return this.http.post<Residente>(this.apiUrl, formData);
+  }
+
+  updateResidente(dep: Residente) {
+    return this.http.put(this.apiUrl, dep);
+  }
+
+  deleteResidente(id: number) {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
 }

@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/resyde/pago")
 @CrossOrigin("http://localhost:4200/")
+@SuppressWarnings({"unused"})
 public class PagoController {
 
     private static final Logger logger = LoggerFactory.getLogger(PagoController.class);
@@ -33,19 +34,19 @@ public class PagoController {
     }
 
     @PostMapping
-    private Pago insert(Pago obj){
+    private Pago insert(PagoRequest obj){
         logger.info("Creando un Pago...");
         return pagoService.insert(obj);
     }
 
     @PutMapping
-    private Pago update(Pago obj) {
+    private Pago update(PagoRequest obj) {
         logger.info("Modificando un Pago...");
         return pagoService.update(obj);
     }
 
     @DeleteMapping
-    private void delete(Pago obj){
+    private void delete(PagoRequest obj){
         logger.info("Eliminando un Pago...");
         pagoService.delete(obj);
     }

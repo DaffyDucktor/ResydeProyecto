@@ -9,6 +9,7 @@ import pe.com.service.TipoResidenciaService;
 import java.util.List;
 
 @Service
+@SuppressWarnings({"deprecation","unused"})
 public class TipoResidenciaServiceImpl implements TipoResidenciaService {
 
     @Autowired

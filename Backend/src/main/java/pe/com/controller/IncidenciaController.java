@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pe.com.model.Incidencia;
+import pe.com.model.request.IncidenciaRequest;
 import pe.com.service.IncidenciaService;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/resyde/incidencia")
 @CrossOrigin("http://localhost:4200/")
+@SuppressWarnings({"unused"})
 public class IncidenciaController {
 
     private static final Logger logger = LoggerFactory.getLogger(DepartamentoController.class);
@@ -32,19 +34,19 @@ public class IncidenciaController {
     }
 
     @PostMapping
-    private Incidencia insert(Incidencia obj){
+    private Incidencia insert(IncidenciaRequest obj){
         logger.info("Creando una Incidencia...");
         return incidenciaService.insert(obj);
     }
 
     @PutMapping
-    private Incidencia update(Incidencia obj) {
+    private Incidencia update(IncidenciaRequest obj) {
         logger.info("Actualizando una Incidencia...");
         return incidenciaService.update(obj);
     }
 
     @DeleteMapping
-    private void delete(Incidencia obj){
+    private void delete(IncidenciaRequest obj){
         logger.info("Eliminando una Incidencia...");
         incidenciaService.delete(obj);
     }

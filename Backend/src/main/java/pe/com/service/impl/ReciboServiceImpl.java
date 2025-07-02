@@ -10,7 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.com.model.Recibo;
+import pe.com.model.request.ReciboRequest;
 import pe.com.repository.DepartamentoRepository;
+import pe.com.repository.EstadoReciboRepository;
 import pe.com.repository.ReciboRepository;
 import pe.com.service.ReciboService;
 
@@ -20,6 +22,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Service
+@SuppressWarnings({"deprecation","unused"})
 public class ReciboServiceImpl implements ReciboService {
 
     private static final Logger log = LoggerFactory.getLogger(ReciboServiceImpl.class);
@@ -28,6 +31,10 @@ public class ReciboServiceImpl implements ReciboService {
 
     @Autowired
     DepartamentoRepository departamentoRepository;
+
+    @Autowired
+    EstadoReciboRepository estadoReciboRepository;
+
 
     @Override
     public List<Recibo> listAll() {
@@ -40,18 +47,41 @@ public class ReciboServiceImpl implements ReciboService {
     }
 
     @Override
-    public Recibo insert(Recibo obj) {
-        return reciboRepository.save(obj);
+    public Recibo insert(ReciboRequest obj) {
+        Recibo objRecibo = new Recibo();
+
+        objRecibo.setYear(obj.getYear());
+        objRecibo.setMonth(obj.getMonth());
+        objRecibo.setParticulars(obj.getParticulars());
+        objRecibo.setTotal(obj.getTotal());
+        objRecibo.setComments(obj.getComments());
+        objRecibo.setUsuCreacion(obj.getUsuCreacion());
+        objRecibo.setIdDepartamento(departamentoRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
+        objRecibo.setIdEstadoRecibo(estadoReciboRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
+
+        return reciboRepository.save(objRecibo);
     }
 
     @Override
-    public Recibo update(Recibo obj) {
-        return reciboRepository.save(obj);
+    public Recibo update(ReciboRequest obj) {
+        Recibo objRecibo = new Recibo();
+
+        objRecibo.setId(Integer.parseInt(obj.getId()));
+        objRecibo.setYear(obj.getYear());
+        objRecibo.setMonth(obj.getMonth());
+        objRecibo.setParticulars(obj.getParticulars());
+        objRecibo.setTotal(obj.getTotal());
+        objRecibo.setComments(obj.getComments());
+        objRecibo.setUsuCreacion(obj.getUsuCreacion());
+        objRecibo.setIdDepartamento(departamentoRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
+        objRecibo.setIdEstadoRecibo(estadoReciboRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
+
+        return reciboRepository.save(objRecibo);
     }
 
     @Override
-    public void delete(Recibo obj) {
-        reciboRepository.delete(obj);
+    public void delete(ReciboRequest obj) {
+        reciboRepository.deleteById(Integer.parseInt(obj.getId()));
     }
 
     @Override

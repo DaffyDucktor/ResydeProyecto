@@ -3,16 +3,30 @@ package pe.com.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.com.model.Usuario;
+import pe.com.model.request.UsuarioRequest;
+import pe.com.repository.ResidenciaRepository;
+import pe.com.repository.ResidenteRepository;
+import pe.com.repository.RolRepository;
 import pe.com.repository.UsuarioRepository;
 import pe.com.service.UsuarioService;
 
 import java.util.List;
 
 @Service
+@SuppressWarnings({"deprecation","unused"})
 public class UsuarioServiceImpl implements UsuarioService {
 
     @Autowired
     UsuarioRepository usuarioRepository;
+
+    @Autowired
+    ResidenciaRepository residenciaRepository;
+
+    @Autowired
+    ResidenteRepository residenteRepository;
+
+    @Autowired
+    RolRepository rolRepository;
 
     @Override
     public List<Usuario> listAll() {
@@ -25,17 +39,35 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public Usuario insert(Usuario obj) {
-        return usuarioRepository.save(obj);
+    public Usuario insert(UsuarioRequest obj) {
+        Usuario objUsuario = new Usuario();
+
+        objUsuario.setUser(obj.getUser());
+        objUsuario.setPassword(obj.getPassword());
+        objUsuario.setUsuCreacion(obj.getUsuCreacion());
+        objUsuario.setIdResidencia(residenciaRepository.getById(Integer.parseInt(obj.getIdResidencia())));
+        objUsuario.setIdResidente(residenteRepository.getById(Integer.parseInt(obj.getIdResidente())));
+        objUsuario.setIdRol(rolRepository.getById(Integer.parseInt(obj.getIdRol())));
+
+        return usuarioRepository.save(objUsuario);
     }
 
     @Override
-    public Usuario update(Usuario obj) {
-        return usuarioRepository.save(obj);
+    public Usuario update(UsuarioRequest obj) {
+        Usuario objUsuario = new Usuario();
+
+        objUsuario.setUser(obj.getUser());
+        objUsuario.setPassword(obj.getPassword());
+        objUsuario.setUsuModifica(obj.getUsuModifica());
+        objUsuario.setIdResidencia(residenciaRepository.getById(Integer.parseInt(obj.getIdResidencia())));
+        objUsuario.setIdResidente(residenteRepository.getById(Integer.parseInt(obj.getIdResidente())));
+        objUsuario.setIdRol(rolRepository.getById(Integer.parseInt(obj.getIdRol())));
+
+        return usuarioRepository.save(objUsuario);
     }
 
     @Override
-    public void delete(Usuario obj) {
-        usuarioRepository.delete(obj);
+    public void delete(UsuarioRequest obj) {
+        usuarioRepository.deleteById(Integer.parseInt(obj.getId()));
     }
 }

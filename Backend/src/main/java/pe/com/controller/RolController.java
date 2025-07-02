@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/resyde/rol")
 @CrossOrigin("http://localhost:4200/")
+@SuppressWarnings({"unused"})
 public class RolController {
 
     private static final Logger logger = LoggerFactory.getLogger(RolController.class);
@@ -29,23 +30,5 @@ public class RolController {
     private Rol listOne(@PathVariable Integer id){
         logger.info("Listando un Rol...");
         return rolService.listOne(id);
-    }
-
-    @PostMapping
-    private Rol insert(Rol obj){
-        logger.info("Creando un Rol...");
-        return rolService.insert(obj);
-    }
-
-    @PutMapping
-    private Rol update(Rol obj) {
-        logger.info("Modificando un Rol...");
-        return rolService.update(obj);
-    }
-
-    @DeleteMapping
-    private void delete(Rol obj){
-        logger.info("Eliminando un Rol...");
-        rolService.delete(obj);
     }
 }

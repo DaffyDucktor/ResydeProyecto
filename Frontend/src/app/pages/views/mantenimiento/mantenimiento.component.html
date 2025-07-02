@@ -9,7 +9,7 @@
         Filtrar
       </p-button>
     </div>
-  <br>
+    <br>
     <div class="row">
       <div class="col">
         <table style="width: 100%;">
@@ -33,9 +33,9 @@
               <td><p-button>Modificar</p-button></td>
             </tr>
             }@empty {
-              <tr>
-                <td>No se encuentran mantenimientos</td>
-              </tr>
+            <tr>
+              <td colspan="6">No se encuentran mantenimientos</td>
+            </tr>
             }
           </tbody>
         </table>
@@ -43,3 +43,51 @@
     </div>
   </div>
 </div>
+
+<ng-template #modalTemplate>
+  <h2 mat-dialog-title>Añadir Mantenimiento</h2>
+  <form [formGroup]="formulario" (ngSubmit)="this.submitForm()">
+    <mat-dialog-content>
+      <div>
+        <label>Descripcion</label>
+        <ng-container>
+          <input type="text" formControlName="descripcion" class="form-control" />
+        </ng-container>
+
+        <label>Fecha Inicio</label>
+        <ng-container>
+          <input type="date" formControlName="fechaIni" class="form-control" />
+        </ng-container>
+
+
+        <label>Fecha Finalizacion</label>
+        <ng-container>
+          <input type="date" formControlName="fechaFin" class="form-control" />
+        </ng-container>
+
+
+        <label>Departamento</label>
+        <ng-container>
+          <select formControlName="idDepartamento" class="form-control">
+            <option *ngFor="let tablaItem of departamentos" [value]="tablaItem.id">
+              {{ tablaItem.codigo }}
+            </option>
+          </select>
+        </ng-container>
+
+        <label>Estado Mantenimiento</label>
+        <ng-container>
+          <select formControlName="idEstadoMantenimiento" class="form-control">
+            <option *ngFor="let tablaItem of estadosMantenimiento" [value]="tablaItem.id">
+              {{ tablaItem.estado }}
+            </option>
+          </select>
+        </ng-container>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-button mat-dialog-close type="button">Cancel</button>
+      <button mat-raised-button color="primary" type="submit">Guardar</button>
+    </mat-dialog-actions>
+  </form>
+</ng-template>

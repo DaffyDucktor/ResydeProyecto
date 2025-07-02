@@ -9,6 +9,7 @@ import pe.com.service.RolService;
 import java.util.List;
 
 @Service
+@SuppressWarnings({"deprecation","unused"})
 public class RolServiceImpl implements RolService {
 
     @Autowired
@@ -22,20 +23,5 @@ public class RolServiceImpl implements RolService {
     @Override
     public Rol listOne(Integer id) {
         return rolRepository.getById(id);
-    }
-
-    @Override
-    public Rol insert(Rol obj) {
-        return rolRepository.save(obj);
-    }
-
-    @Override
-    public Rol update(Rol obj) {
-        return rolRepository.save(obj);
-    }
-
-    @Override
-    public void delete(Rol obj) {
-        rolRepository.delete(obj);
     }
 }

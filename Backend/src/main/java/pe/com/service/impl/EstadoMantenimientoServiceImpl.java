@@ -9,6 +9,7 @@ import pe.com.service.EstadoMantenimientoService;
 import java.util.List;
 
 @Service
+@SuppressWarnings({"deprecation","unused"})
 public class EstadoMantenimientoServiceImpl implements EstadoMantenimientoService {
 
     @Autowired

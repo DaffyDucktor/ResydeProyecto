@@ -7,7 +7,7 @@ import { Usuario } from '../model/usuario';
   providedIn: 'root'
 })
 export class UsuarioService {
-  private apiUrl = 'http://localhost:8080/usuario';
+  private apiUrl = 'http://localhost:8080/resyde/usuario';
 
   constructor(private http: HttpClient) { }
 
@@ -19,8 +19,12 @@ export class UsuarioService {
       return this.http.get<Usuario>(`${this.apiUrl}/${id}`);
     }
   
-    createUsuario(dep: Usuario) {
-      return this.http.post(this.apiUrl, dep);
+    createUsuario(usuario: Usuario): Observable<Usuario> {
+          const formData = new FormData();
+
+    formData.append('residencia', new Blob([JSON.stringify(usuario)], { type: 'application/json'}));
+
+    return this.http.post<Usuario>(this.apiUrl, formData);
     }
   
     updateUsuario(dep: Usuario) {

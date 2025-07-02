@@ -7,7 +7,7 @@ import { Recibo } from '../model/recibo';
   providedIn: 'root',
 })
 export class ReciboService {
-  private apiUrl = 'http://localhost:8080/recibo';
+  private apiUrl = 'http://localhost:8080/resyde/recibo';
 
   constructor(private http: HttpClient) {}
 
@@ -19,8 +19,12 @@ export class ReciboService {
     return this.http.get<Recibo>(`${this.apiUrl}/${id}`);
   }
 
-  createRecibo(rec: Recibo) {
-    return this.http.post(this.apiUrl, rec);
+  createRecibo(rec: Recibo): Observable<Recibo> {
+        const formData = new FormData();
+
+    formData.append('residencia', new Blob([JSON.stringify(rec)], { type: 'application/json'}));
+
+return this.http.post<Recibo>(this.apiUrl, formData);
   }
 
   updateRecibo(rec: Recibo) {

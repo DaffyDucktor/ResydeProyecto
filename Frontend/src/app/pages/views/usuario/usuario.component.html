@@ -31,9 +31,9 @@
               <td><p-button>Modificar</p-button></td>
             </tr>
             }@empty {
-              <tr>
-                <td>No se encuentran usuarios</td>
-              </tr>
+            <tr>
+              <td colspan="5">No se encuentran usuarios</td>
+            </tr>
             }
           </tbody>
         </table>
@@ -41,3 +41,93 @@
     </div>
   </div>
 </div>
+
+<p-dialog header="Añadir Departamento" [(visible)]="display" [breakpoints]="{ '960px': '75vw' }"
+  [style]="{ width: '30vw' }" [modal]="true">
+  <form [formGroup]="formulario" (ngSubmit)="this.submitForm()">
+    <mat-dialog-content>
+      <div class="card flex flex-col gap-4">
+        <div class="flex flex-col gap-2">
+          <label>Usuario</label>
+          <input type="text" pInputText formControlName="usuario" [placeholder]="'Ingrese nombre de Residencia'" />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label>Residencia</label>
+          <p-select formControlName="idResidencia" [options]="dropdownItemsRes" optionValue="code" optionLabel="name"
+            placeholder="Seleccionar Residencia" [autoDisplayFirst]="false">
+          </p-select>
+        </div>
+        <div class="flex flex-col gap-2">
+          <label>Residente (Solo si va a enlazarse a un residente)</label>
+          <p-select formControlName="idResidente" [options]="dropdownItemsResi" optionValue="code" optionLabel="name"
+            placeholder="Seleccionar Residente" [autoDisplayFirst]="false">
+          </p-select>
+        </div>
+        <div class="flex flex-col gap-2">
+          <label>Rol</label>
+          <p-select formControlName="idRol" [options]="dropdownItemsRol" optionValue="code" optionLabel="name"
+            placeholder="Seleccionar Rol" [autoDisplayFirst]="false">
+          </p-select>
+        </div>
+
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-button mat-dialog-close type="button" (click)="close()">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit">Guardar</button>
+    </mat-dialog-actions>
+  </form>
+</p-dialog>
+
+<ng-template #modalTemplate>
+  <h2 mat-dialog-title>Añadir Departamento</h2>
+  <form [formGroup]="formulario" (ngSubmit)="this.submitForm()">
+    <mat-dialog-content>
+      <div>
+        <label>Usuario</label>
+        <ng-container>
+          <input type="text" formControlName="user" [placeholder]="'Ingrese codigo de Departamento'"
+            class="form-control" />
+        </ng-container>
+
+        <label>Contraseña</label>
+        <ng-container>
+          <input type="text" formControlName="password" [placeholder]="'Ingrese codigo de Departamento'"
+            class="form-control" />
+        </ng-container>
+
+
+        <label>Residencia</label>
+        <ng-container>
+          <select formControlName="idResidencia" class="form-control">
+            <option *ngFor="let tablaItem of residencias" [value]="tablaItem.id">
+              {{ tablaItem.nombre }}
+            </option>
+          </select>
+        </ng-container>
+
+        <label>Residente (Solo si va a enlazarse a un residente)</label>
+        <ng-container>
+          <select formControlName="idResidente" class="form-control">
+            <option *ngFor="let tablaItem of residentes" [value]="tablaItem.id">
+              {{ tablaItem.nombre }}
+            </option>
+          </select>
+        </ng-container>
+
+        <label>Rol</label>
+        <ng-container>
+          <select formControlName="idRol" class="form-control">
+            <option *ngFor="let tablaItem of rol" [value]="tablaItem.id">
+              {{ tablaItem.nombre }}
+            </option>
+          </select>
+        </ng-container>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-button mat-dialog-close type="button">Cancel</button>
+      <button mat-raised-button color="primary" type="submit">Guardar</button>
+    </mat-dialog-actions>
+  </form>
+</ng-template>

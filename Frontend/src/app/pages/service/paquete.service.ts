@@ -7,27 +7,31 @@ import { Paquete } from '../model/paquete';
   providedIn: 'root'
 })
 export class PaqueteService {
-  private apiUrl = 'http://localhost:8080/paquete';
+  private apiUrl = 'http://localhost:8080/resyde/paquete';
 
   constructor(private http: HttpClient) { }
 
-    getPaquetes(): Observable<Paquete[]> {
-      return this.http.get<Paquete[]>(this.apiUrl);
-    }
-  
-    getPaqueteById(id: number): Observable<Paquete> {
-      return this.http.get<Paquete>(`${this.apiUrl}/${id}`);
-    }
-  
-    createPaquete(dep: Paquete) {
-      return this.http.post(this.apiUrl, dep);
-    }
-  
-    updatePaquete(dep: Paquete) {
-      return this.http.put(this.apiUrl, dep);
-    }
-  
-    deletePaquete(id: number) {
-      return this.http.delete(`${this.apiUrl}/${id}`);
-    }
+  getPaquetes(): Observable<Paquete[]> {
+    return this.http.get<Paquete[]>(this.apiUrl);
+  }
+
+  getPaqueteById(id: number): Observable<Paquete> {
+    return this.http.get<Paquete>(`${this.apiUrl}/${id}`);
+  }
+
+  createPaquete(paq: Paquete): Observable<Paquete> {
+    const formData = new FormData();
+
+    formData.append('residencia', new Blob([JSON.stringify(paq)], { type: 'application/json' }));
+
+    return this.http.post<Paquete>(this.apiUrl, formData);
+  }
+
+  updatePaquete(dep: Paquete) {
+    return this.http.put(this.apiUrl, dep);
+  }
+
+  deletePaquete(id: number) {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
 }

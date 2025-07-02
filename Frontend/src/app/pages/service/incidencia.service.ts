@@ -7,28 +7,32 @@ import { Incidencia } from '../model/incidencia';
   providedIn: 'root'
 })
 export class IncidenciaService {
-  private apiUrl = 'http://localhost:8080/incidencia';
+  private apiUrl = 'http://localhost:8080/resyde/incidencia';
 
   constructor(private http: HttpClient) { }
 
-    getIncidencias(): Observable<Incidencia[]> {
-      return this.http.get<Incidencia[]>(this.apiUrl);
-    }
-  
-    getIncidenciaById(id: number): Observable<Incidencia> {
-      return this.http.get<Incidencia>(`${this.apiUrl}/${id}`);
-    }
-  
-    createIncidencia(dep: Incidencia) {
-      return this.http.post(this.apiUrl, dep);
-    }
-  
-    updateIncidencia(dep: Incidencia) {
-      return this.http.put(this.apiUrl, dep);
-    }
-  
-    deleteIncidencia(id: number) {
-      return this.http.delete(`${this.apiUrl}/${id}`);
-    }
-  
+  getIncidencias(): Observable<Incidencia[]> {
+    return this.http.get<Incidencia[]>(this.apiUrl);
+  }
+
+  getIncidenciaById(id: number): Observable<Incidencia> {
+    return this.http.get<Incidencia>(`${this.apiUrl}/${id}`);
+  }
+
+  createIncidencia(inc: Incidencia): Observable<Incidencia> {
+    const formData = new FormData();
+
+    formData.append('residencia', new Blob([JSON.stringify(inc)], { type: 'application/json' }));
+
+    return this.http.post<Incidencia>(this.apiUrl, formData);
+  }
+
+  updateIncidencia(dep: Incidencia) {
+    return this.http.put(this.apiUrl, dep);
+  }
+
+  deleteIncidencia(id: number) {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
 }

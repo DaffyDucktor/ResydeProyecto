@@ -36,7 +36,7 @@
             </tr>
             }@empty {
               <tr>
-                <td>No se encuentran pagos</td>
+                <td colspan="7">No se encuentran pagos</td>
               </tr>
             }
           </tbody>
@@ -45,3 +45,105 @@
     </div>
   </div>
 </div>
+
+<p-dialog header="Añadir Pago" [(visible)]="display" [breakpoints]="{ '960px': '75vw' }"
+  [style]="{ width: '30vw' }" [modal]="true">
+  <form [formGroup]="formulario" (ngSubmit)="this.submitForm()">
+    <mat-dialog-content>
+      <div class="card flex flex-col gap-4">
+        <div class="flex flex-col gap-2">
+          <label>Monto Pagado</label>
+          <input type="text" pInputText formControlName="paidAmount" [placeholder]="'Ingrese nombre de Residencia'" />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label>Balance</label>
+          <input type="text" pInputText formControlName="balance" [placeholder]="'Ingrese nombre de Direccion'" />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label>Mora</label>
+          <input type="text" pInputText formControlName="mora" [placeholder]="'Ingrese Cantidad de Departamentos'" />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label>Fecha</label>
+          <input type="text" pInputText formControlName="fecha" [placeholder]="'Ingrese Cantidad de Edificios'" />
+        </div>
+                <div class="flex flex-col gap-2">
+          <label>Comentario</label>
+          <input type="text" pInputText formControlName="comments" [placeholder]="'Ingrese Cantidad de Edificios'" />
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label>Recibos</label>
+
+          <p-select 
+            formControlName="idRecibo" 
+            [options]="dropdownItemsRec" 
+            optionValue="code"  
+            optionLabel="name" 
+            placeholder="Seleccionar Tipo"
+            [autoDisplayFirst]="false">
+          </p-select>
+        </div>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-button mat-dialog-close type="button" (click)="close()">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit">Guardar</button>
+    </mat-dialog-actions>
+  </form>
+</p-dialog>
+
+<ng-template #modalTemplate>
+  <h2 mat-dialog-title>Añadir Pago</h2>
+  <form [formGroup]="formulario" (ngSubmit)="this.submitForm()">
+    <mat-dialog-content>
+      <div>
+        <label>Monto Pagado</label>
+        <ng-container>
+          <input type="text" formControlName="paidAmount" 
+            class="form-control" />
+        </ng-container>
+
+        <label>Balance</label>
+        <ng-container>
+          <input type="text" formControlName="balance" 
+            class="form-control" />
+        </ng-container>
+
+                <label>Mora</label>
+        <ng-container>
+          <input type="text" formControlName="mora" 
+            class="form-control" />
+        </ng-container>
+
+
+                <label>Fecha</label>
+        <ng-container>
+          <input type="date" formControlName="fecha" 
+            class="form-control" />
+        </ng-container>
+
+
+                <label>Comentario</label>
+        <ng-container>
+          <input type="text" formControlName="comments" 
+            class="form-control" />
+        </ng-container>
+
+
+        <label>Recibo</label>
+        <ng-container>
+          <select formControlName="idRecibo" class="form-control">
+            <option *ngFor="let tablaItem of recibos" [value]="tablaItem.id">
+              {{ tablaItem.year + "-" + tablaItem.month}}
+            </option>
+          </select>
+        </ng-container>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-button mat-dialog-close type="button">Cancel</button>
+      <button mat-raised-button color="primary" type="submit">Guardar</button>
+    </mat-dialog-actions>
+  </form>
+</ng-template>

@@ -7,7 +7,7 @@ import { Rol } from '../model/rol';
   providedIn: 'root'
 })
 export class RolService {
-  private apiUrl = 'http://localhost:8080/rol';
+  private apiUrl = 'http://localhost:8080/resyde/rol';
 
   constructor(private http: HttpClient) { }
 
@@ -17,17 +17,5 @@ export class RolService {
   
     getRolById(id: number): Observable<Rol> {
       return this.http.get<Rol>(`${this.apiUrl}/${id}`);
-    }
-  
-    createRol(dep: Rol) {
-      return this.http.post(this.apiUrl, dep);
-    }
-  
-    updateRol(dep: Rol) {
-      return this.http.put(this.apiUrl, dep);
-    }
-  
-    deleteRol(id: number) {
-      return this.http.delete(`${this.apiUrl}/${id}`);
     }
 }

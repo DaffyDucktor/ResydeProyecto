@@ -1,6 +1,7 @@
 package pe.com.service;
 
 import pe.com.model.Visita;
+import pe.com.model.request.VisitaRequest;
 
 import java.util.List;
 
@@ -10,10 +11,10 @@ public interface VisitaService {
 
     Visita listOne(Integer id);
 
-    Visita insert (Visita obj);
+    Visita insert (VisitaRequest obj);
 
-    Visita update (Visita obj);
+    Visita update (VisitaRequest obj);
 
-    void delete (Visita obj);
+    void delete (VisitaRequest obj);
 
 }

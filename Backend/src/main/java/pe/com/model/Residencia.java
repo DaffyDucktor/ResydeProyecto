@@ -45,4 +45,20 @@ public class Residencia {
     @ManyToOne
     @JoinColumn(name = "id_tipo_residencia", nullable=false)
     private TipoResidencia idTipoResidencia;
+
+    @Override
+    public String toString() {
+        return "Residencia{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", direccion='" + direccion + '\'' +
+                ", nDepartamento='" + nDepartamento + '\'' +
+                ", nEdificio='" + nEdificio + '\'' +
+                ", fecCreacion='" + fecCreacion + '\'' +
+                ", usuCreacion='" + usuCreacion + '\'' +
+                ", fecModifica='" + fecModifica + '\'' +
+                ", usuModifica='" + usuModifica + '\'' +
+                ", idTipoResidencia=" + idTipoResidencia +
+                '}';
+    }
 }

@@ -9,6 +9,7 @@ import pe.com.service.EstadoDepartamentoService;
 import java.util.List;
 
 @Service
+@SuppressWarnings({"deprecation","unused"})
 public class EstadoDepartamentoServiceImpl implements EstadoDepartamentoService {
 
     @Autowired

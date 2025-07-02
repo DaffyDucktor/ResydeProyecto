@@ -9,7 +9,7 @@ import { LayoutService } from '../service/layout.service';
 @Component({
     selector: 'app-topbar',
     standalone: true,
-    imports: [RouterModule, CommonModule, StyleClassModule],
+    imports: [RouterModule, CommonModule, StyleClassModule, AppConfigurator],
     template: ` <div class="layout-topbar">
         <div class="layout-topbar-logo-container">
             <button class="layout-menu-button layout-topbar-action" (click)="layoutService.onMenuToggle()">
@@ -38,6 +38,16 @@ import { LayoutService } from '../service/layout.service';
         </div>
 
         <div class="layout-topbar-actions">
+            <div class="layout-config-menu">
+                <div class="relative">
+                    <app-configurator />
+                </div>
+            </div>
+
+            <button class="layout-topbar-menu-button layout-topbar-action" pStyleClass="@next" enterFromClass="hidden" enterActiveClass="animate-scalein" leaveToClass="hidden" leaveActiveClass="animate-fadeout" [hideOnOutsideClick]="true">
+                <i class="pi pi-ellipsis-v"></i>
+            </button>
+
             <div class="layout-topbar-menu hidden lg:block">
                 <div class="layout-topbar-menu-content">
                     <button type="button" class="layout-topbar-action">

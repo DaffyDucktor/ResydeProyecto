@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pe.com.model.Usuario;
+import pe.com.model.request.UsuarioRequest;
 import pe.com.service.UsuarioService;
 
 import java.util.List;
@@ -12,9 +13,10 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/resyde/usuario")
 @CrossOrigin("http://localhost:4200/")
+@SuppressWarnings({"unused"})
 public class UsuarioController {
 
-    private static final Logger logger = LoggerFactory.getLogger(DepartamentoController.class);
+    private static final Logger logger = LoggerFactory.getLogger(UsuarioController.class);
 
     @Autowired
     UsuarioService usuarioService;
@@ -32,19 +34,19 @@ public class UsuarioController {
     }
 
     @PostMapping
-    private Usuario insert(Usuario obj){
+    private Usuario insert(UsuarioRequest obj){
         logger.info("Creando un Usuario...");
         return usuarioService.insert(obj);
     }
 
     @PutMapping
-    private Usuario update(Usuario obj) {
+    private Usuario update(UsuarioRequest obj) {
         logger.info("Modificando un Usuario...");
         return usuarioService.update(obj);
     }
 
     @DeleteMapping
-    private void delete(Usuario obj){
+    private void delete(UsuarioRequest obj){
         logger.info("Eliminando un Usuario...");
         usuarioService.delete(obj);
     }

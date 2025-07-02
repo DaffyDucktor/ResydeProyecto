@@ -1,6 +1,7 @@
 package pe.com.service;
 
 import pe.com.model.Departamento;
+import pe.com.model.request.DepartamentoRequest;
 
 import java.util.List;
 
@@ -10,9 +11,9 @@ public interface DepartamentoService {
 
     Departamento listOne(Integer id);
 
-    Departamento insert (Departamento depObj);
+    Departamento insert (DepartamentoRequest depObj);
 
-    Departamento update (Departamento depObj);
+    Departamento update (DepartamentoRequest depObj);
 
-    void delete (Departamento depObj);
+    void delete (DepartamentoRequest depObj);
 }

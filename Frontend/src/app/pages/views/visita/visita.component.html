@@ -2,11 +2,8 @@
   <div class="card mb-0">
     <h2>Visita</h2>
     <div class="row">
-      <p-button routerLink="pago-form/new" class="font-bold w-max">
+      <p-button (click)="open()" class="font-bold w-max">
         Crear nueva Visita
-      </p-button>|
-      <p-button>
-        Filtrar
       </p-button>
     </div>
         <br>
@@ -34,10 +31,67 @@
             </tr>
             }@empty {
               <tr>
-                <td>No se encuentran visitas</td>
+                <td colspan="6">No se encuentran visitas</td>
               </tr>
             }
           </tbody>
         </table>
       </div>
 </div>
+
+<p-dialog header="Añadir Visita" [(visible)]="display" [breakpoints]="{ '960px': '75vw' }"
+  [style]="{ width: '30vw' }" [modal]="true">
+  <form [formGroup]="formulario" (ngSubmit)="this.submitForm()">
+    <mat-dialog-content>
+      <div class="card flex flex-col gap-4">
+        <div class="flex flex-col gap-2">
+          <label>Nombre</label>
+          <input type="text" pInputText formControlName="name" [placeholder]="'Ingrese nombre de Residencia'" />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label>Comentario</label>
+          <input type="text" pInputText formControlName="comentario" [placeholder]="'Ingrese nombre de Direccion'" />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label>Visible</label>
+          <p-select 
+            formControlName="visible" 
+            [options]="dropdownItemsVisible" 
+            optionValue="code"  
+            optionLabel="name" 
+            placeholder="Seleccionar Tipo" 
+            [autoDisplayFirst]="false">
+          </p-select>
+        </div>
+        <div class="flex flex-col gap-2">
+          <label>Fecha</label>
+          <p-datepicker [showIcon]="true" [showButtonBar]="true" formControlName="fecha"></p-datepicker>
+        </div>
+        <div class="flex flex-col gap-2">
+          <label>Hora</label>
+          <p-datepicker formControlName="hora" [iconDisplay]="'input'" [showIcon]="true" [timeOnly]="true" inputId="templatedisplay">
+            <ng-template #inputicon let-clickCallBack="clickCallBack">
+                <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
+            </ng-template>
+          </p-datepicker>
+        </div>
+        <div class="flex flex-col gap-2">
+          <label>Departamento</label>
+
+          <p-select 
+            formControlName="idDepartamento" 
+            [options]="dropdownItemsDep" 
+            optionValue="code" 
+            optionLabel="name" 
+            placeholder="Seleccionar Departamento"
+            [autoDisplayFirst]="false">
+          </p-select>
+        </div>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-button mat-dialog-close type="button" (click)="close()">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit">Guardar</button>
+    </mat-dialog-actions>
+  </form>
+</p-dialog>

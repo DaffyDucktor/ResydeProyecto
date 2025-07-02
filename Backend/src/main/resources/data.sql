@@ -15,3 +15,9 @@ INSERT INTO estado_departamento values (2, "Ocupado");
 DELETE FROM estado_recibo;
 INSERT INTO estado_recibo values (1, "Pendiente");
 INSERT INTO estado_recibo values (2, "Pagado");
+
+--Roles
+DELETE FROM rol;
+INSERT INTO rol values (1, "Administrador");
+INSERT INTO rol values (2, "Conserje");
+INSERT INTO rol values (3, "Residente");

@@ -3,16 +3,22 @@ package pe.com.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.com.model.Residencia;
+import pe.com.model.request.ResidenciaRequest;
 import pe.com.repository.ResidenciaRepository;
+import pe.com.repository.TipoResidenciaRepository;
 import pe.com.service.ResidenciaService;
 
 import java.util.List;
 
 @Service
+@SuppressWarnings({"deprecation","unused"})
 public class ResidenciaServiceImpl implements ResidenciaService {
 
     @Autowired
     ResidenciaRepository residenciaRepository;
+
+    @Autowired
+    TipoResidenciaRepository tipoResidenciaRepository;
 
     @Override
     public List<Residencia> listAll() {
@@ -25,17 +31,36 @@ public class ResidenciaServiceImpl implements ResidenciaService {
     }
 
     @Override
-    public Residencia insert(Residencia obj) {
-        return residenciaRepository.save(obj);
+    public Residencia insert(ResidenciaRequest obj) {
+        Residencia objResidencia = new Residencia();
+
+        objResidencia.setNombre(obj.getNombre());
+        objResidencia.setDireccion(obj.getDireccion());
+        objResidencia.setNDepartamento(obj.getNDepartamento());
+        objResidencia.setNEdificio(obj.getNEdificio());
+        objResidencia.setUsuCreacion(obj.getUsuCreacion());
+        objResidencia.setIdTipoResidencia(tipoResidenciaRepository.getById(Integer.parseInt(obj.getIdTipoResidencia())));
+
+        return residenciaRepository.save(objResidencia);
     }
 
     @Override
-    public Residencia update(Residencia obj) {
-        return residenciaRepository.save(obj);
+    public Residencia update(ResidenciaRequest obj) {
+        Residencia objResidencia = new Residencia();
+
+        objResidencia.setId(Integer.parseInt(obj.getId()));
+        objResidencia.setNombre(obj.getNombre());
+        objResidencia.setDireccion(obj.getDireccion());
+        objResidencia.setNDepartamento(obj.getNDepartamento());
+        objResidencia.setNEdificio(obj.getNEdificio());
+        objResidencia.setUsuModifica(obj.getUsuModifica());
+        objResidencia.setIdTipoResidencia(tipoResidenciaRepository.getById(Integer.parseInt(obj.getIdTipoResidencia())));
+
+        return residenciaRepository.save(objResidencia);
     }
 
     @Override
-    public void delete(Residencia obj) {
-        residenciaRepository.delete(obj);
+    public void delete(ResidenciaRequest obj) {
+        residenciaRepository.deleteById(Integer.parseInt(obj.getId()));
     }
 }

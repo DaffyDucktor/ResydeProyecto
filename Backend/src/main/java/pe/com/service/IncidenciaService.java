@@ -2,6 +2,7 @@ package pe.com.service;
 
 import pe.com.model.EstadoPaquete;
 import pe.com.model.Incidencia;
+import pe.com.model.request.IncidenciaRequest;
 
 import java.util.List;
 
@@ -10,9 +11,9 @@ public interface IncidenciaService {
 
     Incidencia listOne(Integer id);
 
-    Incidencia insert (Incidencia obj);
+    Incidencia insert (IncidenciaRequest obj);
 
-    Incidencia update (Incidencia obj);
+    Incidencia update (IncidenciaRequest obj);
 
-    void delete (Incidencia obj);
+    void delete (IncidenciaRequest obj);
 }

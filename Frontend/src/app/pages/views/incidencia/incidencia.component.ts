@@ -3,20 +3,58 @@ import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
-import { MessageService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
 import { Incidencia } from '../../model/incidencia';
 import { IncidenciaService } from '../../service/incidencia.service';
 
+//primeng
+import { InputTextModule } from 'primeng/inputtext';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { CardModule } from 'primeng/card';
+import { FileUploadModule } from 'primeng/fileupload';
+import { ButtonModule } from 'primeng/button';
+import { MessageService } from 'primeng/api';
+
+//Material
+import { MatTableModule } from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCardModule } from '@angular/material/card';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSelectChange } from '@angular/material/select';
+import { MatNativeDateModule } from '@angular/material/core';
+
 @Component({
   selector: 'app-incidencia',
-  imports: [ButtonModule, CardModule, RouterModule],
+  imports: [ButtonModule, CardModule, RouterModule,
+    ReactiveFormsModule,
+    FormsModule,
+    // Angular Material
+    MatButtonModule,
+    MatIconModule,
+    MatTableModule,
+    MatInputModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatRadioModule,
+    MatCheckboxModule,
+    MatCardModule,
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatDatepickerModule,],
   templateUrl: './incidencia.component.html',
   styleUrl: './incidencia.component.scss'
 })
 export class IncidenciaComponent {
-  incidencias: Incidencia[] = [];
+    @ViewChild('modalTemplate') dialogTemplate!: TemplateRef<any>;
+incidencias: Incidencia[] = [];
   isDeleteInProgress: boolean = false;
     formulario!: FormGroup;
   isSaveInProgress: boolean = false;
@@ -25,7 +63,8 @@ export class IncidenciaComponent {
     private incidenciaService: IncidenciaService,
     private messageService: MessageService,
         private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog,
 
   ) {
     this.formulario = this.fb.group({
@@ -94,5 +133,14 @@ export class IncidenciaComponent {
         });
       }
     })
+  }
+
+  
+  submitForm() {
+
+  }
+
+  openAddForm(): void {
+    this.dialog.open(this.dialogTemplate);
   }
 }

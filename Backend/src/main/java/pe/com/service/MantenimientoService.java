@@ -2,6 +2,7 @@ package pe.com.service;
 
 import pe.com.model.Incidencia;
 import pe.com.model.Mantenimiento;
+import pe.com.model.request.MantenimientoRequest;
 
 import java.util.List;
 
@@ -10,9 +11,9 @@ public interface MantenimientoService {
 
     Mantenimiento listOne(Integer id);
 
-    Mantenimiento insert (Mantenimiento obj);
+    Mantenimiento insert (MantenimientoRequest obj);
 
-    Mantenimiento update (Mantenimiento obj);
+    Mantenimiento update (MantenimientoRequest obj);
 
-    void delete (Mantenimiento obj);
+    void delete (MantenimientoRequest obj);
 }

@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pe.com.model.Recibo;
+import pe.com.model.request.ReciboRequest;
 import pe.com.service.ReciboService;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/resyde/recibo")
 @CrossOrigin("http://localhost:4200/")
+@SuppressWarnings({"unused"})
 public class ReciboController {
 
     private static final Logger logger = LoggerFactory.getLogger(ReciboController.class);
@@ -32,19 +34,19 @@ public class ReciboController {
     }
 
     @PostMapping
-    private Recibo insert(Recibo obj){
+    private Recibo insert(ReciboRequest obj){
         logger.info("Creando un Recibo...");
         return reciboService.insert(obj);
     }
 
     @PutMapping
-    private Recibo update(Recibo obj) {
+    private Recibo update(ReciboRequest obj) {
         logger.info("Modificando un Recibo...");
         return reciboService.update(obj);
     }
 
     @DeleteMapping
-    private void delete(Recibo obj){
+    private void delete(ReciboRequest obj){
         logger.info("Eliminando un Recibo...");
         reciboService.delete(obj);
     }

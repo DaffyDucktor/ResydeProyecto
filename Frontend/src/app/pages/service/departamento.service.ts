@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class DepartamentoService {
-  private apiUrl = 'http://localhost:8080/departamento';
+  private apiUrl = 'http://localhost:8080/resyde/departamento';
 
   constructor(private http: HttpClient) {}
 
@@ -20,7 +20,11 @@ export class DepartamentoService {
   }
 
   createDepartamento(dep: Departamento) {
-    return this.http.post(this.apiUrl, dep);
+    const formData = new FormData();
+
+    formData.append('departamento', new Blob([JSON.stringify(dep)], { type: 'application/json'}));
+
+    return this.http.post(this.apiUrl, formData);
   }
 
   updateDepartamento(dep: Departamento) {

@@ -32,7 +32,7 @@
             </tr>
             }@empty {
               <tr>
-                <td>No se encuentran incidencias</td>
+                <td colspan="5">No se encuentran incidencias</td>
               </tr>
             }
           </tbody>
@@ -41,3 +41,51 @@
     </div>
   </div>
 </div>
+
+
+<ng-template #modalTemplate>
+  <h2 mat-dialog-title>Añadir Incidencia</h2>
+  <form [formGroup]="formulario" (ngSubmit)="this.submitForm()">
+    <mat-dialog-content>
+      <div>
+        <label>Detalle</label>
+        <ng-container>
+          <input type="text" formControlName="detalle" 
+            class="form-control" />
+        </ng-container>
+
+        <label>Visible</label>
+        <ng-container>
+          <input type="text" formControlName="visible" 
+            class="form-control" />
+        </ng-container>
+
+        <label>Fecha</label>
+        <ng-container>
+          <input type="date" formControlName="fecha" 
+            class="form-control" />
+        </ng-container>
+
+        <label>Hora</label>
+        <ng-container>
+          <input type="text" formControlName="hora" 
+            class="form-control" />
+        </ng-container>
+
+        <label>Departamento</label>
+        <ng-container>
+          <select formControlName="idDepartamento" class="form-control">
+            <option *ngFor="let tablaItem of departamentos" [value]="tablaItem.id">
+              {{ tablaItem.codigo }}
+            </option>
+          </select>
+        </ng-container>
+
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-button mat-dialog-close type="button">Cancel</button>
+      <button mat-raised-button color="primary" type="submit">Guardar</button>
+    </mat-dialog-actions>
+  </form>
+</ng-template>

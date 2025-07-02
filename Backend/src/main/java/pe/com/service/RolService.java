@@ -9,10 +9,4 @@ public interface RolService {
     List<Rol> listAll();
 
     Rol listOne(Integer id);
-
-    Rol insert (Rol obj);
-
-    Rol update (Rol obj);
-
-    void delete (Rol obj);
 }

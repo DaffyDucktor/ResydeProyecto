@@ -7,7 +7,7 @@ import { Residencia } from '../model/residencia';
   providedIn: 'root',
 })
 export class ResidenciaService {
-  private apiUrl = 'http://localhost:8080/residencia';
+  private apiUrl = 'http://localhost:8080/resyde/residencia';
 
   constructor(private http: HttpClient) {}
 
@@ -19,8 +19,12 @@ export class ResidenciaService {
     return this.http.get<Residencia>(`${this.apiUrl}/${id}`);
   }
 
-  createResidencia(res: Residencia) {
-    return this.http.post(this.apiUrl, res);
+  createResidencia(res: Residencia): Observable<Residencia>{
+    const formData = new FormData();
+
+    formData.append('residencia', new Blob([JSON.stringify(res)], { type: 'application/json'}));
+
+    return this.http.post<Residencia>(this.apiUrl, formData);
   }
 
   updateResidencia(res: Residencia) {

@@ -88,7 +88,7 @@ export class AppMenuitem {
 
     constructor(
         public router: Router,
-        public layoutService: LayoutService
+        private layoutService: LayoutService
     ) {
         this.menuSourceSubscription = this.layoutService.menuSource$.subscribe((value) => {
             Promise.resolve(null).then(() => {

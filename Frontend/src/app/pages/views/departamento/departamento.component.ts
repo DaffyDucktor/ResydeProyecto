@@ -3,6 +3,14 @@ import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
+//Servicios
+import { ResidenciaService } from '../../service/residencia.service';
+import { EstadoDepartamentoService } from '../../service/estadoDepartamento.service';
+
+//Modelos
+import { Departamento } from '../../model/departamento';
+import { EstadoDepartamento } from '../../model/estadoDepartamento';
+import { Residencia } from '../../model/residencia';
 
 //primeng
 import { InputTextModule } from 'primeng/inputtext';
@@ -10,19 +18,56 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { CardModule } from 'primeng/card';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ButtonModule } from 'primeng/button';
-
 import { MessageService } from 'primeng/api';
+
+//Material
+import { MatTableModule } from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCardModule } from '@angular/material/card';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSelectChange } from '@angular/material/select';
+import { MatNativeDateModule } from '@angular/material/core';
 import { DepartamentoService } from '../../service/departamento.service';
-import { Departamento } from '../../model/departamento';
+
 
 @Component({
   selector: 'app-departamento',
-  imports: [ButtonModule, CardModule, RouterModule],
+  imports: [ButtonModule, CardModule, RouterModule,
+    ReactiveFormsModule,
+    FormsModule,
+    // Angular Material
+    MatButtonModule,
+    MatIconModule,
+    MatTableModule,
+    MatInputModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatRadioModule,
+    MatCheckboxModule,
+    MatCardModule,
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
+  ],
   templateUrl: './departamento.component.html',
   styleUrl: './departamento.component.scss',
 })
 export class DepartamentoComponent {
+  @ViewChild('modalTemplate') dialogTemplate!: TemplateRef<any>;
+
   departamentos: Departamento[] = [];
+  residencias: Residencia[] = [];
+  estadosDepartamento: EstadoDepartamento[] = [];
+
   isDeleteInProgress: boolean = false;
 
   formulario!: FormGroup;
@@ -32,11 +77,15 @@ export class DepartamentoComponent {
   respuestaPrincipalService: any;
   idPadron: any;
 
+
   constructor(
     private departamentoService: DepartamentoService,
+    private residenciaService: ResidenciaService,
+    private estadoDepartamentoService: EstadoDepartamentoService,
     private messageService: MessageService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog,
   ) {
     this.formulario = this.fb.group({
       id: [null],
@@ -53,6 +102,18 @@ export class DepartamentoComponent {
   getAllDepartamentos() {
     this.departamentoService.getDepartamentos().subscribe((data) => {
       this.departamentos = data;
+    });
+  }
+
+  getAllResidencias() {
+    this.residenciaService.getResidencias().subscribe((data) => {
+      this.residencias = data;
+    });
+  }
+
+  getAllTypes() {
+    this.estadoDepartamentoService.getEstadoDepartamentos().subscribe((data) => {
+      this.estadosDepartamento = data;
     });
   }
 
@@ -105,5 +166,13 @@ export class DepartamentoComponent {
         });
       }
     })
+  }
+
+  submitForm() {
+
+  }
+
+  openAddForm(): void {
+    this.dialog.open(this.dialogTemplate);
   }
 }

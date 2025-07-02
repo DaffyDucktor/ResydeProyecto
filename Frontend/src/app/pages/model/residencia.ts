@@ -4,7 +4,7 @@ export interface Residencia {
     id:number,
     nombre:string,
     direccion:string,
-    nDep:string,
+    nDepartamento:string,
     nEdificio:string,
     fecCreacion:string,
     usuCreacion:string,

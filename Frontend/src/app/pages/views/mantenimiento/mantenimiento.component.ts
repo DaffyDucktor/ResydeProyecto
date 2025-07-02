@@ -3,29 +3,79 @@ import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
-import { MessageService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
 import { MantenimientoService } from '../../service/mantenimiento.service';
 import { Mantenimiento } from '../../model/mantenimiento';
 
+//primeng
+import { InputTextModule } from 'primeng/inputtext';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { CardModule } from 'primeng/card';
+import { FileUploadModule } from 'primeng/fileupload';
+import { ButtonModule } from 'primeng/button';
+import { MessageService } from 'primeng/api';
+
+//Material
+import { MatTableModule } from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCardModule } from '@angular/material/card';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSelectChange } from '@angular/material/select';
+import { MatNativeDateModule } from '@angular/material/core';
+import { Departamento } from '../../model/departamento';
+import { EstadoDepartamento } from '../../model/estadoDepartamento';
+import { DepartamentoService } from '../../service/departamento.service';
+import { EstadoDepartamentoService } from '../../service/estadoDepartamento.service';
+import { EstadoMantenimiento } from '../../model/estadoMantenimiento';
+import { EstadoMantenimientoService } from '../../service/estadoMantenimiento.service';
+
 @Component({
   selector: 'app-mantenimiento',
-  imports: [ButtonModule, CardModule, RouterModule],
+  imports: [ButtonModule, CardModule, RouterModule,
+    ReactiveFormsModule,
+    FormsModule,
+    // Angular Material
+    MatButtonModule,
+    MatIconModule,
+    MatTableModule,
+    MatInputModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatRadioModule,
+    MatCheckboxModule,
+    MatCardModule,
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatDatepickerModule,],
   templateUrl: './mantenimiento.component.html',
   styleUrl: './mantenimiento.component.scss'
 })
 export class MantenimientoComponent {
-  mantenimientos: Mantenimiento[] = [];
+    @ViewChild('modalTemplate') dialogTemplate!: TemplateRef<any>;
+mantenimientos: Mantenimiento[] = [];
   isDeleteInProgress: boolean = false;
     formulario!: FormGroup;
   isSaveInProgress: boolean = false;
 
+  departamentos: Departamento[] = [];
+  estadosMantenimiento: EstadoMantenimiento[] = [];
+
   constructor(
     private mantenimientoService: MantenimientoService,
     private messageService: MessageService,
+    private departamentoService: DepartamentoService,
+    private estadosMantenimientoService: EstadoMantenimientoService,
         private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+        private dialog: MatDialog,
 
   ) {
     this.formulario = this.fb.group({
@@ -43,6 +93,18 @@ export class MantenimientoComponent {
   getAllMantenimientos() {
     this.mantenimientoService.getMantenimientos().subscribe((data) => {
       this.mantenimientos = data;
+    });
+  }
+
+  getAllDepartamentos() {
+    this.departamentoService.getDepartamentos().subscribe((data) => {
+      this.departamentos = data;
+    });
+  }
+
+  getAllEstadoMantenimientos() {
+    this.estadosMantenimientoService.getEstadoMantenimientos().subscribe((data) => {
+      this.estadosMantenimiento = data;
     });
   }
 
@@ -94,5 +156,13 @@ export class MantenimientoComponent {
         });
       }
     })
+  }
+  
+  submitForm() {
+
+  }
+
+  openAddForm(): void {
+    this.dialog.open(this.dialogTemplate);
   }
 }

@@ -7,7 +7,7 @@ import { Mantenimiento } from '../model/mantenimiento';
   providedIn: 'root'
 })
 export class MantenimientoService {
-  private apiUrl = 'http://localhost:8080/mantenimiento';
+  private apiUrl = 'http://localhost:8080/resyde/mantenimiento';
 
   constructor(private http: HttpClient) { }
 
@@ -19,8 +19,12 @@ export class MantenimientoService {
     return this.http.get<Mantenimiento>(`${this.apiUrl}/${id}`);
   }
 
-  createMantenimiento(dep: Mantenimiento) {
-    return this.http.post(this.apiUrl, dep);
+  createMantenimiento(mant: Mantenimiento): Observable<Mantenimiento> {
+    const formData = new FormData();
+
+    formData.append('residencia', new Blob([JSON.stringify(mant)], { type: 'application/json' }));
+
+    return this.http.post<Mantenimiento>(this.apiUrl, formData);
   }
 
   updateMantenimiento(dep: Mantenimiento) {

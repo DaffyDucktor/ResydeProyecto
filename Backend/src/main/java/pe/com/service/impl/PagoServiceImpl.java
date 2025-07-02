@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import pe.com.model.Pago;
 import pe.com.model.request.PagoRequest;
 import pe.com.repository.PagoRepository;
+import pe.com.repository.ReciboRepository;
 import pe.com.service.PagoService;
 
 import java.io.FileNotFoundException;
@@ -20,11 +21,15 @@ import java.io.IOException;
 import java.util.List;
 
 @Service
+@SuppressWarnings({"deprecation","unused"})
 public class PagoServiceImpl implements PagoService {
 
     private static final Logger log = LoggerFactory.getLogger(PagoServiceImpl.class);
     @Autowired
     PagoRepository pagoRepository;
+
+    @Autowired
+    ReciboRepository reciboRepository;
 
     @Override
     public List<Pago> listAll() {
@@ -37,18 +42,39 @@ public class PagoServiceImpl implements PagoService {
     }
 
     @Override
-    public Pago insert(Pago obj) {
-        return pagoRepository.save(obj);
+    public Pago insert(PagoRequest obj) {
+        Pago objPago = new Pago();
+
+        objPago.setPaidAmount(obj.getPaidAmount());
+        objPago.setBalance(obj.getBalance());
+        objPago.setMora(obj.getMora());
+        objPago.setFecha(obj.getFecha());
+        objPago.setComments(obj.getComments());
+        objPago.setUsuCreacion(obj.getUsuCreacion());
+        objPago.setIdRecibo(reciboRepository.getById(Integer.parseInt(obj.getIdRecibo())));
+
+        return pagoRepository.save(objPago);
     }
 
     @Override
-    public Pago update(Pago obj) {
-        return pagoRepository.save(obj);
+    public Pago update(PagoRequest obj) {
+        Pago objPago = new Pago();
+
+        objPago.setId(Integer.parseInt(obj.getId()));
+        objPago.setPaidAmount(obj.getPaidAmount());
+        objPago.setBalance(obj.getBalance());
+        objPago.setMora(obj.getMora());
+        objPago.setFecha(obj.getFecha());
+        objPago.setComments(obj.getComments());
+        objPago.setUsuModifica(obj.getUsuModifica());
+        objPago.setIdRecibo(reciboRepository.getById(Integer.parseInt(obj.getIdRecibo())));
+
+        return pagoRepository.save(objPago);
     }
 
     @Override
-    public void delete(Pago obj) {
-        pagoRepository.delete(obj);
+    public void delete(PagoRequest obj) {
+        pagoRepository.deleteById(Integer.parseInt(obj.getId()));
     }
 
     @Override

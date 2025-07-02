@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pe.com.model.Residente;
+import pe.com.model.request.ResidenteRequest;
 import pe.com.service.ResidenteService;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/resyde/residente")
 @CrossOrigin("http://localhost:4200/")
+@SuppressWarnings({"unused"})
 public class ResidenteController {
 
     private static final Logger logger = LoggerFactory.getLogger(ResidenteController.class);
@@ -32,19 +34,19 @@ public class ResidenteController {
     }
 
     @PostMapping
-    private Residente insert(Residente obj){
+    private Residente insert(ResidenteRequest obj){
         logger.info("Creando un Residente...");
         return residenteService.insert(obj);
     }
 
     @PutMapping
-    private Residente update(Residente obj) {
+    private Residente update(ResidenteRequest obj) {
         logger.info("Modificando un Residente...");
         return residenteService.update(obj);
     }
 
     @DeleteMapping
-    private void delete(Residente obj){
+    private void delete(ResidenteRequest obj){
         logger.info("Eliminando un Residente...");
         residenteService.delete(obj);
     }

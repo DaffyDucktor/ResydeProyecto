@@ -1,15 +1,16 @@
 import { Routes } from '@angular/router';
+import { AppLayout } from './app/layout/component/app.layout';
+import { Dashboard } from './app/pages/dashboard/dashboard';
+import { Documentation } from './app/pages/documentation/documentation';
+import { Landing } from './app/pages/landing/landing';
+import { Notfound } from './app/pages/notfound/notfound';
 import { ReciboComponent } from './app/pages/views/recibo/recibo.component';
 import { DepartamentoComponent } from './app/pages/views/departamento/departamento.component';
 import { ResidenciaComponent } from './app/pages/views/residencia/residencia.component';
-import { MainComponent } from './app/pages/views/main/main.component';
-import { AppLayout } from './app/layout/component/app.layout';
-import { Dashboard } from './app/pages/views/main/dashboard';
 import { IncidenciaComponent } from './app/pages/views/incidencia/incidencia.component';
 import { MantenimientoComponent } from './app/pages/views/mantenimiento/mantenimiento.component';
 import { PagoComponent } from './app/pages/views/pago/pago.component';
 import { PaqueteComponent } from './app/pages/views/paquete/paquete.component';
-import { RolComponent } from './app/pages/views/rol/rol.component';
 import { UsuarioComponent } from './app/pages/views/usuario/usuario.component';
 import { ResidenteComponent } from './app/pages/views/residente/residente.component';
 import { VisitaComponent } from './app/pages/views/visita/visita.component';
@@ -32,9 +33,15 @@ export const appRoutes: Routes = [
             { path: 'uikit/recibo/cargaMasiva', component: CargaMasivaReciboComponent },
             { path: 'uikit/residencia', component: ResidenciaComponent },
             { path: 'uikit/residente', component: ResidenteComponent },
-            { path: 'uikit/rol', component: RolComponent },
             { path: 'uikit/usuario', component: UsuarioComponent },
-            { path: 'uikit/visita', component: VisitaComponent }
+            { path: 'uikit/visita', component: VisitaComponent },
+            { path: 'uikit', loadChildren: () => import('./app/pages/uikit/uikit.routes') },
+            { path: 'documentation', component: Documentation },
+            { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') }
         ]
-    }
+    },
+    { path: 'landing', component: Landing },
+    { path: 'notfound', component: Notfound },
+    { path: 'auth', loadChildren: () => import('./app/pages/auth/auth.routes') },
+    { path: '**', redirectTo: '/notfound' }
 ];

@@ -3,16 +3,22 @@ package pe.com.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.com.model.Incidencia;
+import pe.com.model.request.IncidenciaRequest;
+import pe.com.repository.DepartamentoRepository;
 import pe.com.repository.IncidenciaRepository;
 import pe.com.service.IncidenciaService;
 
 import java.util.List;
 
 @Service
+@SuppressWarnings({"deprecation","unused"})
 public class IncidenciaServiceImpl implements IncidenciaService {
 
     @Autowired
     IncidenciaRepository incidenciaRepository;
+
+    @Autowired
+    DepartamentoRepository departamentoRepository;
 
     @Override
     public List<Incidencia> listAll() {
@@ -25,17 +31,36 @@ public class IncidenciaServiceImpl implements IncidenciaService {
     }
 
     @Override
-    public Incidencia insert(Incidencia obj) {
-        return incidenciaRepository.save(obj);
+    public Incidencia insert(IncidenciaRequest obj) {
+        Incidencia objIncidencia = new Incidencia();
+
+        objIncidencia.setDetalle(obj.getDetalle());
+        objIncidencia.setVisible(obj.getVisible());
+        objIncidencia.setFecha(obj.getFecha());
+        objIncidencia.setHora(obj.getHora());
+        objIncidencia.setUsuCreacion(obj.getUsuCreacion());
+        objIncidencia.setIdDepartamento(departamentoRepository.getById(Integer.parseInt(obj.getId())));
+
+        return incidenciaRepository.save(objIncidencia);
     }
 
     @Override
-    public Incidencia update(Incidencia obj) {
-        return incidenciaRepository.save(obj);
+    public Incidencia update(IncidenciaRequest obj) {
+        Incidencia objIncidencia = new Incidencia();
+
+        objIncidencia.setId(Integer.parseInt(obj.getId()));
+        objIncidencia.setDetalle(obj.getDetalle());
+        objIncidencia.setVisible(obj.getVisible());
+        objIncidencia.setFecha(obj.getFecha());
+        objIncidencia.setHora(obj.getHora());
+        objIncidencia.setUsuModifica(obj.getUsuModifica());
+        objIncidencia.setIdDepartamento(departamentoRepository.getById(Integer.parseInt(obj.getId())));
+
+        return incidenciaRepository.save(objIncidencia);
     }
 
     @Override
-    public void delete(Incidencia obj) {
-        incidenciaRepository.delete(obj);
+    public void delete(IncidenciaRequest obj) {
+        incidenciaRepository.deleteById(Integer.parseInt(obj.getId()));
     }
 }
