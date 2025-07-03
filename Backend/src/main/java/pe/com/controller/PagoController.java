@@ -34,9 +34,9 @@ public class PagoController {
     }
 
     @GetMapping("/balance")
-    private long balance(){
+    private Double balance(){
         logger.info("Total de Pagos...");
-        return pagoService.count();
+        return pagoService.balance();
     }
 
     @GetMapping("/{id}")

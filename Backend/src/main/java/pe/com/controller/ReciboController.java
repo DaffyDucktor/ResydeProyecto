@@ -34,7 +34,7 @@ public class ReciboController {
     }
 
     @GetMapping("/balance")
-    private long balance(){
+    private Double balance(){
         logger.info("Total de recibos...");
         return reciboService.balance();
     }
@@ -70,5 +70,5 @@ public class ReciboController {
                                 @RequestAttribute(name = "residence")String residence){
         logger.info("Realizando carga masiva de recibos...");
         return reciboService.creacionMasiva(month, year, residence);
-    }
+    }   
 }
