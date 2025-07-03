@@ -41,7 +41,7 @@ public class DepartamentoServiceImpl implements DepartamentoService {
         objDepartamento.setCodigo(depObj.getCodigo());
         objDepartamento.setIdResidencia(residenciaRepository.getById(Integer.parseInt(depObj.getIdResidencia())));
         objDepartamento.setIdEstadoDepartamento(estadoDepartamentoRepository.getById(Integer.parseInt(depObj.getIdEstadoDepartamento())));
-        objDepartamento.setUsuCreacion(depObj.getUsuCreacion());
+        objDepartamento.setUsuCreacion(depObj.getUsuario());
         return departamentoRepository.save(objDepartamento);
     }
 
@@ -53,8 +53,7 @@ public class DepartamentoServiceImpl implements DepartamentoService {
         objDepartamento.setCodigo(depObj.getCodigo());
         objDepartamento.setIdResidencia(residenciaRepository.getById(Integer.parseInt(depObj.getIdResidencia())));
         objDepartamento.setIdEstadoDepartamento(estadoDepartamentoRepository.getById(Integer.parseInt(depObj.getIdEstadoDepartamento())));
-        objDepartamento.setFecModifica("");
-        objDepartamento.setUsuModifica(depObj.getUsuCreacion());
+        objDepartamento.setUsuModifica(depObj.getUsuario());
 
         return departamentoRepository.save(objDepartamento);
     }
@@ -62,5 +61,10 @@ public class DepartamentoServiceImpl implements DepartamentoService {
     @Override
     public void delete(DepartamentoRequest depObj) {
         departamentoRepository.deleteById(Integer.parseInt(depObj.getId()));
+    }
+
+    @Override
+    public long count() {
+        return departamentoRepository.count();
     }
 }

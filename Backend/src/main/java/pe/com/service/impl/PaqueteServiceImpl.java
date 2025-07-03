@@ -43,7 +43,7 @@ public class PaqueteServiceImpl implements PaqueteService {
         objPaquete.setFecha(obj.getFecha());
         objPaquete.setHora(obj.getHora());
         objPaquete.setCodigo(obj.getCodigo());
-        objPaquete.setUsuCreacion(obj.getUsuCreacion());
+        objPaquete.setUsuCreacion(obj.getUsuario());
         objPaquete.setIdDepartamento(departamentoRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
         objPaquete.setIdEstadoPaquete(estadoPaqueteRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
 
@@ -60,7 +60,7 @@ public class PaqueteServiceImpl implements PaqueteService {
         objPaquete.setFecha(obj.getFecha());
         objPaquete.setHora(obj.getHora());
         objPaquete.setCodigo(obj.getCodigo());
-        objPaquete.setUsuModifica(obj.getUsuModifica());
+        objPaquete.setUsuModifica(obj.getUsuario());
         objPaquete.setIdDepartamento(departamentoRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
         objPaquete.setIdEstadoPaquete(estadoPaqueteRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
 

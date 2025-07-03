@@ -40,7 +40,7 @@ public class VisitaServiceImpl implements VisitaService {
         objVisita.setVisible(obj.getVisible());
         objVisita.setFecha(obj.getFecha());
         objVisita.setHora(obj.getHora());
-        objVisita.setUsuCreacion(obj.getUsuCreacion());
+        objVisita.setUsuCreacion(obj.getUsuario());
         objVisita.setIdDepartamento(departamentoRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
 
         return visitaRepository.save(objVisita);
@@ -57,7 +57,7 @@ public class VisitaServiceImpl implements VisitaService {
         objVisita.setVisible(obj.getVisible());
         objVisita.setFecha(obj.getFecha());
         objVisita.setHora(obj.getHora());
-        objVisita.setFecModifica(obj.getUsuModifica());
+        objVisita.setFecModifica(obj.getUsuario());
         objVisita.setIdDepartamento(departamentoRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
 
         return visitaRepository.save(objVisita);

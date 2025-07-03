@@ -19,10 +19,7 @@ public class PagoRequest {
     private String mora;
     private String fecha;
     private String comments;
-    private String fecCreacion;
-    private String usuCreacion;
-    private String fecModifica;
-    private String usuModifica;
+    private String usuario;
     private String idRecibo;
 
     @Override
@@ -34,10 +31,7 @@ public class PagoRequest {
                 ", mora='" + mora + '\'' +
                 ", fecha='" + fecha + '\'' +
                 ", comments='" + comments + '\'' +
-                ", fecCreacion='" + fecCreacion + '\'' +
-                ", usuCreacion='" + usuCreacion + '\'' +
-                ", fecModifica='" + fecModifica + '\'' +
-                ", usuModifica='" + usuModifica + '\'' +
+                ", usuario='" + usuario + '\'' +
                 ", idRecibo='" + idRecibo + '\'' +
                 '}';
     }

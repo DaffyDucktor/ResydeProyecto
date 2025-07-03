@@ -16,4 +16,6 @@ public interface ResidenciaService {
     Residencia update (ResidenciaRequest obj);
 
     void delete (ResidenciaRequest obj);
+
+    long count();
 }

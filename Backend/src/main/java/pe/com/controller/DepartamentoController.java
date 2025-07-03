@@ -28,6 +28,12 @@ public class DepartamentoController {
         return departamentoService.listAll();
     }
 
+    @GetMapping("count")
+    private long count(){
+        logger.info("Contar departamentos...");
+        return departamentoService.count();
+    }
+
     @GetMapping("/{id}")
     private Departamento listOne(@PathVariable Integer id){
         logger.info("Listando un departamento...");

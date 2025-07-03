@@ -44,7 +44,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         objUsuario.setUser(obj.getUser());
         objUsuario.setPassword(obj.getPassword());
-        objUsuario.setUsuCreacion(obj.getUsuCreacion());
+        objUsuario.setUsuCreacion(obj.getUsuario());
         objUsuario.setIdResidencia(residenciaRepository.getById(Integer.parseInt(obj.getIdResidencia())));
         objUsuario.setIdResidente(residenteRepository.getById(Integer.parseInt(obj.getIdResidente())));
         objUsuario.setIdRol(rolRepository.getById(Integer.parseInt(obj.getIdRol())));
@@ -58,7 +58,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         objUsuario.setUser(obj.getUser());
         objUsuario.setPassword(obj.getPassword());
-        objUsuario.setUsuModifica(obj.getUsuModifica());
+        objUsuario.setUsuModifica(obj.getUsuario());
         objUsuario.setIdResidencia(residenciaRepository.getById(Integer.parseInt(obj.getIdResidencia())));
         objUsuario.setIdResidente(residenteRepository.getById(Integer.parseInt(obj.getIdResidente())));
         objUsuario.setIdRol(rolRepository.getById(Integer.parseInt(obj.getIdRol())));

@@ -38,7 +38,7 @@ public class IncidenciaServiceImpl implements IncidenciaService {
         objIncidencia.setVisible(obj.getVisible());
         objIncidencia.setFecha(obj.getFecha());
         objIncidencia.setHora(obj.getHora());
-        objIncidencia.setUsuCreacion(obj.getUsuCreacion());
+        objIncidencia.setUsuCreacion(obj.getUsuario());
         objIncidencia.setIdDepartamento(departamentoRepository.getById(Integer.parseInt(obj.getId())));
 
         return incidenciaRepository.save(objIncidencia);
@@ -53,7 +53,7 @@ public class IncidenciaServiceImpl implements IncidenciaService {
         objIncidencia.setVisible(obj.getVisible());
         objIncidencia.setFecha(obj.getFecha());
         objIncidencia.setHora(obj.getHora());
-        objIncidencia.setUsuModifica(obj.getUsuModifica());
+        objIncidencia.setUsuModifica(obj.getUsuario());
         objIncidencia.setIdDepartamento(departamentoRepository.getById(Integer.parseInt(obj.getId())));
 
         return incidenciaRepository.save(objIncidencia);

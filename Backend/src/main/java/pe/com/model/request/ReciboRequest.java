@@ -20,10 +20,7 @@ public class ReciboRequest {
     private String particulars;
     private String total;
     private String comments;
-    private String fecCreacion;
-    private String usuCreacion;
-    private String fecModifica;
-    private String usuModifica;
+    private String usuario;
     private String idDepartamento;
     private String idEstadoRecibo;
 
@@ -36,10 +33,7 @@ public class ReciboRequest {
                 ", particulars='" + particulars + '\'' +
                 ", total='" + total + '\'' +
                 ", comments='" + comments + '\'' +
-                ", fecCreacion='" + fecCreacion + '\'' +
-                ", usuCreacion='" + usuCreacion + '\'' +
-                ", fecModifica='" + fecModifica + '\'' +
-                ", usuModifica='" + usuModifica + '\'' +
+                ", usuario='" + usuario + '\'' +
                 ", idDepartamento='" + idDepartamento + '\'' +
                 ", idEstadoRecibo='" + idEstadoRecibo + '\'' +
                 '}';

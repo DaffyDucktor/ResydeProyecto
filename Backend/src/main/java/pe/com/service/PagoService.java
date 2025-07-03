@@ -19,4 +19,8 @@ public interface PagoService {
     Integer cargaMasiva (List<PagoRequest> obj);
 
     void NetWorthExport();
+
+    long count();
+
+    Double balance();
 }

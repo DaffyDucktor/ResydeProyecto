@@ -27,6 +27,18 @@ public class PagoController {
         return pagoService.listAll();
     }
 
+    @GetMapping("/count")
+    private long count(){
+        logger.info("Contar pagos...");
+        return pagoService.count();
+    }
+
+    @GetMapping("/balance")
+    private long balance(){
+        logger.info("Total de Pagos...");
+        return pagoService.count();
+    }
+
     @GetMapping("/{id}")
     private Pago listOne(@PathVariable Integer id){
         logger.info("Listando un Pago...");

@@ -38,7 +38,7 @@ public class ResidenciaServiceImpl implements ResidenciaService {
         objResidencia.setDireccion(obj.getDireccion());
         objResidencia.setNDepartamento(obj.getNDepartamento());
         objResidencia.setNEdificio(obj.getNEdificio());
-        objResidencia.setUsuCreacion(obj.getUsuCreacion());
+        objResidencia.setUsuCreacion(obj.getUsuario());
         objResidencia.setIdTipoResidencia(tipoResidenciaRepository.getById(Integer.parseInt(obj.getIdTipoResidencia())));
 
         return residenciaRepository.save(objResidencia);
@@ -53,7 +53,7 @@ public class ResidenciaServiceImpl implements ResidenciaService {
         objResidencia.setDireccion(obj.getDireccion());
         objResidencia.setNDepartamento(obj.getNDepartamento());
         objResidencia.setNEdificio(obj.getNEdificio());
-        objResidencia.setUsuModifica(obj.getUsuModifica());
+        objResidencia.setUsuModifica(obj.getUsuario());
         objResidencia.setIdTipoResidencia(tipoResidenciaRepository.getById(Integer.parseInt(obj.getIdTipoResidencia())));
 
         return residenciaRepository.save(objResidencia);
@@ -62,5 +62,10 @@ public class ResidenciaServiceImpl implements ResidenciaService {
     @Override
     public void delete(ResidenciaRequest obj) {
         residenciaRepository.deleteById(Integer.parseInt(obj.getId()));
+    }
+
+    @Override
+    public long count() {
+        return residenciaRepository.count();
     }
 }

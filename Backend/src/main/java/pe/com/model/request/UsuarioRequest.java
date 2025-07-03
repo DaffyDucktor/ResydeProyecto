@@ -16,10 +16,7 @@ public class UsuarioRequest {
     private String id;
     private String user;
     private String password;
-    private String fecCreacion;
-    private String usuCreacion;
-    private String fecModifica;
-    private String usuModifica;
+    private String usuario;
     private String idResidencia;
     private String idResidente;
     private String idRol;
@@ -30,10 +27,7 @@ public class UsuarioRequest {
                 "id='" + id + '\'' +
                 ", user='" + user + '\'' +
                 ", password='" + password + '\'' +
-                ", fecCreacion='" + fecCreacion + '\'' +
-                ", usuCreacion='" + usuCreacion + '\'' +
-                ", fecModifica='" + fecModifica + '\'' +
-                ", usuModifica='" + usuModifica + '\'' +
+                ", usuario='" + usuario + '\'' +
                 ", idResidencia='" + idResidencia + '\'' +
                 ", idResidente='" + idResidente + '\'' +
                 ", idRol='" + idRol + '\'' +

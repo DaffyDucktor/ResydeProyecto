@@ -14,10 +14,7 @@ public class DepartamentoRequest {
 
     private String id;
     private String codigo;
-    private String fecCreacion;
-    private String usuCreacion;
-    private String fecModifica;
-    private String usuModifica;
+    private String usuario;
     private String idResidencia;
     private String idEstadoDepartamento;
 
@@ -26,10 +23,7 @@ public class DepartamentoRequest {
         return "DepartamentoRequest{" +
                 "id='" + id + '\'' +
                 ", codigo='" + codigo + '\'' +
-                ", fecCreacion='" + fecCreacion + '\'' +
-                ", usuCreacion='" + usuCreacion + '\'' +
-                ", fecModifica='" + fecModifica + '\'' +
-                ", usuModifica='" + usuModifica + '\'' +
+                ", usuario='" + usuario + '\'' +
                 ", idResidencia='" + idResidencia + '\'' +
                 ", idEstadoDepartamento='" + idEstadoDepartamento + '\'' +
                 '}';

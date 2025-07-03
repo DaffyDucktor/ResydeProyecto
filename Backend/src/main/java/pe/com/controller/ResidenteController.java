@@ -27,6 +27,12 @@ public class ResidenteController {
         return residenteService.listAll();
     }
 
+    @GetMapping("count")
+    private long count(){
+        logger.info("Contar departamentos...");
+        return residenteService.count();
+    }
+
     @GetMapping("/{id}")
     private Residente listOne(@PathVariable Integer id){
         logger.info("Listando un Residente...");

@@ -30,6 +30,12 @@ public class ResidenciaController {
         return obj;
     }
 
+    @GetMapping("count")
+    private long count(){
+        logger.info("Contar departamentos...");
+        return residenciaService.count();
+    }
+
     @GetMapping("/{id}")
     private Residencia listOne(@PathVariable Integer id){
         logger.info("Listando un Residencia...");

@@ -21,10 +21,7 @@ public class VisitaRequest {
     private String visible;
     private String fecha;
     private String hora;
-    private String fecCreacion;
-    private String usuCreacion;
-    private String fecModifica;
-    private String usuModifica;
+    private String usuario;
     private String idDepartamento;
 
     @Override
@@ -37,10 +34,7 @@ public class VisitaRequest {
                 ", visible='" + visible + '\'' +
                 ", fecha='" + fecha + '\'' +
                 ", hora='" + hora + '\'' +
-                ", fecCreacion='" + fecCreacion + '\'' +
-                ", usuCreacion='" + usuCreacion + '\'' +
-                ", fecModifica='" + fecModifica + '\'' +
-                ", usuModifica='" + usuModifica + '\'' +
+                ", usuario='" + usuario + '\'' +
                 ", idDepartamento='" + idDepartamento + '\'' +
                 '}';
     }

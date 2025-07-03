@@ -20,10 +20,7 @@ public class ResidenciaRequest {
     private String nDepartamento;
     @JsonProperty("nEdificio")
     private String nEdificio;
-    private String fecCreacion;
-    private String usuCreacion;
-    private String fecModifica;
-    private String usuModifica;
+    private String usuario;
     private String idTipoResidencia;
 
     @Override
@@ -34,10 +31,7 @@ public class ResidenciaRequest {
                 ", direccion='" + direccion + '\'' +
                 ", nDepartamento='" + nDepartamento + '\'' +
                 ", nEdificio='" + nEdificio + '\'' +
-                ", fecCreacion='" + fecCreacion + '\'' +
-                ", usuCreacion='" + usuCreacion + '\'' +
-                ", fecModifica='" + fecModifica + '\'' +
-                ", usuModifica='" + usuModifica + '\'' +
+                ", usuario='" + usuario + '\'' +
                 ", idTipoResidencia='" + idTipoResidencia + '\'' +
                 '}';
     }

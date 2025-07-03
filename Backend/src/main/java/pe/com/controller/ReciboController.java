@@ -27,6 +27,19 @@ public class ReciboController {
         return reciboService.listAll();
     }
 
+    @GetMapping("/count")
+    private long count(){
+        logger.info("Contar recibos...");
+        return reciboService.count();
+    }
+
+    @GetMapping("/balance")
+    private long balance(){
+        logger.info("Total de recibos...");
+        return reciboService.balance();
+    }
+
+
     @GetMapping("/{id}")
     private Recibo listOne(@PathVariable Integer id){
         logger.info("Listando un Recibo...");

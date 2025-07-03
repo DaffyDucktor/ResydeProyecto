@@ -16,4 +16,6 @@ public interface DepartamentoService {
     Departamento update (DepartamentoRequest depObj);
 
     void delete (DepartamentoRequest depObj);
+
+    long count();
 }

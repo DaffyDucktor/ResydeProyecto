@@ -17,10 +17,7 @@ public class MantenimientoRequest {
     private String descripcion;
     private String fechaIni;
     private String fechaFin;
-    private String fecCreacion;
-    private String usuCreacion;
-    private String fecModifica;
-    private String usuModifica;
+    private String usuario;
     private String idDepartamento;
     private String idEstadoMantenimiento;
 
@@ -31,10 +28,7 @@ public class MantenimientoRequest {
                 ", descripcion='" + descripcion + '\'' +
                 ", fechaIni='" + fechaIni + '\'' +
                 ", fechaFin='" + fechaFin + '\'' +
-                ", fecCreacion='" + fecCreacion + '\'' +
-                ", usuCreacion='" + usuCreacion + '\'' +
-                ", fecModifica='" + fecModifica + '\'' +
-                ", usuModifica='" + usuModifica + '\'' +
+                ", usuario='" + usuario + '\'' +
                 ", idDepartamento='" + idDepartamento + '\'' +
                 ", idEstadoMantenimiento='" + idEstadoMantenimiento + '\'' +
                 '}';

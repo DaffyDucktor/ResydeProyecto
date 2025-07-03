@@ -20,4 +20,8 @@ public interface ReciboService {
     Integer creacionMasiva(String month, String year, String residence);
 
     void NetWorthExport();
+
+    long count();
+
+    Double balance();
 }

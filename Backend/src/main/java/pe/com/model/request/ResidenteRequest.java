@@ -19,10 +19,7 @@ public class ResidenteRequest {
     private String apellido;
     private String telefono;
     private String correo;
-    private String fecCreacion;
-    private String usuCreacion;
-    private String fecModifica;
-    private String usuModifica;
+    private String usuario;
     private String idDepartamento;
 
     @Override
@@ -33,10 +30,7 @@ public class ResidenteRequest {
                 ", apellido='" + apellido + '\'' +
                 ", telefono='" + telefono + '\'' +
                 ", correo='" + correo + '\'' +
-                ", fecCreacion='" + fecCreacion + '\'' +
-                ", usuCreacion='" + usuCreacion + '\'' +
-                ", fecModifica='" + fecModifica + '\'' +
-                ", usuModifica='" + usuModifica + '\'' +
+                ", usuario='" + usuario + '\'' +
                 ", idDepartamento='" + idDepartamento + '\'' +
                 '}';
     }

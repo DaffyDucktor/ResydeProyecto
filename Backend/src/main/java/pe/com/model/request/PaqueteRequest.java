@@ -19,10 +19,7 @@ public class PaqueteRequest {
     private String fecha;
     private String hora;
     private String codigo;
-    private String fecCreacion;
-    private String usuCreacion;
-    private String fecModifica;
-    private String usuModifica;
+    private String usuario;
     private String idDepartamento;
     private String idEstadoPaquete;
 
@@ -35,10 +32,7 @@ public class PaqueteRequest {
                 ", fecha='" + fecha + '\'' +
                 ", hora='" + hora + '\'' +
                 ", codigo='" + codigo + '\'' +
-                ", fecCreacion='" + fecCreacion + '\'' +
-                ", usuCreacion='" + usuCreacion + '\'' +
-                ", fecModifica='" + fecModifica + '\'' +
-                ", usuModifica='" + usuModifica + '\'' +
+                ", usuario='" + usuario + '\'' +
                 ", idDepartamento='" + idDepartamento + '\'' +
                 ", idEstadoPaquete='" + idEstadoPaquete + '\'' +
                 '}';

@@ -42,7 +42,7 @@ public class MantenimientoServiceImpl implements MantenimientoService {
         objMantenimiento.setDescripcion(obj.getDescripcion());
         objMantenimiento.setFechaFin(obj.getFechaFin());
         objMantenimiento.setFechaIni(obj.getFechaIni());
-        objMantenimiento.setUsuCreacion(obj.getUsuCreacion());
+        objMantenimiento.setUsuCreacion(obj.getUsuario());
         objMantenimiento.setIdDepartamento(departamentoRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
         objMantenimiento.setIdEstadoMantenimiento(estadoMantenimientoRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
 
@@ -57,7 +57,7 @@ public class MantenimientoServiceImpl implements MantenimientoService {
         objMantenimiento.setDescripcion(obj.getDescripcion());
         objMantenimiento.setFechaFin(obj.getFechaFin());
         objMantenimiento.setFechaIni(obj.getFechaIni());
-        objMantenimiento.setUsuCreacion(obj.getUsuCreacion());
+        objMantenimiento.setUsuCreacion(obj.getUsuario());
         objMantenimiento.setIdDepartamento(departamentoRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
         objMantenimiento.setIdEstadoMantenimiento(estadoMantenimientoRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
 

@@ -38,7 +38,7 @@ public class ResidenteServiceImpl implements ResidenteService {
         objResidente.setNombre(obj.getNombre());
         objResidente.setTelefono(obj.getTelefono());
         objResidente.setCorreo(obj.getCorreo());
-        objResidente.setUsuCreacion(obj.getUsuCreacion());
+        objResidente.setUsuCreacion(obj.getUsuario());
         objResidente.setIdDepartamento(departamentoRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
 
         return residenteRepository.save(objResidente);
@@ -53,7 +53,7 @@ public class ResidenteServiceImpl implements ResidenteService {
         objResidente.setNombre(obj.getNombre());
         objResidente.setTelefono(obj.getTelefono());
         objResidente.setCorreo(obj.getCorreo());
-        objResidente.setUsuModifica(obj.getUsuModifica());
+        objResidente.setUsuModifica(obj.getUsuario());
         objResidente.setIdDepartamento(departamentoRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
 
         return residenteRepository.save(objResidente);
@@ -62,5 +62,10 @@ public class ResidenteServiceImpl implements ResidenteService {
     @Override
     public void delete(ResidenteRequest obj) {
          residenteRepository.deleteById(Integer.parseInt(obj.getId()));
+    }
+
+    @Override
+    public long count() {
+        return residenteRepository.count();
     }
 }

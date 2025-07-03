@@ -50,7 +50,7 @@ public class PagoServiceImpl implements PagoService {
         objPago.setMora(obj.getMora());
         objPago.setFecha(obj.getFecha());
         objPago.setComments(obj.getComments());
-        objPago.setUsuCreacion(obj.getUsuCreacion());
+        objPago.setUsuCreacion(obj.getUsuario());
         objPago.setIdRecibo(reciboRepository.getById(Integer.parseInt(obj.getIdRecibo())));
 
         return pagoRepository.save(objPago);
@@ -66,7 +66,7 @@ public class PagoServiceImpl implements PagoService {
         objPago.setMora(obj.getMora());
         objPago.setFecha(obj.getFecha());
         objPago.setComments(obj.getComments());
-        objPago.setUsuModifica(obj.getUsuModifica());
+        objPago.setUsuModifica(obj.getUsuario());
         objPago.setIdRecibo(reciboRepository.getById(Integer.parseInt(obj.getIdRecibo())));
 
         return pagoRepository.save(objPago);
@@ -111,5 +111,22 @@ public class PagoServiceImpl implements PagoService {
             throw new RuntimeException(e);
         }
         log.info("Archivo creado exitosamente.");
+    }
+
+    @Override
+    public long count() {
+        return reciboRepository.count();
+    }
+
+    @Override
+    public Double balance() {
+        List<Pago> objList = pagoRepository.findAll();
+
+        Double balance = 0.0;
+
+        for (Pago obj: objList){
+            balance = balance + Double.parseDouble(obj.getBalance());
+        }
+        return 0.0;
     }
 }

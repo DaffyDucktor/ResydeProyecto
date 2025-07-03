@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pe.com.model.Pago;
 import pe.com.model.Recibo;
 import pe.com.model.request.ReciboRequest;
 import pe.com.repository.DepartamentoRepository;
@@ -55,7 +56,7 @@ public class ReciboServiceImpl implements ReciboService {
         objRecibo.setParticulars(obj.getParticulars());
         objRecibo.setTotal(obj.getTotal());
         objRecibo.setComments(obj.getComments());
-        objRecibo.setUsuCreacion(obj.getUsuCreacion());
+        objRecibo.setUsuCreacion(obj.getUsuario());
         objRecibo.setIdDepartamento(departamentoRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
         objRecibo.setIdEstadoRecibo(estadoReciboRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
 
@@ -72,7 +73,7 @@ public class ReciboServiceImpl implements ReciboService {
         objRecibo.setParticulars(obj.getParticulars());
         objRecibo.setTotal(obj.getTotal());
         objRecibo.setComments(obj.getComments());
-        objRecibo.setUsuCreacion(obj.getUsuCreacion());
+        objRecibo.setUsuCreacion(obj.getUsuario());
         objRecibo.setIdDepartamento(departamentoRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
         objRecibo.setIdEstadoRecibo(estadoReciboRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
 
@@ -119,5 +120,22 @@ public class ReciboServiceImpl implements ReciboService {
             throw new RuntimeException(e);
         }
         log.info("Archivo creado exitosamente.");
+    }
+
+    @Override
+    public long count() {
+        return reciboRepository.count();
+    }
+
+    @Override
+    public Double balance() {
+        List<Recibo> objList = reciboRepository.findAll();
+
+        Double balance = 0.0;
+
+        for (Recibo obj: objList){
+            balance = balance + Double.parseDouble(obj.getParticulars());
+        }
+        return 0.0;
     }
 }
