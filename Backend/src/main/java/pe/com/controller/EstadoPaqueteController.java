@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/resyde/estadoPaquete")
-@CrossOrigin("http://localhost:4200/")
+//@CrossOrigin("http://localhost:4200/")
 @SuppressWarnings({"unused"})
 public class EstadoPaqueteController {
 

@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/resyde/residencia")
-@CrossOrigin("http://localhost:4200/")
+//@CrossOrigin("http://localhost:4200/")
 @SuppressWarnings({"unused"})
 public class ResidenciaController {
 
@@ -38,7 +38,7 @@ public class ResidenciaController {
 
     @GetMapping("/{id}")
     private Residencia listOne(@PathVariable Integer id){
-        logger.info("Listando un Residencia...");
+        logger.info("Listando un Residencia...: " + id);
         return residenciaService.listOne(id);
     }
 
@@ -47,7 +47,12 @@ public class ResidenciaController {
         logger.info("Creando un Residencia...");
         logger.info("RESIDENCIA REQUEST: {}", obj.toString());
 
-        return residenciaService.insert(obj);
+        if(obj.getId().isEmpty()){
+            return residenciaService.insert(obj);
+        } else {
+            return residenciaService.update(obj);
+        }
+
     }
 
     @PutMapping

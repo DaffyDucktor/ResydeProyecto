@@ -1,5 +1,6 @@
 package pe.com.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,9 +26,11 @@ public class Residencia {
     private String direccion;
 
     @Column
+    @JsonProperty("nDepartamento")
     private String nDepartamento;
 
     @Column
+    @JsonProperty("nEdificio")
     private String nEdificio;
 
     @Column

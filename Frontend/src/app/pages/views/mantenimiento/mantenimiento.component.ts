@@ -7,12 +7,18 @@ import { MantenimientoService } from '../../service/mantenimiento.service';
 import { Mantenimiento } from '../../model/mantenimiento';
 
 //primeng
+import { PrimeNG } from 'primeng/config';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CardModule } from 'primeng/card';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ButtonModule } from 'primeng/button';
 import { MessageService } from 'primeng/api';
+import { FluidModule } from 'primeng/fluid';
+import { SelectModule } from 'primeng/select';
+import { TextareaModule } from 'primeng/textarea';
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
 
 //Material
 import { MatTableModule } from '@angular/material/table';
@@ -54,40 +60,61 @@ import { EstadoMantenimientoService } from '../../service/estadoMantenimiento.se
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatDatepickerModule,],
+    MatDatepickerModule,
+    //primeng
+    ButtonModule,
+    InputTextModule,
+    InputNumberModule,
+    CardModule,
+    FileUploadModule,
+    FluidModule, SelectModule, TextareaModule, DialogModule, DropdownModule
+  ],
   templateUrl: './mantenimiento.component.html',
   styleUrl: './mantenimiento.component.scss'
 })
 export class MantenimientoComponent {
-    @ViewChild('modalTemplate') dialogTemplate!: TemplateRef<any>;
-mantenimientos: Mantenimiento[] = [];
+  @ViewChild('modalTemplate') dialogTemplate!: TemplateRef<any>;
+  mantenimientos: Mantenimiento[] = [];
   isDeleteInProgress: boolean = false;
-    formulario!: FormGroup;
+  formulario!: FormGroup;
   isSaveInProgress: boolean = false;
 
   departamentos: Departamento[] = [];
   estadosMantenimiento: EstadoMantenimiento[] = [];
+
+  dropdownItemsDep = [
+    { name: '', code: '' }
+  ];
+
+  dropdownItemsEstMant = [
+    { name: '', code: '' }
+  ];
+  display: boolean = false;
 
   constructor(
     private mantenimientoService: MantenimientoService,
     private messageService: MessageService,
     private departamentoService: DepartamentoService,
     private estadosMantenimientoService: EstadoMantenimientoService,
-        private fb: FormBuilder,
+    private fb: FormBuilder,
     private router: Router,
-        private dialog: MatDialog,
+    private dialog: MatDialog,
 
   ) {
     this.formulario = this.fb.group({
       id: [null],
-      codigo: ['', Validators.required],
-      idResidencia: ['', Validators.required],
-      idEstadoDepartamento: ['', Validators.required],
+      descripcion: [null, Validators.required],
+      fechaIni: [null, Validators.required],
+      fechaFin: [null, Validators.required],
+      idDepartamento: [null, Validators.required],
+      idEstadoMantenimiento: [null, Validators.required],
     })
   }
 
   ngOnInit(): void {
     this.getAllMantenimientos();
+    this.getAllDepartamentos();
+    this.getAllEstadoMantenimientos();
   }
 
   getAllMantenimientos() {
@@ -98,13 +125,19 @@ mantenimientos: Mantenimiento[] = [];
 
   getAllDepartamentos() {
     this.departamentoService.getDepartamentos().subscribe((data) => {
-      this.departamentos = data;
+      this.dropdownItemsDep.length = 0;
+      data.forEach(element => {
+        this.dropdownItemsDep.push({ name: element.codigo, code: element.id.toString() });
+      });
     });
   }
 
   getAllEstadoMantenimientos() {
     this.estadosMantenimientoService.getEstadoMantenimientos().subscribe((data) => {
-      this.estadosMantenimiento = data;
+      this.dropdownItemsEstMant.length = 0;
+      data.forEach(element => {
+        this.dropdownItemsEstMant.push({ name: element.estado, code: element.id.toString() });
+      });
     });
   }
 
@@ -130,7 +163,7 @@ mantenimientos: Mantenimiento[] = [];
       },
     });
   }
- createMantenimiento() {
+  createMantenimiento() {
     if (this.formulario.invalid) {
       this.messageService.add({
         severity: 'error',
@@ -157,12 +190,32 @@ mantenimientos: Mantenimiento[] = [];
       }
     })
   }
-  
+
   submitForm() {
 
   }
 
   openAddForm(): void {
     this.dialog.open(this.dialogTemplate);
+  }
+
+  open() {
+    this.formulario.enable();
+    this.formulario.reset();
+    this.display = true;
+  }
+
+  edit() {
+    this.formulario.enable();
+    this.display = true;
+  }
+
+  view() {
+    this.formulario.disable();
+    this.display = true;
+  }
+
+  close() {
+    this.display = false;
   }
 }

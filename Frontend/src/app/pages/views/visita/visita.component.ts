@@ -189,6 +189,18 @@ export class VisitaComponent {
   }
 
   open() {
+    this.formulario.enable();
+    this.formulario.reset();
+    this.display = true;
+  }
+
+  edit() {
+    this.formulario.enable();
+    this.display = true;
+  }
+
+  view() {
+    this.formulario.disable();
     this.display = true;
   }
 

@@ -27,7 +27,7 @@ public class ResidenciaServiceImpl implements ResidenciaService {
 
     @Override
     public Residencia listOne(Integer id) {
-        return residenciaRepository.getById(id);
+        return residenciaRepository.findById(id).get();
     }
 
     @Override
@@ -39,14 +39,14 @@ public class ResidenciaServiceImpl implements ResidenciaService {
         objResidencia.setNDepartamento(obj.getNDepartamento());
         objResidencia.setNEdificio(obj.getNEdificio());
         objResidencia.setUsuCreacion(obj.getUsuario());
-        objResidencia.setIdTipoResidencia(tipoResidenciaRepository.getById(Integer.parseInt(obj.getIdTipoResidencia())));
+        objResidencia.setIdTipoResidencia(tipoResidenciaRepository.findById(Integer.parseInt(obj.getIdTipoResidencia())).get());
 
         return residenciaRepository.save(objResidencia);
     }
 
     @Override
     public Residencia update(ResidenciaRequest obj) {
-        Residencia objResidencia = new Residencia();
+        Residencia objResidencia = residenciaRepository.findById(Integer.parseInt(obj.getId())).get();
 
         objResidencia.setId(Integer.parseInt(obj.getId()));
         objResidencia.setNombre(obj.getNombre());
@@ -54,7 +54,7 @@ public class ResidenciaServiceImpl implements ResidenciaService {
         objResidencia.setNDepartamento(obj.getNDepartamento());
         objResidencia.setNEdificio(obj.getNEdificio());
         objResidencia.setUsuModifica(obj.getUsuario());
-        objResidencia.setIdTipoResidencia(tipoResidenciaRepository.getById(Integer.parseInt(obj.getIdTipoResidencia())));
+        objResidencia.setIdTipoResidencia(tipoResidenciaRepository.findById(Integer.parseInt(obj.getIdTipoResidencia())).get());
 
         return residenciaRepository.save(objResidencia);
     }

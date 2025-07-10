@@ -11,23 +11,29 @@ export class PagoService {
 
   constructor(private http: HttpClient) { }
 
-    getPagos(): Observable<Pago[]> {
-      return this.http.get<Pago[]>(this.apiUrl);
-    }
-  
-    getPagoById(id: number): Observable<Pago> {
-      return this.http.get<Pago>(`${this.apiUrl}/${id}`);
-    }
-  
-    createPago(dep: Pago) {
-      return this.http.post(this.apiUrl, dep);
-    }
-  
-    updatePago(dep: Pago) {
-      return this.http.put(this.apiUrl, dep);
-    }
-  
-    deletePago(id: number) {
-      return this.http.delete(`${this.apiUrl}/${id}`);
-    }
+  getCount(): Observable<Number> {
+    return this.http.get<Number>(this.apiUrl + "/count");
+  }
+  getBalance(): Observable<Number> {
+    return this.http.get<Number>(this.apiUrl + "/balance");
+  }
+  getPagos(): Observable<Pago[]> {
+    return this.http.get<Pago[]>(this.apiUrl);
+  }
+
+  getPagoById(id: number): Observable<Pago> {
+    return this.http.get<Pago>(`${this.apiUrl}/${id}`);
+  }
+
+  createPago(dep: Pago): Observable<Pago> {
+    return this.http.post<Pago>(this.apiUrl, dep);
+  }
+
+  updatePago(dep: Pago) {
+    return this.http.put(this.apiUrl, dep);
+  }
+
+  deletePago(id: number) {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
 }

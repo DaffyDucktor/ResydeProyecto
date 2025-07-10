@@ -13,12 +13,18 @@ import { EstadoDepartamento } from '../../model/estadoDepartamento';
 import { Residencia } from '../../model/residencia';
 
 //primeng
+import { PrimeNG } from 'primeng/config';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CardModule } from 'primeng/card';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ButtonModule } from 'primeng/button';
 import { MessageService } from 'primeng/api';
+import { FluidModule } from 'primeng/fluid';
+import { SelectModule } from 'primeng/select';
+import { TextareaModule } from 'primeng/textarea';
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
 
 //Material
 import { MatTableModule } from '@angular/material/table';
@@ -43,6 +49,7 @@ import { DepartamentoService } from '../../service/departamento.service';
   imports: [ButtonModule, CardModule, RouterModule,
     ReactiveFormsModule,
     FormsModule,
+    CommonModule,
     // Angular Material
     MatButtonModule,
     MatIconModule,
@@ -57,6 +64,13 @@ import { DepartamentoService } from '../../service/departamento.service';
     MatDatepickerModule,
     MatNativeDateModule,
     MatDatepickerModule,
+    //primeng
+    ButtonModule,
+    InputTextModule,
+    InputNumberModule,
+    CardModule,
+    FileUploadModule,
+    FluidModule, SelectModule, TextareaModule, DialogModule, DropdownModule
   ],
   templateUrl: './departamento.component.html',
   styleUrl: './departamento.component.scss',
@@ -77,6 +91,16 @@ export class DepartamentoComponent {
   respuestaPrincipalService: any;
   idPadron: any;
 
+  idResidenciaSelect: any;
+
+  dropdownItemsRes = [
+    { name: '', code: '' }
+  ];
+
+  dropdownItemsEstDep = [
+    { name: '', code: '' }
+  ];
+  display: boolean = false;
 
   constructor(
     private departamentoService: DepartamentoService,
@@ -86,34 +110,46 @@ export class DepartamentoComponent {
     private fb: FormBuilder,
     private router: Router,
     private dialog: MatDialog,
+    private primeng: PrimeNG
   ) {
     this.formulario = this.fb.group({
       id: [null],
-      codigo: ['', Validators.required],
-      idResidencia: ['', Validators.required],
-      idEstadoDepartamento: ['', Validators.required],
+      codigo: [null, Validators.required],
+      idResidencia: [null, Validators.required],
+      idEstadoDepartamento: [null, Validators.required],
+      usuario: [null],
     })
   }
 
   ngOnInit(): void {
+    this.primeng.ripple.set(true);
     this.getAllDepartamentos();
+    this.getAllResidencias();
+    this.getAllTypes();
   }
 
   getAllDepartamentos() {
     this.departamentoService.getDepartamentos().subscribe((data) => {
       this.departamentos = data;
     });
+    console.log(this.departamentos.length)
   }
 
   getAllResidencias() {
     this.residenciaService.getResidencias().subscribe((data) => {
-      this.residencias = data;
+      this.dropdownItemsRes.length = 0;
+      data.forEach(element => {
+        this.dropdownItemsRes.push({ name: element.nombre, code: element.id.toString() });
+      });
     });
   }
 
   getAllTypes() {
     this.estadoDepartamentoService.getEstadoDepartamentos().subscribe((data) => {
-      this.estadosDepartamento = data;
+      this.dropdownItemsEstDep.length = 0;
+      data.forEach(element => {
+        this.dropdownItemsEstDep.push({ name: element.estado, code: element.id.toString() });
+      });
     });
   }
 
@@ -174,5 +210,25 @@ export class DepartamentoComponent {
 
   openAddForm(): void {
     this.dialog.open(this.dialogTemplate);
+  }
+
+  open() {
+    this.formulario.enable();
+    this.formulario.reset();
+    this.display = true;
+  }
+
+  edit() {
+    this.formulario.enable();
+    this.display = true;
+  }
+
+  view() {
+    this.formulario.disable();
+    this.display = true;
+  }
+
+  close() {
+    this.display = false;
   }
 }

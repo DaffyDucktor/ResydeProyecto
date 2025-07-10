@@ -58,34 +58,34 @@ import { EstadoPaqueteService } from '../../service/estadoPaquete.service';
     MatDatepickerModule,
     MatNativeDateModule,
     MatDatepickerModule,
-      //primeng
-      ButtonModule,
-      InputTextModule,
-      InputNumberModule,
-      CardModule,
-      FileUploadModule,
-      FluidModule, SelectModule, TextareaModule, DialogModule, DropdownModule
+    //primeng
+    ButtonModule,
+    InputTextModule,
+    InputNumberModule,
+    CardModule,
+    FileUploadModule,
+    FluidModule, SelectModule, TextareaModule, DialogModule, DropdownModule
   ],
   templateUrl: './paquete.component.html',
   styleUrl: './paquete.component.scss'
 })
 export class PaqueteComponent {
-    @ViewChild('modalTemplate') dialogTemplate!: TemplateRef<any>;
-paquetes: Paquete[] = [];
+  @ViewChild('modalTemplate') dialogTemplate!: TemplateRef<any>;
+  paquetes: Paquete[] = [];
   isDeleteInProgress: boolean = false;
-    formulario!: FormGroup;
+  formulario!: FormGroup;
   isSaveInProgress: boolean = false;
 
   departamentos: Departamento[] = [];
   estadosPaquete: EstadoPaquete[] = [];
 
-    dropdownItemsDep = [
-        { name: '', code: '' }
-    ];
+  dropdownItemsDep = [
+    { name: '', code: '' }
+  ];
 
   dropdownItemsEstPaq = [
-        { name: '', code: '' }
-    ];
+    { name: '', code: '' }
+  ];
   display: boolean = false;
 
   constructor(
@@ -93,21 +93,27 @@ paquetes: Paquete[] = [];
     private messageService: MessageService,
     private departamentoService: DepartamentoService,
     private estadoPaqueteService: EstadoPaqueteService,
-        private fb: FormBuilder,
+    private fb: FormBuilder,
     private router: Router,
     private dialog: MatDialog,
 
   ) {
     this.formulario = this.fb.group({
       id: [null],
-      codigo: ['', Validators.required],
-      idResidencia: ['', Validators.required],
-      idEstadoDepartamento: ['', Validators.required],
+      remitente: [null, Validators.required],
+      descripcion: [null, Validators.required],
+      fecha: [null, Validators.required],
+      hora: [null, Validators.required],
+      codigo: [null, Validators.required],
+      idDepartamento: [null, Validators.required],
+      idEstadoPaquete: [null, Validators.required],
     })
   }
 
   ngOnInit(): void {
     this.getAllPaquetes();
+    this.getAllDepartamentos();
+    this.getAllEstados();
   }
 
   getAllPaquetes() {
@@ -118,21 +124,21 @@ paquetes: Paquete[] = [];
 
   getAllDepartamentos() {
     this.departamentoService.getDepartamentos().subscribe((data) => {
-            this.dropdownItemsDep.length = 0;
+      this.dropdownItemsDep.length = 0;
       data.forEach(element => {
         this.dropdownItemsDep.push({ name: element.codigo, code: element.id.toString() });
       });
-this.departamentos = data;
+      this.departamentos = data;
     });
   }
 
   getAllEstados() {
     this.estadoPaqueteService.getEstadoPaquetes().subscribe((data) => {
-            this.dropdownItemsEstPaq.length = 0;
+      this.dropdownItemsEstPaq.length = 0;
       data.forEach(element => {
         this.dropdownItemsEstPaq.push({ name: element.estado, code: element.id.toString() });
       });
-this.estadosPaquete = data;
+      this.estadosPaquete = data;
     });
   }
 
@@ -167,7 +173,19 @@ this.estadosPaquete = data;
     this.dialog.open(this.dialogTemplate);
   }
 
-    open() {
+  open() {
+    this.formulario.enable();
+    this.formulario.reset();
+    this.display = true;
+  }
+
+  edit() {
+    this.formulario.enable();
+    this.display = true;
+  }
+
+  view() {
+    this.formulario.disable();
     this.display = true;
   }
 

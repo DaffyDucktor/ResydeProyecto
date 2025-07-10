@@ -2,11 +2,8 @@
   <div class="card mb-0">
     <h2>Mantenimiento</h2>
     <div class="row">
-      <p-button routerLink="pago-form/new" class="font-bold w-max">
+      <p-button (onClick)="open()" class="font-bold w-max">
         Crear nuevo mantenimiento
-      </p-button>|
-      <p-button>
-        Filtrar
       </p-button>
     </div>
     <br>
@@ -44,50 +41,53 @@
   </div>
 </div>
 
-<ng-template #modalTemplate>
-  <h2 mat-dialog-title>Añadir Mantenimiento</h2>
+
+<p-dialog header="Añadir Mantenimiento" [(visible)]="display" [breakpoints]="{ '960px': '75vw' }"
+  [style]="{ width: '30vw' }" [modal]="true">
   <form [formGroup]="formulario" (ngSubmit)="this.submitForm()">
     <mat-dialog-content>
-      <div>
-        <label>Descripcion</label>
-        <ng-container>
-          <input type="text" formControlName="descripcion" class="form-control" />
-        </ng-container>
+      <div class="card flex flex-col gap-4">
+        <div class="flex flex-col gap-2">
+          <label>Descripcion</label>
+          <input type="text" pInputText formControlName="descripcion" [placeholder]="'Ingrese nombre de Residencia'" />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label>Fecha Inicio</label>
+          <input type="text" pInputText formControlName="fechaIni" [placeholder]="'Ingrese nombre de Direccion'" />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label>Fecha Finalizacion</label>
+          <input type="text" pInputText formControlName="fechaFin" [placeholder]="'Ingrese Cantidad de Departamentos'" />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label>Departamento</label>
 
-        <label>Fecha Inicio</label>
-        <ng-container>
-          <input type="date" formControlName="fechaIni" class="form-control" />
-        </ng-container>
+          <p-select 
+            formControlName="idDepartamento" 
+            [options]="dropdownItemsDep" 
+            optionValue="code"  
+            optionLabel="name" 
+            placeholder="Seleccionar Tipo"
+            [autoDisplayFirst]="false" appendTo="body">
+          </p-select>
+        </div>
+        <div class="flex flex-col gap-2">
+          <label>Estado Mantenimiento</label>
 
-
-        <label>Fecha Finalizacion</label>
-        <ng-container>
-          <input type="date" formControlName="fechaFin" class="form-control" />
-        </ng-container>
-
-
-        <label>Departamento</label>
-        <ng-container>
-          <select formControlName="idDepartamento" class="form-control">
-            <option *ngFor="let tablaItem of departamentos" [value]="tablaItem.id">
-              {{ tablaItem.codigo }}
-            </option>
-          </select>
-        </ng-container>
-
-        <label>Estado Mantenimiento</label>
-        <ng-container>
-          <select formControlName="idEstadoMantenimiento" class="form-control">
-            <option *ngFor="let tablaItem of estadosMantenimiento" [value]="tablaItem.id">
-              {{ tablaItem.estado }}
-            </option>
-          </select>
-        </ng-container>
+          <p-select 
+            formControlName="idEstadoMantenimiento" 
+            [options]="dropdownItemsEstMant" 
+            optionValue="code"  
+            optionLabel="name" 
+            placeholder="Seleccionar Tipo"
+            [autoDisplayFirst]="false" appendTo="body">
+          </p-select>
+        </div>
       </div>
     </mat-dialog-content>
     <mat-dialog-actions>
-      <button mat-button mat-dialog-close type="button">Cancel</button>
+      <button mat-button mat-dialog-close type="button" (click)="close()">Cancelar</button>
       <button mat-raised-button color="primary" type="submit">Guardar</button>
     </mat-dialog-actions>
   </form>
-</ng-template>
+</p-dialog>

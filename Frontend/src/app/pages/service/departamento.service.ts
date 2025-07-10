@@ -11,6 +11,10 @@ export class DepartamentoService {
 
   constructor(private http: HttpClient) {}
 
+  getCount(): Observable<Number> {
+    return this.http.get<Number>(this.apiUrl + "/count");
+  }
+
   getDepartamentos(): Observable<Departamento[]> {
     return this.http.get<Departamento[]>(this.apiUrl);
   }

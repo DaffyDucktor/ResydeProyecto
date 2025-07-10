@@ -3,7 +3,7 @@
     <h2>Residencia</h2>
     <div class="row">
       <p-button (click)="open()" class="font-bold w-max">
-        Crear nuevo usuario
+        Crear nuevo Residencia
       </p-button>
     </div>
     <br>
@@ -20,8 +20,8 @@
             <tr>
               <td>{{residencia.nombre}}</td>
               <td>{{residencia.idTipoResidencia.codigo}}</td>
-              <td><p-button>Ver</p-button></td>
-              <td><p-button>Modificar</p-button></td>
+              <td><p-button (click)="view(residencia.id)">Ver</p-button></td>
+              <td><p-button (click)="edit(residencia.id)">Modificar</p-button></td>
             </tr>
             }@empty {
             <tr>
@@ -35,7 +35,7 @@
   </div>
 </div>
 <p-dialog header="Añadir Residencia" [(visible)]="display" [breakpoints]="{ '960px': '75vw' }"
-  [style]="{ width: '30vw' }" [modal]="true">
+  [style]="{ width: '30vw' }" [modal]="true" (onHide)="close()">
   <form [formGroup]="formulario" (ngSubmit)="this.submitForm()">
     <mat-dialog-content>
       <div class="card flex flex-col gap-4">
@@ -49,7 +49,8 @@
         </div>
         <div class="flex flex-col gap-2">
           <label>Cant. Departamentos</label>
-          <input type="text" pInputText formControlName="nDepartamento" [placeholder]="'Ingrese Cantidad de Departamentos'" />
+          <input type="text" pInputText formControlName="nDepartamento"
+            [placeholder]="'Ingrese Cantidad de Departamentos'" />
         </div>
         <div class="flex flex-col gap-2">
           <label>Cant. Edificio</label>
@@ -58,20 +59,15 @@
         <div class="flex flex-col gap-2">
           <label>Tipo Residencia</label>
 
-          <p-select 
-            formControlName="idTipoResidencia" 
-            [options]="dropdownItems" 
-            optionValue="code"  
-            optionLabel="name" 
-            placeholder="Seleccionar Tipo"
-            [autoDisplayFirst]="false">
+          <p-select formControlName="idTipoResidencia" [options]="dropdownItems" optionValue="code" optionLabel="name"
+            placeholder="Seleccionar Tipo" [autoDisplayFirst]="false" appendTo="body">
           </p-select>
         </div>
       </div>
     </mat-dialog-content>
     <mat-dialog-actions>
       <button mat-button mat-dialog-close type="button" (click)="close()">Cancelar</button>
-      <button mat-raised-button color="primary" type="submit">Guardar</button>
+      <button mat-raised-button color="primary" type="submit" *ngIf="this.editable">Guardar</button>
     </mat-dialog-actions>
   </form>
 </p-dialog>

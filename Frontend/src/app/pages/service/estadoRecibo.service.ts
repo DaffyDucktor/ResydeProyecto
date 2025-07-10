@@ -7,7 +7,7 @@ import { EstadoRecibo } from '../model/estadoRecibo';
   providedIn: 'root'
 })
 export class EstadoReciboService {
-  private apiUrl = 'http://localhost:8080/resyde/EstadoRecibo';
+  private apiUrl = 'http://localhost:8080/resyde/estadoRecibo';
 
   constructor(private http: HttpClient) { }
 

@@ -69,7 +69,7 @@ import { RolService } from '../../service/rol.service';
     InputNumberModule,
     CardModule,
     FileUploadModule,
-    FluidModule, SelectModule, TextareaModule, DialogModule, DropdownModule
+    FluidModule, SelectModule, TextareaModule, DialogModule, DropdownModule,
   ],
   templateUrl: './usuario.component.html',
   styleUrl: './usuario.component.scss'
@@ -120,6 +120,9 @@ export class UsuarioComponent {
 
   ngOnInit(): void {
     this.getAllUsuarios();
+    this.getAllResidencias();
+    this.getAllResidentes();
+    this.getAllRoles();
   }
 
   getAllUsuarios() {
@@ -130,19 +133,28 @@ export class UsuarioComponent {
 
   getAllResidencias() {
     this.residenciaService.getResidencias().subscribe((data) => {
-      this.residencias = data;
+            this.dropdownItemsRes.length = 0;
+      data.forEach(element => {
+        this.dropdownItemsRes.push({ name: element.direccion, code: element.id.toString() });
+      });
     });
   }
 
   getAllResidentes() {
     this.residenteService.getResidentes().subscribe((data) => {
-      this.residentes = data;
+            this.dropdownItemsResi.length = 0;
+      data.forEach(element => {
+        this.dropdownItemsResi.push({ name: (element.nombre + " " + element.apellido), code: element.id.toString() });
+      });
     });
   }
 
   getAllRoles() {
     this.rolService.getRols().subscribe((data) => {
-      this.roles = data;
+            this.dropdownItemsRol.length = 0;
+      data.forEach(element => {
+        this.dropdownItemsRol.push({ name: element.nombre, code: element.id.toString() });
+      });
     });
   }
 
@@ -205,6 +217,18 @@ export class UsuarioComponent {
   }
 
   open() {
+    this.formulario.enable();
+    this.formulario.reset();
+    this.display = true;
+  }
+
+  edit() {
+    this.formulario.enable();
+    this.display = true;
+  }
+
+  view() {
+    this.formulario.disable();
     this.display = true;
   }
 

@@ -57,45 +57,47 @@ import { ReciboService } from '../../service/recibo.service';
     MatDatepickerModule,
     MatNativeDateModule,
     MatDatepickerModule,
-      //primeng
-      ButtonModule,
-      InputTextModule,
-      InputNumberModule,
-      CardModule,
-      FileUploadModule,
-      FluidModule, SelectModule, TextareaModule, DialogModule, DropdownModule
+    //primeng
+    ButtonModule,
+    InputTextModule,
+    InputNumberModule,
+    CardModule,
+    FileUploadModule,
+    FluidModule, SelectModule, TextareaModule, DialogModule, DropdownModule
   ],
   templateUrl: './pago.component.html',
   styleUrl: './pago.component.scss'
 })
 export class PagoComponent {
-    @ViewChild('modalTemplate') dialogTemplate!: TemplateRef<any>;
-pagos: Pago[] = [];
+  @ViewChild('modalTemplate') dialogTemplate!: TemplateRef<any>;
+  pagos: Pago[] = [];
   isDeleteInProgress: boolean = false;
-    formulario!: FormGroup;
+  formulario!: FormGroup;
   isSaveInProgress: boolean = false;
 
   recibos: Recibo[] = [];
 
-    dropdownItemsRec = [
-        { name: '', code: '' }
-    ];
+  dropdownItemsRec = [
+    { name: '', code: '' }
+  ];
   display: boolean = false;
 
   constructor(
     private pagoService: PagoService,
     private messageService: MessageService,
     private reciboService: ReciboService,
-        private fb: FormBuilder,
+    private fb: FormBuilder,
     private router: Router,
-    private dialog: MatDialog,
-
+    private dialog: MatDialog
   ) {
     this.formulario = this.fb.group({
       id: [null],
-      codigo: ['', Validators.required],
-      idResidencia: ['', Validators.required],
-      idEstadoDepartamento: ['', Validators.required],
+      paidAmount: [null, Validators.required],
+      balance: [null, Validators.required],
+      mora: [null, Validators.required],
+      fecha: [null, Validators.required],
+      comments: [null, Validators.required],
+      idRecibo: [null, Validators.required],
     })
   }
 
@@ -112,7 +114,7 @@ pagos: Pago[] = [];
 
   getAllRecibos() {
     this.reciboService.getRecibos().subscribe((data) => {
-            this.dropdownItemsRec.length = 0;
+      this.dropdownItemsRec.length = 0;
       data.forEach(element => {
         this.dropdownItemsRec.push({ name: (element.year + "|" + element.month), code: element.id.toString() });
       });
@@ -141,7 +143,7 @@ pagos: Pago[] = [];
       },
     });
   }
- createPago() {
+  createPago() {
     if (this.formulario.invalid) {
       this.messageService.add({
         severity: 'error',
@@ -169,7 +171,7 @@ pagos: Pago[] = [];
     })
   }
 
-  
+
   submitForm() {
 
   }
@@ -178,7 +180,19 @@ pagos: Pago[] = [];
     this.dialog.open(this.dialogTemplate);
   }
 
-    open() {
+  open() {
+    this.formulario.enable();
+    this.formulario.reset();
+    this.display = true;
+  }
+
+  edit() {
+    this.formulario.enable();
+    this.display = true;
+  }
+
+  view() {
+    this.formulario.disable();
     this.display = true;
   }
 

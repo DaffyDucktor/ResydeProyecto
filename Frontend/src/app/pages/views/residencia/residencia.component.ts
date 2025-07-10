@@ -79,9 +79,11 @@ export class ResidenciaComponent {
   isSaveInProgress: boolean = false;
 
   dropdownItems = [
-        { name: '', code: '' }
-    ];
+    { name: '', code: '' }
+  ];
   display: boolean = false;
+
+  editable: boolean = true;
 
   constructor(
     private residenciaService: ResidenciaService,
@@ -124,7 +126,7 @@ export class ResidenciaComponent {
       });
     });
   }
-  
+
   deleteResidencia(id: number) {
     this.isDeleteInProgress = true;
     this.residenciaService.deleteResidencia(id).subscribe({
@@ -161,7 +163,6 @@ export class ResidenciaComponent {
       });
       return;
     }
-    console.log(JSON.stringify(this.formulario.value))
     this.isSaveInProgress = true;
     this.residenciaService.createResidencia(this.formulario.value)
       .subscribe({
@@ -169,10 +170,10 @@ export class ResidenciaComponent {
           this.messageService.add({
             severity: 'success',
             summary: 'Guardado',
-            detail: 'Libro guardado correctamente',
+            detail: 'Residencia guardada correctamente',
           });
           this.isSaveInProgress = false;
-          this.router.navigateByUrl('/');
+          this.getAllResidencias();
         },
         error: () => {
           this.isSaveInProgress = false;
@@ -186,10 +187,60 @@ export class ResidenciaComponent {
   }
 
   open() {
+    this.formulario.enable();
+    this.editable = true;
+    this.display = true;
+  }
+
+  edit(id: number) {
+    this.residenciaService.getResidenciaById(id).subscribe({
+      next: (data) => {
+        console.log(JSON.stringify(data))
+        this.formulario.patchValue({
+          id: data.id,
+          nombre: data.nombre,
+          direccion: data.direccion,
+          nDepartamento: data.nDepartamento,
+          nEdificio: data.nEdificio,
+          idTipoResidencia: { name: data.idTipoResidencia.codigo, code: data.idTipoResidencia.id.toString() }
+        });
+      },
+      error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No encontrado',
+        });
+      }
+    })
+    this.formulario.enable();
+    this.editable = true;
+    this.display = true;
+  }
+
+  view(id: number) {
+    this.residenciaService.getResidenciaById(id).subscribe({
+      next: (data) => {
+        this.formulario.patchValue(data);
+        this.formulario.patchValue({
+          idTipoResidencia: { name: data.idTipoResidencia.codigo, code: data.idTipoResidencia.id.toString() }
+        });
+      },
+      error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No encontrado',
+        });
+      }
+    })
+    this.formulario.disable();
+    this.editable = false;
     this.display = true;
   }
 
   close() {
     this.display = false;
+    this.formulario.reset();
   }
 }

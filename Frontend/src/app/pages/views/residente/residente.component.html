@@ -2,11 +2,8 @@
   <div class="card mb-0">
     <h2>Residente</h2>
     <div class="row">
-      <p-button routerLink="pago-form/new" class="font-bold w-max">
+      <p-button (onClick)="open()" class="font-bold w-max">
         Crear nuevo residente
-      </p-button>|
-      <p-button>
-        Filtrar
       </p-button>
     </div>
     <br>
@@ -71,7 +68,7 @@
             optionValue="code"  
             optionLabel="name" 
             placeholder="Seleccionar Departamento"
-            [autoDisplayFirst]="false">
+            [autoDisplayFirst]="false" appendTo="body">
           </p-select>
         </div>
       </div>

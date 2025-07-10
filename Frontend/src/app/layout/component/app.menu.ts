@@ -67,11 +67,6 @@ export class AppMenu {
                     { label: 'Residente', icon: 'pi pi-fw pi-image', routerLink: ['/uikit/residente'] },
                 ]
             }, {
-                label: 'Rol',
-                items: [
-                    { label: 'Rol', icon: 'pi pi-fw pi-bars', routerLink: ['/uikit/rol'] },
-                ]
-            }, {
                 label: 'Usuario',
                 items: [
                     { label: 'Usuario', icon: 'pi pi-fw pi-comment', routerLink: ['/uikit/usuario'] }

@@ -11,6 +11,10 @@ export class ResidenciaService {
 
   constructor(private http: HttpClient) {}
 
+  getCount(): Observable<Number> {
+    return this.http.get<Number>(this.apiUrl + "/count");
+  }
+
   getResidencias(): Observable<Residencia[]> {
     return this.http.get<Residencia[]>(this.apiUrl);
   }

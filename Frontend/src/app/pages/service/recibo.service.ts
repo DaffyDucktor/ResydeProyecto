@@ -11,6 +11,13 @@ export class ReciboService {
 
   constructor(private http: HttpClient) {}
 
+  getCount(): Observable<Number> {
+    return this.http.get<Number>(this.apiUrl + "/count");
+  }
+
+  getBalance(): Observable<Number> {
+    return this.http.get<Number>(this.apiUrl + "/balance");
+  }
   getRecibos(): Observable<Recibo[]> {
     return this.http.get<Recibo[]>(this.apiUrl);
   }

@@ -2,11 +2,8 @@
   <div class="card mb-0">
     <h2>Incidencia</h2>
     <div class="row">
-      <p-button routerLink="pago-form/new" class="font-bold w-max">
+      <p-button (onClick)="open()" class="font-bold w-max">
         Crear nueva incidencia
-      </p-button>|
-      <p-button>
-        Filtrar
       </p-button>
     </div>
         <br>
@@ -42,50 +39,44 @@
   </div>
 </div>
 
-
-<ng-template #modalTemplate>
-  <h2 mat-dialog-title>Añadir Incidencia</h2>
+<p-dialog header="Añadir Residencia" [(visible)]="display" [breakpoints]="{ '960px': '75vw' }"
+  [style]="{ width: '30vw' }" [modal]="true">
   <form [formGroup]="formulario" (ngSubmit)="this.submitForm()">
     <mat-dialog-content>
-      <div>
-        <label>Detalle</label>
-        <ng-container>
-          <input type="text" formControlName="detalle" 
-            class="form-control" />
-        </ng-container>
+      <div class="card flex flex-col gap-4">
+        <div class="flex flex-col gap-2">
+          <label>Detalle</label>
+          <input type="text" pInputText formControlName="detalle" [placeholder]="'Ingrese nombre de Residencia'" />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label>Visible</label>
+          <input type="text" pInputText formControlName="visible" [placeholder]="'Ingrese nombre de Direccion'" />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label>Fecha</label>
+          <input type="text" pInputText formControlName="fecha" [placeholder]="'Ingrese Cantidad de Departamentos'" />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label>Hora</label>
+          <input type="text" pInputText formControlName="hora" [placeholder]="'Ingrese Cantidad de Edificios'" />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label>Departamento</label>
 
-        <label>Visible</label>
-        <ng-container>
-          <input type="text" formControlName="visible" 
-            class="form-control" />
-        </ng-container>
-
-        <label>Fecha</label>
-        <ng-container>
-          <input type="date" formControlName="fecha" 
-            class="form-control" />
-        </ng-container>
-
-        <label>Hora</label>
-        <ng-container>
-          <input type="text" formControlName="hora" 
-            class="form-control" />
-        </ng-container>
-
-        <label>Departamento</label>
-        <ng-container>
-          <select formControlName="idDepartamento" class="form-control">
-            <option *ngFor="let tablaItem of departamentos" [value]="tablaItem.id">
-              {{ tablaItem.codigo }}
-            </option>
-          </select>
-        </ng-container>
-
+          <p-select 
+            formControlName="idDepartamento" 
+            [options]="dropdownItemsDep" 
+            optionValue="code"  
+            optionLabel="name" 
+            placeholder="Seleccionar Tipo"
+            [autoDisplayFirst]="false" appendTo="body">
+          </p-select>
+        </div>
       </div>
     </mat-dialog-content>
     <mat-dialog-actions>
-      <button mat-button mat-dialog-close type="button">Cancel</button>
+      <button mat-button mat-dialog-close type="button" (click)="close()">Cancelar</button>
       <button mat-raised-button color="primary" type="submit">Guardar</button>
     </mat-dialog-actions>
   </form>
-</ng-template>
+</p-dialog>

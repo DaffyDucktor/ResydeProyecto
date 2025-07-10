@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { RippleModule } from 'primeng/ripple';
 import { AppFloatingConfigurator } from '../../layout/component/app.floatingconfigurator';
+import { UsuarioService } from '../service/usuario.service';
 
 @Component({
     selector: 'app-login',
@@ -54,7 +55,7 @@ import { AppFloatingConfigurator } from '../../layout/component/app.floatingconf
                                 </div>
                                 <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">Forgot password?</span>
                             </div>
-                            <p-button label="Sign In" styleClass="w-full" routerLink="/"></p-button>
+                            <p-button label="Sign In" styleClass="w-full" (onClick)="login()"></p-button>
                         </div>
                     </div>
                 </div>
@@ -68,4 +69,17 @@ export class Login {
     password: string = '';
 
     checked: boolean = false;
+
+    constructor(
+        public router: Router,
+        public usuarioService: UsuarioService
+    ) { }
+
+    login() {
+        const user = { email: this.email, password: this.password };
+        this.usuarioService.login(user).subscribe((data) => {
+            this.usuarioService.setToken(data.token);
+            this.router.navigateByUrl("/");
+        });
+    }
 }

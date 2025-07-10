@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/resyde/incidencia")
-@CrossOrigin("http://localhost:4200/")
+//@CrossOrigin("http://localhost:4200/")
 @SuppressWarnings({"unused"})
 public class IncidenciaController {
 

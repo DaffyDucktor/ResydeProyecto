@@ -119,14 +119,20 @@ export class ReciboComponent {
   ) {
     this.formulario = this.fb.group({
       id: [null],
-      codigo: ['', Validators.required],
-      idResidencia: ['', Validators.required],
-      idEstadoDepartamento: ['', Validators.required],
+      year: [null, Validators.required],
+      month: [null, Validators.required],
+      particulars: [null, Validators.required],
+      total: [null, Validators.required],
+      comments: [null, Validators.required],
+      idDepartamento: [null, Validators.required],
+      idEstadoRecibo: [null, Validators.required],
     })
   }
 
   ngOnInit(): void {
     this.getAllRecibos();
+    this.getAllDepartamentos();
+    this.getAllEstadoRecibo();
   }
 
   getAllRecibos() {
@@ -137,11 +143,10 @@ export class ReciboComponent {
 
   getAllDepartamentos() {
     this.departamentoService.getDepartamentos().subscribe((data) => {
-      this.dropdownItemsEstRec.length = 0;
+      this.dropdownItemsDep.length = 0;
       data.forEach(element => {
-        this.dropdownItemsEstRec.push({ name: element.codigo, code: element.id.toString() });
+        this.dropdownItemsDep.push({ name: element.codigo, code: element.id.toString() });
       });
-      this.departamentos = data;
     });
   }
 
@@ -151,7 +156,6 @@ export class ReciboComponent {
       data.forEach(element => {
         this.dropdownItemsEstRec.push({ name: element.estado, code: element.id.toString() });
       });
-      this.estadosRecibo = data;
     });
   }
 
@@ -214,6 +218,18 @@ export class ReciboComponent {
   }
 
   open() {
+    this.formulario.enable();
+    this.formulario.reset();
+    this.display = true;
+  }
+
+  edit() {
+    this.formulario.enable();
+    this.display = true;
+  }
+
+  view() {
+    this.formulario.disable();
     this.display = true;
   }
 

@@ -2,11 +2,8 @@
   <div class="card mb-0">
     <h2>Recibo</h2>
     <div class="row">
-      <p-button routerLink="recibo-form/new" class="font-bold w-max">
+      <p-button (onClick)="open()" class="font-bold w-max">
         Crear nuevo recibo
-      </p-button>|
-      <p-button>
-        Filtrar
       </p-button>
     </div>
         <br>
@@ -45,7 +42,7 @@
   </div>
 </div>
 
-<p-dialog header="Añadir Departamento" [(visible)]="display" [breakpoints]="{ '960px': '75vw' }"
+<p-dialog header="Añadir Recibo" [(visible)]="display" [breakpoints]="{ '960px': '75vw' }"
   [style]="{ width: '30vw' }" [modal]="true">
   <form [formGroup]="formulario" (ngSubmit)="this.submitForm()">
     <mat-dialog-content>
@@ -58,7 +55,7 @@
             optionValue="code"  
             optionLabel="name" 
             placeholder="Seleccionar Año"
-            [autoDisplayFirst]="false">
+            [autoDisplayFirst]="false" appendTo="body">
           </p-select>
 
         </div>
@@ -70,7 +67,7 @@
             optionValue="code"  
             optionLabel="name" 
             placeholder="Seleccionar Mes"
-            [autoDisplayFirst]="false">
+            [autoDisplayFirst]="false" appendTo="body">
           </p-select>
         </div>
         <div class="flex flex-col gap-2">
@@ -93,7 +90,7 @@
             optionValue="code"  
             optionLabel="name" 
             placeholder="Seleccionar Departamento"
-            [autoDisplayFirst]="false">
+            [autoDisplayFirst]="false" appendTo="body">
           </p-select>
         </div>
                 <div class="flex flex-col gap-2">
@@ -104,7 +101,7 @@
             optionValue="code"  
             optionLabel="name" 
             placeholder="Seleccionar Estado"
-            [autoDisplayFirst]="false">
+            [autoDisplayFirst]="false" appendTo="body">
           </p-select>
         </div>
       </div>
