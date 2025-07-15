@@ -1,7 +1,10 @@
 package pe.com.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pe.com.model.Departamento;
 import pe.com.model.Incidencia;
 import pe.com.model.request.IncidenciaRequest;
 import pe.com.repository.DepartamentoRepository;
@@ -13,6 +16,8 @@ import java.util.List;
 @Service
 @SuppressWarnings({"deprecation","unused"})
 public class IncidenciaServiceImpl implements IncidenciaService {
+
+    private static final Logger logger = LoggerFactory.getLogger(IncidenciaServiceImpl.class);
 
     @Autowired
     IncidenciaRepository incidenciaRepository;
@@ -26,8 +31,17 @@ public class IncidenciaServiceImpl implements IncidenciaService {
     }
 
     @Override
+    public List<Incidencia> listAllByResidencia(Integer idResidencia) {
+        logger.info("IdResidencia: " + idResidencia);
+        return incidenciaRepository.getAllByResidencia(idResidencia);
+    }
+
+    @Override
     public Incidencia listOne(Integer id) {
-        return incidenciaRepository.getById(id);
+        Incidencia obj = incidenciaRepository.getById(id);
+        logger.info("INCIDENCIA REQUEST: {}", obj.toString());
+
+        return obj;
     }
 
     @Override
@@ -35,11 +49,10 @@ public class IncidenciaServiceImpl implements IncidenciaService {
         Incidencia objIncidencia = new Incidencia();
 
         objIncidencia.setDetalle(obj.getDetalle());
-        objIncidencia.setVisible(obj.getVisible());
         objIncidencia.setFecha(obj.getFecha());
         objIncidencia.setHora(obj.getHora());
         objIncidencia.setUsuCreacion(obj.getUsuario());
-        objIncidencia.setIdDepartamento(departamentoRepository.getById(Integer.parseInt(obj.getId())));
+        objIncidencia.setIdDepartamento(departamentoRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
 
         return incidenciaRepository.save(objIncidencia);
     }
@@ -50,7 +63,6 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 
         objIncidencia.setId(Integer.parseInt(obj.getId()));
         objIncidencia.setDetalle(obj.getDetalle());
-        objIncidencia.setVisible(obj.getVisible());
         objIncidencia.setFecha(obj.getFecha());
         objIncidencia.setHora(obj.getHora());
         objIncidencia.setUsuModifica(obj.getUsuario());

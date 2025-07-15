@@ -1,19 +1,26 @@
 package pe.com.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pe.com.controller.DepartamentoController;
 import pe.com.model.Departamento;
+import pe.com.model.Residencia;
 import pe.com.model.request.DepartamentoRequest;
 import pe.com.repository.DepartamentoRepository;
 import pe.com.repository.EstadoDepartamentoRepository;
 import pe.com.repository.ResidenciaRepository;
 import pe.com.service.DepartamentoService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@SuppressWarnings({"deprecation","unused"})
+@SuppressWarnings({"deprecation", "unused"})
 public class DepartamentoServiceImpl implements DepartamentoService {
+
+    private static final Logger logger = LoggerFactory.getLogger(DepartamentoServiceImpl.class);
 
     @Autowired
     DepartamentoRepository departamentoRepository;
@@ -30,8 +37,32 @@ public class DepartamentoServiceImpl implements DepartamentoService {
     }
 
     @Override
+    public List<Departamento> listAllByResidencia(Integer idResidencia) {
+        logger.info("IDResidencia: " + idResidencia);
+        return departamentoRepository.getAllByResidencia(idResidencia);
+    }
+
+
+    @Override
     public Departamento listOne(Integer id) {
         return departamentoRepository.getById(id);
+    }
+
+    @Override
+    public List<Departamento> insertAll(String idResidencia) {
+            Residencia obj = residenciaRepository.getById(Integer.parseInt(idResidencia));
+        logger.info("HOMERO: " + obj.toString());
+
+            List<Departamento> depList = new ArrayList<>();
+            for (int i = 0; i < Integer.parseInt(obj.getNDepartamento()); i++) {
+                Departamento objDep = new Departamento();
+                objDep.setIdResidencia(obj);
+                objDep.setIdEstadoDepartamento(estadoDepartamentoRepository.getById(1));
+                objDep.setUsuCreacion("Admin");
+                depList.add(objDep);
+            }
+            return departamentoRepository.saveAll(depList);
+
     }
 
     @Override

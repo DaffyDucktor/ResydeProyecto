@@ -1,5 +1,6 @@
 package pe.com.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "departamento")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Departamento {
 
     @Id
@@ -42,4 +44,18 @@ public class Departamento {
     @JoinColumn(name = "id_estado_departamento", nullable=false)
     private EstadoDepartamento idEstadoDepartamento;
 
+
+    @Override
+    public String toString() {
+        return "Departamento{" +
+                "id=" + id +
+                ", codigo='" + codigo + '\'' +
+                ", fecCreacion='" + fecCreacion + '\'' +
+                ", usuCreacion='" + usuCreacion + '\'' +
+                ", fecModifica='" + fecModifica + '\'' +
+                ", usuModifica='" + usuModifica + '\'' +
+                ", idResidencia=" + idResidencia.getNombre() +
+                ", idEstadoDepartamento=" + idEstadoDepartamento.getEstado() +
+                '}';
+    }
 }

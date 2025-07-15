@@ -1,5 +1,6 @@
 package pe.com.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "incidencia")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Incidencia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,9 +22,6 @@ public class Incidencia {
 
     @Column
     private String detalle;
-
-    @Column
-    private String visible;
 
     @Column
     private String fecha;
@@ -45,4 +44,19 @@ public class Incidencia {
     @ManyToOne
     @JoinColumn(name = "id_departamento", nullable=false)
     private Departamento idDepartamento;
+
+    @Override
+    public String toString() {
+        return "Incidencia{" +
+                "id=" + id +
+                ", detalle='" + detalle + '\'' +
+                ", fecha='" + fecha + '\'' +
+                ", hora='" + hora + '\'' +
+                ", fecCreacion='" + fecCreacion + '\'' +
+                ", usuCreacion='" + usuCreacion + '\'' +
+                ", fecModifica='" + fecModifica + '\'' +
+                ", usuModifica='" + usuModifica + '\'' +
+                ", idDepartamento=" + idDepartamento +
+                '}';
+    }
 }

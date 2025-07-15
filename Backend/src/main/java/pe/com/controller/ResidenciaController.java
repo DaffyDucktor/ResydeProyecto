@@ -9,6 +9,7 @@ import pe.com.model.request.ResidenciaRequest;
 import pe.com.service.ResidenciaService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/resyde/residencia")
@@ -44,12 +45,13 @@ public class ResidenciaController {
 
     @PostMapping
     private Residencia insert(@RequestPart(value = "residencia") ResidenciaRequest obj){
-        logger.info("Creando un Residencia...");
         logger.info("RESIDENCIA REQUEST: {}", obj.toString());
 
-        if(obj.getId().isEmpty()){
+        if(Optional.ofNullable(obj.getId()).orElse("").isEmpty()){
+            logger.info("Creando un Residencia...");
             return residenciaService.insert(obj);
         } else {
+            logger.info("Modificando un Residencia...");
             return residenciaService.update(obj);
         }
 

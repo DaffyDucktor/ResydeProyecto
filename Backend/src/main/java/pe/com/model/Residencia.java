@@ -1,5 +1,6 @@
 package pe.com.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "residencia")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Residencia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,7 +63,7 @@ public class Residencia {
                 ", usuCreacion='" + usuCreacion + '\'' +
                 ", fecModifica='" + fecModifica + '\'' +
                 ", usuModifica='" + usuModifica + '\'' +
-                ", idTipoResidencia=" + idTipoResidencia +
+                ", idTipoResidencia=" + idTipoResidencia.getCodigo() +
                 '}';
     }
 }

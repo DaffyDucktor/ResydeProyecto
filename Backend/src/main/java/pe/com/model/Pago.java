@@ -1,5 +1,6 @@
 package pe.com.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "pago")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Pago {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

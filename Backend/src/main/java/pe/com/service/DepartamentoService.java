@@ -9,7 +9,11 @@ public interface DepartamentoService {
 
     List<Departamento> listAll();
 
+    List<Departamento> listAllByResidencia(Integer idResidencia);
+
     Departamento listOne(Integer id);
+
+    List<Departamento> insertAll(String idResidencia);
 
     Departamento insert (DepartamentoRequest depObj);
 

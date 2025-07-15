@@ -28,6 +28,12 @@ public class DepartamentoController {
         return departamentoService.listAll();
     }
 
+    @GetMapping("/listAllByResidencia/{idResidencia}")
+    private List<Departamento> listAllByResidencia(@PathVariable(required = false) Integer idResidencia){
+        logger.info("Listando departamentos por la residencia...: {}", idResidencia);
+        return departamentoService.listAllByResidencia(idResidencia);
+    }
+
     @GetMapping("count")
     private long count(){
         logger.info("Contar departamentos...");
@@ -40,16 +46,23 @@ public class DepartamentoController {
         return departamentoService.listOne(id);
     }
 
-    @PostMapping
-    private Departamento insert(@RequestBody DepartamentoRequest obj){
-        logger.info("Creando un departamento...");
-        return departamentoService.insert(obj);
+    @PostMapping("/insertAll")
+    private List<Departamento> insertAll(@RequestParam String idResidencia){
+        logger.info("Creando los departamentos de una residencia...: {}", idResidencia);
+        return departamentoService.insertAll(idResidencia);
     }
 
-    @PutMapping
-    private Departamento update(@RequestBody DepartamentoRequest obj) {
-        logger.info("Modificando un departamento...");
-        return departamentoService.update(obj);
+    @PostMapping
+    private Departamento insert(@RequestPart(value = "departamento") DepartamentoRequest obj){
+        logger.info("DEPARTAMENTO REQUEST: {}", obj.toString());
+
+        if(obj.getId().isEmpty()){
+            logger.info("Creando un departamento...");
+            return departamentoService.insert(obj);
+        } else {
+            logger.info("Modificando un departamento...");
+            return departamentoService.update(obj);
+        }
     }
 
     @DeleteMapping
