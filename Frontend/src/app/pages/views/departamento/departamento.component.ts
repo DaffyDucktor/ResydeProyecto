@@ -6,6 +6,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 //Servicios
 import { ResidenciaService } from '../../service/residencia.service';
 import { EstadoDepartamentoService } from '../../service/estadoDepartamento.service';
+import { DepartamentoService } from '../../service/departamento.service';
 
 //Modelos
 import { Departamento } from '../../model/departamento';
@@ -41,7 +42,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectChange } from '@angular/material/select';
 import { MatNativeDateModule } from '@angular/material/core';
-import { DepartamentoService } from '../../service/departamento.service';
 
 
 @Component({
@@ -101,6 +101,7 @@ export class DepartamentoComponent {
     { name: '', code: '' }
   ];
   display: boolean = false;
+  editable: boolean = true;
 
   constructor(
     private departamentoService: DepartamentoService,
@@ -123,16 +124,48 @@ export class DepartamentoComponent {
 
   ngOnInit(): void {
     this.primeng.ripple.set(true);
-    this.getAllDepartamentos();
     this.getAllResidencias();
     this.getAllTypes();
   }
 
-  getAllDepartamentos() {
+  getResidencia() {
+    this.getAllDepartamentos(this.idResidenciaSelect);
+  }
+
+  getAllDepartamentos(idResidencia: number) {
+    this.departamentoService.getDepartamentosByResidence(idResidencia).subscribe({
+      next: (data) => {
+        if (data.length > 0) {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Correcto',
+            detail: 'Departamentos encontrados',
+          });
+        } else {
+          this.messageService.add({
+            severity: 'information',
+            summary: 'Aviso',
+            detail: 'No hay departamentos creados para esta residencia',
+          });
+        }
+        this.isDeleteInProgress = false;
+        this.departamentos = data;
+      },
+      error: () => {
+        this.isDeleteInProgress = false;
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No se pudo encontrar departamentos',
+        });
+      },
+    });
+  }
+
+  getAllDepartamentosD() {
     this.departamentoService.getDepartamentos().subscribe((data) => {
       this.departamentos = data;
     });
-    console.log(this.departamentos.length)
   }
 
   getAllResidencias() {
@@ -163,7 +196,7 @@ export class DepartamentoComponent {
           detail: 'Departamento eliminado',
         });
         this.isDeleteInProgress = false;
-        this.getAllDepartamentos();
+        //this.getAllDepartamentos();
       },
       error: () => {
         this.isDeleteInProgress = false;
@@ -176,23 +209,25 @@ export class DepartamentoComponent {
     });
   }
 
-  createDepartamento() {
-    if (this.formulario.invalid) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Revise los campos e intente nuevamente',
-      });
-      return
-    }
-    this.departamentoService.createDepartamento(this.formulario.value).subscribe({
-      next: () => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Guardado',
-          detail: 'Departamento guardado correctamente',
-        });
-        this.router.navigateByUrl('/')
+  createAllDepartamentos() {
+    this.departamentoService.createAllDepartamentos(this.idResidenciaSelect).subscribe({
+      next: (data) => {
+        if (data.length == 0) {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Guardado',
+            detail: 'Departamentos creados',
+          });
+
+        } else {
+          this.messageService.add({
+            severity: 'information',
+            summary: 'Guardado',
+            detail: 'Error, intentar mas tarde por favor',
+          });
+        }
+        this.getAllDepartamentos(this.idResidenciaSelect);
+
       },
       error: () => {
         this.messageService.add({
@@ -204,8 +239,38 @@ export class DepartamentoComponent {
     })
   }
 
-  submitForm() {
 
+  submitForm() {
+    if (this.formulario.invalid) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Revise los campos e intente nuevamente',
+      });
+      return;
+    }
+    this.isSaveInProgress = true;
+    this.departamentoService.createDepartamento(this.formulario.value)
+      .subscribe({
+        next: () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Guardado',
+            detail: 'Departamento guardado correctamente',
+          });
+          this.isSaveInProgress = false;
+          this.close();
+          this.getAllDepartamentos(this.idResidenciaSelect);
+        },
+        error: () => {
+          this.isSaveInProgress = false;
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Revise los campos e intente nuevamente',
+          });
+        },
+      });
   }
 
   openAddForm(): void {
@@ -214,21 +279,59 @@ export class DepartamentoComponent {
 
   open() {
     this.formulario.enable();
-    this.formulario.reset();
+    this.editable = true;
     this.display = true;
   }
 
-  edit() {
+  edit(id: number) {
+    this.departamentoService.getDepartamentoById(id).subscribe({
+      next: (data) => {
+        console.log(JSON.stringify(data))
+        this.formulario.patchValue({
+          id: data.id,
+          codigo: data.codigo,
+          idResidencia: data.idResidencia.id,
+          idEstadoDepartamento: { name: data.idEstadoDepartamento.id, code: data.idEstadoDepartamento.id.toString() }
+        });
+      },
+      error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No encontrado',
+        });
+      }
+    })
     this.formulario.enable();
+    this.editable = true;
     this.display = true;
   }
 
-  view() {
+  view(id: number) {
+    this.departamentoService.getDepartamentoById(id).subscribe({
+      next: (data) => {
+        this.formulario.patchValue(data);
+      },
+      error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No encontrado',
+        });
+      }
+    })
     this.formulario.disable();
+    this.editable = false;
     this.display = true;
   }
 
   close() {
     this.display = false;
+    this.formulario.reset();
+  }
+
+  deleteResidencia() {
+    this.departamentos = [];
+    this.idResidenciaSelect = null;
   }
 }

@@ -3,10 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
-import { Visita } from '../../model/visita';
+//Servicios
+import { DepartamentoService } from '../../service/departamento.service';
 import { VisitaService } from '../../service/visita.service';
-import { Departamento } from '../../model/departamento';
 
+//Modelos
+import { Visita } from '../../model/visita';
+import { Departamento } from '../../model/departamento';
 
 //primeng
 import { PrimeNG } from 'primeng/config';
@@ -38,13 +41,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectChange } from '@angular/material/select';
 import { MatNativeDateModule } from '@angular/material/core';
-import { DepartamentoService } from '../../service/departamento.service';
+import { ResidenciaService } from '../../service/residencia.service';
 
 @Component({
   selector: 'app-visita',
   imports: [ButtonModule, CardModule, RouterModule,
     ReactiveFormsModule,
     FormsModule,
+    CommonModule,
     // Angular Material
     MatButtonModule,
     MatIconModule,
@@ -79,6 +83,7 @@ export class VisitaComponent {
   formulario!: FormGroup;
   isSaveInProgress: boolean = false;
   departamentos: Departamento[] = [];
+  idResidenciaSelect: any;
 
   dropdownItemsVisible = [
     { name: 'Si', code: '1' },
@@ -88,16 +93,23 @@ export class VisitaComponent {
   dropdownItemsDep = [
     { name: '', code: '' }
   ];
+
+  dropdownItemsRes = [
+    { name: '', code: '' }
+  ];
   display: boolean = false;
+  editable: boolean = true;
 
 
   constructor(
     private departamentoService: DepartamentoService,
+    private residenciaService: ResidenciaService,
     private visitaService: VisitaService,
     private messageService: MessageService,
     private fb: FormBuilder,
     private router: Router,
     private dialog: MatDialog,
+    private primeng: PrimeNG
 
   ) {
     this.formulario = this.fb.group({
@@ -112,12 +124,45 @@ export class VisitaComponent {
   }
 
   ngOnInit(): void {
-    this.getAllVisitas();
+    this.primeng.ripple.set(true);
+    this.getAllResidencias();
   }
 
-  getAllVisitas() {
-    this.visitaService.getVisitas().subscribe((data) => {
-      this.visitas = data;
+  getAllResidencias() {
+    this.residenciaService.getResidencias().subscribe((data) => {
+      this.dropdownItemsRes.length = 0;
+      data.forEach(element => {
+        this.dropdownItemsRes.push({ name: element.nombre, code: element.id.toString() });
+      });
+    });
+  }
+  getAllVisitas(idResidencia: number) {
+    this.visitaService.getVisitasByResidence(idResidencia).subscribe({
+      next: (data) => {
+        if (data.length > 0) {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Correcto',
+            detail: 'Visitas encontradas',
+          });
+        } else {
+          this.messageService.add({
+            severity: 'information',
+            summary: 'Aviso',
+            detail: 'No hay Visitas creados para esta residencia',
+          });
+        }
+        this.isDeleteInProgress = false;
+        this.visitas = data;
+      },
+      error: () => {
+        this.isDeleteInProgress = false;
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No se pudo encontrar visitas',
+        });
+      },
     });
   }
 
@@ -139,7 +184,7 @@ export class VisitaComponent {
           detail: 'Visita eliminado',
         });
         this.isDeleteInProgress = false;
-        this.getAllVisitas();
+        this.getAllVisitas(this.idResidenciaSelect);
       },
       error: () => {
         this.isDeleteInProgress = false;

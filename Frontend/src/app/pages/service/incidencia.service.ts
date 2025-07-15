@@ -15,6 +15,10 @@ export class IncidenciaService {
     return this.http.get<Incidencia[]>(this.apiUrl);
   }
 
+  getIncidenciasByResidence(idResidencia: number): Observable<Incidencia[]> {
+    return this.http.get<Incidencia[]>(`${this.apiUrl}/listAllByResidencia/${idResidencia}`);
+  }
+
   getIncidenciaById(id: number): Observable<Incidencia> {
     return this.http.get<Incidencia>(`${this.apiUrl}/${id}`);
   }
@@ -22,7 +26,7 @@ export class IncidenciaService {
   createIncidencia(inc: Incidencia): Observable<Incidencia> {
     const formData = new FormData();
 
-    formData.append('residencia', new Blob([JSON.stringify(inc)], { type: 'application/json' }));
+    formData.append('incidencia', new Blob([JSON.stringify(inc)], { type: 'application/json' }));
 
     return this.http.post<Incidencia>(this.apiUrl, formData);
   }

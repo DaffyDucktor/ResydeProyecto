@@ -2,27 +2,31 @@
   <div class="card mb-0">
     <h2>Departamento</h2>
     <div class="row" >
-      <p-select *ngIf="false"
+      <p-select *ngIf="!idResidenciaSelect"
+      (onChange)="getResidencia()"
         [(ngModel)] = "idResidenciaSelect"
         [options]="dropdownItemsRes" 
         optionValue="code"  
         optionLabel="name" 
-        placeholder="Seleccionar Tipo"
+        placeholder="Seleccionar Residencia"
         [autoDisplayFirst]="false" appendTo="body">
       </p-select>
     </div>
     <div class="row">
-      <p-button class="font-bold w-max" *ngIf="this.departamentos.length == 0">
+      <p-button class="font-bold w-max" *ngIf="idResidenciaSelect && this.departamentos.length == 0" (onClick)="createAllDepartamentos()">
         Crear departamentos
       </p-button>
+      <p-button class="font-bold w-max" *ngIf="idResidenciaSelect" (onClick)="deleteResidencia()">
+        Volver
+      </p-button>
     </div>
+    
     <br>
-    <div class="row">
+    <div class="row" *ngIf="idResidenciaSelect">
       <div class="col">
         <table style="width: 100%;">
           <thead>
             <th>N° Departamento</th>
-            <th>Residencia</th>
             <th>Estado Departamento</th>
             <th colspan="2">Acciones</th>
           </thead>
@@ -30,10 +34,9 @@
             @for (departamento of this.departamentos; track departamento.id) {
             <tr>
               <td>{{departamento.codigo}}</td>
-              <td>{{departamento.idResidencia.nombre}}</td>
               <td>{{departamento.idEstadoDepartamento.estado}}</td>
-              <td><p-button (click)="open()">Ver</p-button></td>
-              <td><p-button (click)="open()">Modificar</p-button></td>
+              <td><p-button (click)="view(departamento.id)">Ver</p-button></td>
+              <td><p-button (click)="edit(departamento.id)">Modificar</p-button></td>
             </tr>
             }@empty {
             <tr>
@@ -48,26 +51,16 @@
 </div>
 
 <p-dialog header="Añadir Departamento" [(visible)]="display" [breakpoints]="{ '960px': '75vw' }"
-  [style]="{ width: '30vw' }" [modal]="true">
+  [style]="{ width: '30vw' }" [modal]="true" (onHide)="close()">
   <form [formGroup]="formulario" (ngSubmit)="this.submitForm()">
     <input type="hidden" formControlName="id" />
     <input type="hidden" formControlName="usuario" />
+    <input type="hidden" formControlName="idResidencia" />
     <mat-dialog-content>
       <div class="card flex flex-col gap-4">
         <div class="flex flex-col gap-2">
           <label>Codigo</label>
           <input type="text" pInputText formControlName="codigo" [placeholder]="'Ingrese nombre de Residencia'" />
-        </div>
-        <div class="flex flex-col gap-2">
-          <label>Residencia</label>
-          <p-select 
-            formControlName="idResidencia" 
-            [options]="dropdownItemsRes" 
-            optionValue="code"  
-            optionLabel="name" 
-            placeholder="Seleccionar Tipo"
-            [autoDisplayFirst]="false" appendTo="body">
-          </p-select>
         </div>
         <div class="flex flex-col gap-2">
           <label>Estado Departamento</label>

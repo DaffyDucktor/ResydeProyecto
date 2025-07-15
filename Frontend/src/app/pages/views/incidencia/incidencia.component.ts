@@ -1,10 +1,16 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, formatDate } from '@angular/common';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
-import { Incidencia } from '../../model/incidencia';
+//Servicios
 import { IncidenciaService } from '../../service/incidencia.service';
+import { DepartamentoService } from '../../service/departamento.service';
+import { ResidenciaService } from '../../service/residencia.service';
+
+//Modelos
+import { Incidencia } from '../../model/incidencia';
+import { Residencia } from '../../model/residencia';
 
 //primeng
 import { PrimeNG } from 'primeng/config';
@@ -19,6 +25,9 @@ import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
+import { DatePickerModule } from 'primeng/datepicker';
+import { Fluid } from 'primeng/fluid';
+import { CalendarModule } from 'primeng/calendar';
 
 //Material
 import { MatTableModule } from '@angular/material/table';
@@ -35,13 +44,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectChange } from '@angular/material/select';
 import { MatNativeDateModule } from '@angular/material/core';
-import { DepartamentoService } from '../../service/departamento.service';
 
 @Component({
   selector: 'app-incidencia',
   imports: [ButtonModule, CardModule, RouterModule,
     ReactiveFormsModule,
     FormsModule,
+    CommonModule,
     // Angular Material
     MatButtonModule,
     MatIconModule,
@@ -62,7 +71,8 @@ import { DepartamentoService } from '../../service/departamento.service';
     InputNumberModule,
     CardModule,
     FileUploadModule,
-    FluidModule, SelectModule, TextareaModule, DialogModule, DropdownModule
+    DatePickerModule,
+    FluidModule, SelectModule, TextareaModule, DialogModule, DropdownModule, Fluid, CalendarModule
   ],
 
   templateUrl: './incidencia.component.html',
@@ -75,44 +85,93 @@ export class IncidenciaComponent {
   formulario!: FormGroup;
   isSaveInProgress: boolean = false;
 
+  idResidenciaSelect: any;
+
   dropdownItemsDep = [
     { name: '', code: '' }
   ];
+
+  dropdownItemsRes = [
+    { name: '', code: '' }
+  ];
   display: boolean = false;
+  editable: boolean = true;
 
   constructor(
     private incidenciaService: IncidenciaService,
+    private residenciaService: ResidenciaService,
     private departamentoService: DepartamentoService,
     private messageService: MessageService,
     private fb: FormBuilder,
     private router: Router,
     private dialog: MatDialog,
-
+    private primeng: PrimeNG
   ) {
     this.formulario = this.fb.group({
-      id: [null],
-      detalle: [null, Validators.required],
-      visible: [null, Validators.required],
-      fecha: [null, Validators.required],
-      hora: [null, Validators.required],
-      idDepartamento: [null, Validators.required],
+      id: [''],
+      detalle: ['', Validators.required],
+      fecha: ['', Validators.required],
+      fechaInput: ['', Validators.required],
+      hora: ['', Validators.required],
+      horaInput: ['', Validators.required],
+      idDepartamento: ['', Validators.required],
     })
   }
 
   ngOnInit(): void {
-    this.getAllIncidencias();
+    this.primeng.ripple.set(true);
+    this.getAllResidencias();
     this.getDepartamento();
   }
 
-  getAllIncidencias() {
-    this.incidenciaService.getIncidencias().subscribe((data) => {
-      this.incidencias = data;
+  getResidencia() {
+    this.getAllIncidencias(this.idResidenciaSelect);
+  }
+
+  getAllIncidencias(idResidencia: number) {
+    this.incidenciaService.getIncidenciasByResidence(idResidencia).subscribe({
+      next: (data) => {
+        if (data.length > 0) {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Correcto',
+            detail: 'Incidencias encontradas',
+          });
+        } else {
+          this.messageService.add({
+            severity: 'information',
+            summary: 'Aviso',
+            detail: 'No hay Incidencias creados para esta residencia',
+          });
+        }
+        this.isDeleteInProgress = false;
+        this.incidencias = data;
+      },
+      error: () => {
+        this.isDeleteInProgress = false;
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No se pudo encontrar incidencias',
+        });
+      },
+    });
+  }
+
+
+  getAllResidencias() {
+    this.residenciaService.getResidencias().subscribe((data) => {
+      this.dropdownItemsRes.length = 0;
+      data.forEach(element => {
+        this.dropdownItemsRes.push({ name: element.nombre, code: element.id.toString() });
+      });
     });
   }
 
   getDepartamento() {
     this.departamentoService.getDepartamentos().subscribe((data) => {
       this.dropdownItemsDep.length = 0;
+      this.dropdownItemsDep.push({ name: 'Residencia', code: '' });
       data.forEach(element => {
         this.dropdownItemsDep.push({ name: element.codigo, code: element.id.toString() });
       });
@@ -129,7 +188,7 @@ export class IncidenciaComponent {
           detail: 'Incidencia eliminado',
         });
         this.isDeleteInProgress = false;
-        this.getAllIncidencias();
+        this.getAllIncidencias(this.idResidenciaSelect);
       },
       error: () => {
         this.isDeleteInProgress = false;
@@ -171,7 +230,44 @@ export class IncidenciaComponent {
 
 
   submitForm() {
+    const fecha = this.formulario.get('fechaInput')?.value;
+    const hora = this.formulario.get('horaInput')?.value;
+    this.formulario.patchValue({
+      fecha: formatDate(fecha, 'dd-MM-yyyy', 'en-US'),
+      hora: formatDate(hora, 'HH:mm', 'en-US')
+    });
 
+    if (this.formulario.invalid) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Revise los campos e intente nuevamente',
+      });
+      return;
+    }
+
+    this.isSaveInProgress = true;
+    this.incidenciaService.createIncidencia(this.formulario.value)
+      .subscribe({
+        next: () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Guardado',
+            detail: 'Incidencia guardada correctamente',
+          });
+          this.isSaveInProgress = false;
+          this.close();
+          this.getAllIncidencias(this.idResidenciaSelect);
+        },
+        error: () => {
+          this.isSaveInProgress = false;
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Revise los campos e intente nuevamente',
+          });
+        },
+      });
   }
 
   openAddForm(): void {
@@ -184,17 +280,67 @@ export class IncidenciaComponent {
     this.display = true;
   }
 
-  edit() {
+  edit(id: number) {
+    this.incidenciaService.getIncidenciaById(id).subscribe({
+      next: (data) => {
+        console.log(JSON.stringify(data))
+                  const [dia, mes, anio] = data.fecha.split('/').map(Number);
+const fechaDate = new Date(anio, mes - 1, dia);
+const [horas, minutos] = data.hora.split(':').map(Number);
+const horaDate = new Date();
+horaDate.setHours(horas);
+horaDate.setMinutes(minutos);
+horaDate.setSeconds(0);
+
+        this.formulario.patchValue({
+          id: data.id,
+          detalle: data.detalle,
+
+          fechaInput: fechaDate,
+          horaInput: horaDate,
+          fecha: data.fecha,
+          hora: data.hora,
+          idDepartamento: { name: data.idDepartamento.codigo, code: data.idDepartamento.id.toString() }
+        });
+      },
+      error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No encontrado',
+        });
+      }
+    })
     this.formulario.enable();
+    this.editable = true;
     this.display = true;
   }
 
-  view() {
+  view(id: number) {
+    this.incidenciaService.getIncidenciaById(id).subscribe({
+      next: (data) => {
+        console.log(JSON.stringify(data))
+        this.formulario.patchValue(data);
+      },
+      error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No encontrado',
+        });
+      }
+    })
     this.formulario.disable();
+    this.editable = false;
     this.display = true;
   }
 
   close() {
     this.display = false;
+    this.formulario.reset();
+  }
+  deleteResidencia() {
+    this.incidencias = [];
+    this.idResidenciaSelect = null;
   }
 }

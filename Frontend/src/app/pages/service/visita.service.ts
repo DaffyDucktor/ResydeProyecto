@@ -15,6 +15,9 @@ export class VisitaService {
     return this.http.get<Visita[]>(this.apiUrl);
   }
 
+  getVisitasByResidence(idResidencia: number): Observable<Visita[]> {
+      return this.http.get<Visita[]>(`${this.apiUrl}/listAllByResidencia/${idResidencia}`);
+  }
   getVisitaById(id: number): Observable<Visita> {
     return this.http.get<Visita>(`${this.apiUrl}/${id}`);
   }

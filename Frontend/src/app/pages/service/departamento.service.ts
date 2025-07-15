@@ -19,16 +19,28 @@ export class DepartamentoService {
     return this.http.get<Departamento[]>(this.apiUrl);
   }
 
+  getDepartamentosByResidence(idResidencia: number): Observable<Departamento[]> {
+    return this.http.get<Departamento[]>(`${this.apiUrl}/listAllByResidencia/${idResidencia}`);
+  }
+
   getDepartamentoById(id: number): Observable<Departamento> {
     return this.http.get<Departamento>(`${this.apiUrl}/${id}`);
   }
 
-  createDepartamento(dep: Departamento) {
+  createAllDepartamentos(idResidencia: number): Observable<any> {
+    const formData = new FormData();
+
+    formData.append('idResidencia', idResidencia.toString());
+
+    return this.http.post(this.apiUrl + "/insertAll", formData);
+  }
+
+  createDepartamento(dep: Departamento): Observable<Departamento> {
     const formData = new FormData();
 
     formData.append('departamento', new Blob([JSON.stringify(dep)], { type: 'application/json'}));
 
-    return this.http.post(this.apiUrl, formData);
+    return this.http.post<Departamento>(this.apiUrl, formData);
   }
 
   updateDepartamento(dep: Departamento) {
