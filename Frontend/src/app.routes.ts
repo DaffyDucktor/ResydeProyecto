@@ -34,10 +34,7 @@ export const appRoutes: Routes = [
             { path: 'uikit/residencia', component: ResidenciaComponent },
             { path: 'uikit/residente', component: ResidenteComponent },
             { path: 'uikit/usuario', component: UsuarioComponent },
-            { path: 'uikit/visita', component: VisitaComponent },
-            { path: 'uikit', loadChildren: () => import('./app/pages/uikit/uikit.routes') },
-            { path: 'documentation', component: Documentation },
-            { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') }
+            { path: 'uikit/visita', component: VisitaComponent }
         ]
     },
     { path: 'landing', component: Landing },
