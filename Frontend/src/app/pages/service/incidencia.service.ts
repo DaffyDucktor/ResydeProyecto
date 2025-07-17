@@ -7,7 +7,7 @@ import { Incidencia } from '../model/incidencia';
   providedIn: 'root'
 })
 export class IncidenciaService {
-  private apiUrl = 'http://localhost:8080/resyde/incidencia';
+  private apiUrl = 'https://resydeproyecto.onrender.com/resyde/incidencia';
 
   constructor(private http: HttpClient) { }
 

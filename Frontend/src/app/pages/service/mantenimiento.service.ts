@@ -7,7 +7,7 @@ import { Mantenimiento } from '../model/mantenimiento';
   providedIn: 'root'
 })
 export class MantenimientoService {
-  private apiUrl = 'http://localhost:8080/resyde/mantenimiento';
+  private apiUrl = 'https://resydeproyecto.onrender.com/resyde/mantenimiento';
 
   constructor(private http: HttpClient) { }
 

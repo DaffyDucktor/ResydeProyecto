@@ -7,7 +7,7 @@ import { Residente } from '../model/residente';
   providedIn: 'root'
 })
 export class ResidenteService {
-  private apiUrl = 'http://localhost:8080/resyde/residente';
+  private apiUrl = 'https://resydeproyecto.onrender.com/resyde/residente';
 
   constructor(private http: HttpClient) { }
 

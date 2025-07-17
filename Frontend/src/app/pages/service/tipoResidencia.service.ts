@@ -7,7 +7,7 @@ import { TipoResidencia } from '../model/tipoResidencia';
   providedIn: 'root'
 })
 export class TipoResidenciaService {
-  private apiUrl = 'http://localhost:8080/resyde/tipoResidencia';
+  private apiUrl = 'https://resydeproyecto.onrender.com/resyde/tipoResidencia';
 
   constructor(private http: HttpClient) { }
 

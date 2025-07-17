@@ -7,7 +7,7 @@ import { Pago } from '../model/pago';
   providedIn: 'root'
 })
 export class PagoService {
-  private apiUrl = 'http://localhost:8080/resyde/pago';
+  private apiUrl = 'https://resydeproyecto.onrender.com/resyde/pago';
 
   constructor(private http: HttpClient) { }
 

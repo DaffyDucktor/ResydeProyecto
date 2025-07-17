@@ -43,7 +43,6 @@ export class AppMenu {
                 label: 'Pago',
                 items: [
                     { label: 'Pago', icon: 'pi pi-fw pi-list', routerLink: ['/uikit/pago'] },
-                    { label: 'Carga Masiva', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/pago/cargaMasiva'] },
                 ]
             }, {
                 label: 'Paquete',
@@ -54,7 +53,6 @@ export class AppMenu {
                 label: 'Recibo',
                 items: [
                     { label: 'Recibo', icon: 'pi pi-fw pi-tablet', routerLink: ['/uikit/recibo'] },
-                    { label: 'Carga Masiva', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/recibo/cargaMasiva'] },
                 ]
             }, {
                 label: 'Residencia',

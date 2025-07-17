@@ -8,7 +8,7 @@ import { CookieService } from 'ngx-cookie-service';
   providedIn: 'root'
 })
 export class UsuarioService {
-  private apiUrl = 'http://localhost:8080/resyde/usuario';
+  private apiUrl = 'https://resydeproyecto.onrender.com/resyde/usuario';
 
   constructor(
     private http: HttpClient,
@@ -48,7 +48,7 @@ export class UsuarioService {
   }
 
   setTokens(object: Usuario) {
-    this.cookieService.set("usuario", object.user);
+    this.cookieService.set("usuario", object.usuario);
     this.cookieService.set("contra", object.password);
     this.cookieService.set("idRol", object.idRol.id.toString());
     this.cookieService.set("idResidencia", object.idResidencia.id.toString())

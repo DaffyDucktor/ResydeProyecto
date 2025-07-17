@@ -7,7 +7,7 @@ import { Paquete } from '../model/paquete';
   providedIn: 'root'
 })
 export class PaqueteService {
-  private apiUrl = 'http://localhost:8080/resyde/paquete';
+  private apiUrl = 'https://resydeproyecto.onrender.com/resyde/paquete';
 
   constructor(private http: HttpClient) { }
 

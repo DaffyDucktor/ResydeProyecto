@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class DepartamentoService {
-  private apiUrl = 'http://localhost:8080/resyde/departamento';
+  private apiUrl = 'https://resydeproyecto.onrender.com/resyde/departamento';
 
   constructor(private http: HttpClient) {}
 
