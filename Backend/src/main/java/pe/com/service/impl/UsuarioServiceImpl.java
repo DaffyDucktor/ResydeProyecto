@@ -52,7 +52,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Usuario insert(UsuarioRequest obj) {
         Usuario objUsuario = new Usuario();
 
-        objUsuario.setUser(obj.getUser());
+        objUsuario.setUsuario(obj.getUsuario());
         objUsuario.setPassword(obj.getPassword());
         objUsuario.setUsuCreacion(obj.getUsuario());
         objUsuario.setIdResidencia(residenciaRepository.getById(Integer.parseInt(obj.getIdResidencia())));
@@ -66,7 +66,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Usuario update(UsuarioRequest obj) {
         Usuario objUsuario = new Usuario();
 
-        objUsuario.setUser(obj.getUser());
+        objUsuario.setUsuario(obj.getUsuario());
         objUsuario.setPassword(obj.getPassword());
         objUsuario.setUsuModifica(obj.getUsuario());
         objUsuario.setIdResidencia(residenciaRepository.getById(Integer.parseInt(obj.getIdResidencia())));

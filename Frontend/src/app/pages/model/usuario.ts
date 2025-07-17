@@ -4,7 +4,7 @@ import { Rol } from './rol';
 
 export interface Usuario {
   id: number;
-  user: string;
+  usuario: string;
   password: string;
   fecCreacion: string;
   usuCreacion: string;

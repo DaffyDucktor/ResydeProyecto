@@ -14,7 +14,6 @@ import javax.persistence.*;
 @SuppressWarnings({"unused"})
 public class UsuarioRequest {
     private String id;
-    private String user;
     private String password;
     private String usuario;
     private String idResidencia;
@@ -25,7 +24,6 @@ public class UsuarioRequest {
     public String toString() {
         return "UsuarioRequest{" +
                 "id='" + id + '\'' +
-                ", user='" + user + '\'' +
                 ", password='" + password + '\'' +
                 ", usuario='" + usuario + '\'' +
                 ", idResidencia='" + idResidencia + '\'' +

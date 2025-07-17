@@ -117,7 +117,7 @@ export class UsuarioComponent {
   ) {
     this.formulario = this.fb.group({
       id: [''],
-      user: ['', Validators.required],
+      usuario: ['', Validators.required],
       password: ['', Validators.required],
       idResidencia: ['', Validators.required],
       idResidente: [''],
@@ -266,7 +266,7 @@ export class UsuarioComponent {
 
         this.formulario.patchValue({
           id: data.id,
-          user: data.user,
+          user: data.usuario,
           password: data.password,
           idResidencia: data.idResidencia.toString(),
           idResidente: data.idResidente.toString(),
@@ -292,7 +292,7 @@ export class UsuarioComponent {
 
         this.formulario.patchValue({
           id: data.id,
-          user: data.user,
+          user: data.usuario,
           password: data.password,
           idResidencia: data.idResidencia.toString(),
           idResidente: data.idResidente.toString(),

@@ -21,7 +21,7 @@ public class Usuario {
     private Integer id;
 
     @Column
-    private String user;
+    private String usuario;
 
     @Column
     private String password;

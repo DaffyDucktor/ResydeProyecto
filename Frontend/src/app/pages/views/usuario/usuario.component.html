@@ -29,7 +29,7 @@
           <tbody style="text-align: center;">
             @for (usuario of this.usuarios; track usuario.id) {
             <tr>
-              <td>{{usuario.user}}</td>
+              <td>{{usuario.usuario}}</td>
               <td>{{usuario.password}}</td>
               <td>{{usuario.idResidencia.nombre}}</td>
               <td>{{usuario.idRol.nombre}}</td>
@@ -55,7 +55,7 @@
       <div class="card flex flex-col gap-4">
         <div class="flex flex-col gap-2">
           <label>Usuario</label>
-          <input type="text" pInputText formControlName="user" [placeholder]="'Ingrese nombre de Residencia'" />
+          <input type="text" pInputText formControlName="usuario" [placeholder]="'Ingrese nombre de Residencia'" />
         </div>
         <div class="flex flex-col gap-2">
           <label>Residencia</label>
