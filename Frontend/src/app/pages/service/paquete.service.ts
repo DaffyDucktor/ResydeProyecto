@@ -15,6 +15,10 @@ export class PaqueteService {
     return this.http.get<Paquete[]>(this.apiUrl);
   }
 
+  getPaquetesByResidence(idResidencia: number): Observable<Paquete[]> {
+    return this.http.get<Paquete[]>(`${this.apiUrl}/listAllByResidencia/${idResidencia}`);
+  }
+
   getPaqueteById(id: number): Observable<Paquete> {
     return this.http.get<Paquete>(`${this.apiUrl}/${id}`);
   }

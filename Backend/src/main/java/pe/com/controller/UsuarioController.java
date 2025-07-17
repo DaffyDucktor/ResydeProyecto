@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
+import pe.com.model.Residente;
 import pe.com.model.Usuario;
 import pe.com.model.request.UsuarioRequest;
 import pe.com.service.UsuarioService;
@@ -28,6 +30,12 @@ public class UsuarioController {
         return usuarioService.listAll();
     }
 
+    @GetMapping("/listAllByResidencia/{idResidencia}")
+    private List<Usuario> listAllByResidencia(@PathVariable(required = false) Integer idResidencia){
+        logger.info("Listando usuarios por la residencia...: {}", idResidencia);
+        return usuarioService.listAllByResidencia(idResidencia);
+    }
+
     @GetMapping("/{id}")
     private Usuario listOne(@PathVariable Integer id){
         logger.info("Listando un Usuario...");
@@ -35,9 +43,16 @@ public class UsuarioController {
     }
 
     @PostMapping
-    private Usuario insert(UsuarioRequest obj){
-        logger.info("Creando un Usuario...");
-        return usuarioService.insert(obj);
+    private Usuario insert(@RequestPart(value = "usuario")UsuarioRequest obj){
+        logger.info("USUARIO REQUEST: {}", obj.toString());
+
+        if (Optional.ofNullable(obj.getId()).orElse("").isEmpty()) {
+            logger.info("Creando un Usuario...");
+            return usuarioService.insert(obj);
+        } else {
+            logger.info("Modificando un Usuario...");
+            return usuarioService.update(obj);
+        }
     }
 
     @PutMapping
@@ -51,5 +66,4 @@ public class UsuarioController {
         logger.info("Eliminando un Usuario...");
         usuarioService.delete(obj);
     }
-
 }

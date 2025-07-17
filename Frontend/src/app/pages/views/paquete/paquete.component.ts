@@ -1,10 +1,19 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, formatDate } from '@angular/common';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
-import { Paquete } from '../../model/paquete';
+//Servicios
 import { PaqueteService } from '../../service/paquete.service';
+import { ResidenciaService } from '../../service/residencia.service';
+import { DepartamentoService } from '../../service/departamento.service';
+import { EstadoPaqueteService } from '../../service/estadoPaquete.service';
+
+//Modelos
+import { Paquete } from '../../model/paquete';
+import { Residencia } from '../../model/residencia';
+import { Departamento } from '../../model/departamento';
+import { EstadoPaquete } from '../../model/estadoPaquete';
 
 //primeng
 import { PrimeNG } from 'primeng/config';
@@ -19,6 +28,9 @@ import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
+import { DatePickerModule } from 'primeng/datepicker';
+import { CalendarModule } from 'primeng/calendar';
+
 //Material
 import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
@@ -34,16 +46,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectChange } from '@angular/material/select';
 import { MatNativeDateModule } from '@angular/material/core';
-import { Departamento } from '../../model/departamento';
-import { EstadoPaquete } from '../../model/estadoPaquete';
-import { DepartamentoService } from '../../service/departamento.service';
-import { EstadoPaqueteService } from '../../service/estadoPaquete.service';
 
 @Component({
   selector: 'app-paquete',
   imports: [ButtonModule, CardModule, RouterModule,
     ReactiveFormsModule,
     FormsModule,
+    CommonModule,
     // Angular Material
     MatButtonModule,
     MatIconModule,
@@ -64,7 +73,8 @@ import { EstadoPaqueteService } from '../../service/estadoPaquete.service';
     InputNumberModule,
     CardModule,
     FileUploadModule,
-    FluidModule, SelectModule, TextareaModule, DialogModule, DropdownModule
+    DatePickerModule,
+    FluidModule, SelectModule, TextareaModule, DialogModule, DropdownModule, CalendarModule
   ],
   templateUrl: './paquete.component.html',
   styleUrl: './paquete.component.scss'
@@ -76,6 +86,8 @@ export class PaqueteComponent {
   formulario!: FormGroup;
   isSaveInProgress: boolean = false;
 
+  idResidenciaSelect: any;
+
   departamentos: Departamento[] = [];
   estadosPaquete: EstadoPaquete[] = [];
 
@@ -86,42 +98,87 @@ export class PaqueteComponent {
   dropdownItemsEstPaq = [
     { name: '', code: '' }
   ];
+
+  dropdownItemsRes = [
+    { name: '', code: '' }
+  ];
+
   display: boolean = false;
+  editable: boolean = true;
 
   constructor(
     private paqueteService: PaqueteService,
+    private residenciaService: ResidenciaService,
     private messageService: MessageService,
     private departamentoService: DepartamentoService,
     private estadoPaqueteService: EstadoPaqueteService,
     private fb: FormBuilder,
     private router: Router,
     private dialog: MatDialog,
-
+    private primeng: PrimeNG
   ) {
     this.formulario = this.fb.group({
-      id: [null],
-      remitente: [null, Validators.required],
-      descripcion: [null, Validators.required],
-      fecha: [null, Validators.required],
-      hora: [null, Validators.required],
-      codigo: [null, Validators.required],
-      idDepartamento: [null, Validators.required],
-      idEstadoPaquete: [null, Validators.required],
+      id: [''],
+      remitente: ['', Validators.required],
+      descripcion: ['', Validators.required],
+      fecha: ['', Validators.required],
+      hora: ['', Validators.required],
+      codigo: ['', Validators.required],
+      idDepartamento: ['', Validators.required],
+      idEstadoPaquete: ['', Validators.required],
     })
   }
 
   ngOnInit(): void {
-    this.getAllPaquetes();
+    this.primeng.ripple.set(true);
+    this.getAllResidencias();
     this.getAllDepartamentos();
     this.getAllEstados();
   }
 
-  getAllPaquetes() {
-    this.paqueteService.getPaquetes().subscribe((data) => {
-      this.paquetes = data;
+  getResidencia() {
+    this.getAllPaquetes(this.idResidenciaSelect);
+  }
+
+  getAllPaquetes(idResidencia: number) {
+    this.paqueteService.getPaquetesByResidence(idResidencia).subscribe({
+      next: (data) => {
+        if (data.length > 0) {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Correcto',
+            detail: 'Paquetes encontrados',
+          });
+        } else {
+          this.messageService.add({
+            severity: 'information',
+            summary: 'Aviso',
+            detail: 'No hay Paquetes creados para esta residencia',
+          });
+        }
+        this.isDeleteInProgress = false;
+        this.paquetes = data;
+      },
+      error: () => {
+        this.isDeleteInProgress = false;
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No se pudo encontrar Paquetes',
+        });
+      },
     });
   }
 
+  getAllResidencias() {
+    this.residenciaService.getResidencias().subscribe((data) => {
+      this.dropdownItemsRes.length = 0;
+      data.forEach(element => {
+        this.dropdownItemsRes.push({ name: element.nombre, code: element.id.toString() });
+      });
+    });
+  }
+  
   getAllDepartamentos() {
     this.departamentoService.getDepartamentos().subscribe((data) => {
       this.dropdownItemsDep.length = 0;
@@ -152,7 +209,7 @@ export class PaqueteComponent {
           detail: 'Paquete eliminado',
         });
         this.isDeleteInProgress = false;
-        this.getAllPaquetes();
+        this.getAllPaquetes(this.idResidenciaSelect);
       },
       error: () => {
         this.isDeleteInProgress = false;
@@ -166,7 +223,44 @@ export class PaqueteComponent {
   }
 
   submitForm() {
+    const fecha = this.formulario.get('fechaInput')?.value;
+    const hora = this.formulario.get('horaInput')?.value;
+    this.formulario.patchValue({
+      fecha: formatDate(fecha, 'dd-MM-yyyy', 'en-US'),
+      hora: formatDate(hora, 'HH:mm', 'en-US')
+    });
 
+    if (this.formulario.invalid) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Revise los campos e intente nuevamente',
+      });
+      return;
+    }
+
+    this.isSaveInProgress = true;
+    this.paqueteService.createPaquete(this.formulario.value)
+      .subscribe({
+        next: () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Guardado',
+            detail: 'Paquete guardada correctamente',
+          });
+          this.isSaveInProgress = false;
+          this.close();
+          this.getAllPaquetes(this.idResidenciaSelect);
+        },
+        error: () => {
+          this.isSaveInProgress = false;
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Revise los campos e intente nuevamente',
+          });
+        }
+      });
   }
 
   openAddForm(): void {
@@ -179,17 +273,88 @@ export class PaqueteComponent {
     this.display = true;
   }
 
-  edit() {
+  edit(id: number) {
+    this.paqueteService.getPaqueteById(id).subscribe({
+      next: (data) => {
+        console.log(JSON.stringify(data))
+        const [dd, mm, yyyy] = data.fecha.split('-').map(Number);
+        const fechaDate = new Date(yyyy, mm - 1, dd); // Recuerda: los meses empiezan desde 0
+        const [horas, minutos] = data.hora.split(':').map(Number);
+        const horaDate = new Date();
+        horaDate.setHours(horas);
+        horaDate.setMinutes(minutos);
+        horaDate.setSeconds(0);
+
+        this.formulario.patchValue({
+          id: data.id,
+          codigo: data.codigo,
+          remitente: data.remitente,
+          descripcion: data.descripcion,
+          fechaInput: fechaDate,
+          horaInput: horaDate,
+          fecha: data.fecha,
+          hora: data.hora,
+          idDepartamento: data.idDepartamento.id.toString(),
+          idEstadoPaquete: data.idEstadoPaquete.id.toString()
+        });
+      },
+      error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No encontrado',
+        });
+      }
+    })
     this.formulario.enable();
+    this.editable = true;
     this.display = true;
   }
 
-  view() {
+  view(id: number) {
+    this.paqueteService.getPaqueteById(id).subscribe({
+      next: (data) => {
+        console.log(JSON.stringify(data))
+        const [dd, mm, yyyy] = data.fecha.split('-').map(Number);
+        const fechaDate = new Date(yyyy, mm - 1, dd); // Recuerda: los meses empiezan desde 0
+        const [horas, minutos] = data.hora.split(':').map(Number);
+        const horaDate = new Date();
+        horaDate.setHours(horas);
+        horaDate.setMinutes(minutos);
+        horaDate.setSeconds(0);
+
+        this.formulario.patchValue({
+          id: data.id,
+          codigo: data.codigo,
+          remitente: data.remitente,
+          descripcion: data.descripcion,
+          fechaInput: fechaDate,
+          horaInput: horaDate,
+          fecha: data.fecha,
+          hora: data.hora,
+          idDepartamento: data.idDepartamento.id.toString(),
+          idEstadoPaquete: data.idEstadoPaquete.id.toString()
+        });
+      },
+      error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No encontrado',
+        });
+      }
+    })
     this.formulario.disable();
+    this.editable = false;
     this.display = true;
   }
 
   close() {
     this.display = false;
+    this.formulario.reset();
+  }
+  deleteResidencia() {
+    this.paquetes = [];
+    this.idResidenciaSelect = null;
   }
 }

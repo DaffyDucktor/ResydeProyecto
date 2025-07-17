@@ -2,12 +2,21 @@
   <div class="card mb-0">
     <h2>Residente</h2>
     <div class="row">
+      <p-select *ngIf="!idResidenciaSelect" (onChange)="getResidencia()" [(ngModel)]="idResidenciaSelect"
+        [options]="dropdownItemsRes" optionValue="code" optionLabel="name" placeholder="Seleccionar Residencia"
+        [autoDisplayFirst]="false" appendTo="body">
+      </p-select>
+    </div>
+    <div class="row" *ngIf="idResidenciaSelect">
       <p-button (onClick)="open()" class="font-bold w-max">
         Crear nuevo residente
+      </p-button> |
+      <p-button class="font-bold w-max" (onClick)="deleteResidencia()">
+        Volver
       </p-button>
     </div>
     <br>
-    <div class="row">
+    <div class="row" *ngIf="idResidenciaSelect">
       <div class="col">
         <table style="width: 100%;">
           <thead>
@@ -24,8 +33,8 @@
               <td>{{residente.telefono}}</td>
               <td>{{residente.correo}}</td>
               <td>{{residente.idDepartamento.codigo}}</td>
-              <td><p-button>Ver</p-button></td>
-              <td><p-button>Modificar</p-button></td>
+              <td><p-button (click)="view(residente.id)">Ver</p-button></td>
+              <td><p-button (click)="edit(residente.id)">Modificar</p-button></td>
             </tr>
             }@empty {
             <tr>
@@ -40,35 +49,31 @@
 </div>
 
 <p-dialog header="Añadir Departamento" [(visible)]="display" [breakpoints]="{ '960px': '75vw' }"
-  [style]="{ width: '30vw' }" [modal]="true">
+  [style]="{ width: '30vw' }" [modal]="true" (onHide)="close()">
   <form [formGroup]="formulario" (ngSubmit)="this.submitForm()">
     <mat-dialog-content>
       <div class="card flex flex-col gap-4">
         <div class="flex flex-col gap-2">
           <label>Nombre</label>
-          <input type="text" pInputText formControlName="nombre" [placeholder]="'Ingrese nombre de Residencia'" />
+          <input type="text" pInputText formControlName="nombre" [placeholder]="'Ingrese Nombre'" />
         </div>
         <div class="flex flex-col gap-2">
           <label>Apellido</label>
-          <input type="text" pInputText formControlName="apellido" [placeholder]="'Ingrese nombre de Direccion'" />
+          <input type="text" pInputText formControlName="apellido" [placeholder]="'Ingrese Apellido'" />
         </div>
         <div class="flex flex-col gap-2">
-          <label>Telefono</label>
-          <input type="text" pInputText formControlName="telefono" [placeholder]="'Ingrese Cantidad de Departamentos'" />
+          <label>Teléfono</label>
+          <input type="text" pInputText formControlName="telefono"
+            [placeholder]="'Ingrese número de teléfono'" />
         </div>
         <div class="flex flex-col gap-2">
           <label>Correo</label>
-          <input type="text" pInputText formControlName="correo" [placeholder]="'Ingrese Cantidad de Edificios'" />
+          <input type="text" pInputText formControlName="correo" [placeholder]="'Ingrese Correo'" />
         </div>
         <div class="flex flex-col gap-2">
           <label>Departamento</label>
-          <p-select 
-            formControlName="idDepartamento" 
-            [options]="dropdownItemsDep" 
-            optionValue="code"  
-            optionLabel="name" 
-            placeholder="Seleccionar Departamento"
-            [autoDisplayFirst]="false" appendTo="body">
+          <p-select formControlName="idDepartamento" [options]="dropdownItemsDep" optionValue="code" optionLabel="name"
+            placeholder="Seleccionar Departamento" [autoDisplayFirst]="false" appendTo="body">
           </p-select>
         </div>
       </div>
@@ -79,45 +84,3 @@
     </mat-dialog-actions>
   </form>
 </p-dialog>
-
-<ng-template #modalTemplate>
-  <h2 mat-dialog-title>Añadir Departamento</h2>
-  <form [formGroup]="formulario" (ngSubmit)="this.submitForm()">
-    <mat-dialog-content>
-      <div>
-        <label>Nombre</label>
-        <ng-container>
-          <input type="text" formControlName="nombre" class="form-control" />
-        </ng-container>
-
-        <label>Apellido</label>
-        <ng-container>
-          <input type="text" formControlName="apellido" class="form-control" />
-        </ng-container>
-
-        <label>Telefono</label>
-        <ng-container>
-          <input type="text" formControlName="telefono" class="form-control" />
-        </ng-container>
-
-        <label>Correo</label>
-        <ng-container>
-          <input type="text" formControlName="correo" class="form-control" />
-        </ng-container>
-
-        <label>Departamento</label>
-        <ng-container>
-          <select formControlName="idDepartamento" class="form-control">
-            <option *ngFor="let tablaItem of departamentos" [value]="tablaItem.id">
-              {{ tablaItem.codigo }}
-            </option>
-          </select>
-        </ng-container>
-      </div>
-    </mat-dialog-content>
-    <mat-dialog-actions>
-      <button mat-button mat-dialog-close type="button">Cancel</button>
-      <button mat-raised-button color="primary" type="submit">Guardar</button>
-    </mat-dialog-actions>
-  </form>
-</ng-template>

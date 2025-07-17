@@ -4,11 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pe.com.model.Incidencia;
 import pe.com.model.Recibo;
 import pe.com.model.request.ReciboRequest;
 import pe.com.service.ReciboService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/resyde/recibo")
@@ -39,6 +41,11 @@ public class ReciboController {
         return reciboService.balance();
     }
 
+    @GetMapping("/listAllByResidencia/{idResidencia}")
+    private List<Recibo> listAllByResidencia(@PathVariable(required = false) Integer idResidencia){
+        logger.info("Listando recibos por la residencia...: {}", idResidencia);
+        return reciboService.listAllByResidencia(idResidencia);
+    }
 
     @GetMapping("/{id}")
     private Recibo listOne(@PathVariable Integer id){
@@ -47,9 +54,16 @@ public class ReciboController {
     }
 
     @PostMapping
-    private Recibo insert(ReciboRequest obj){
-        logger.info("Creando un Recibo...");
-        return reciboService.insert(obj);
+    private Recibo insert(@RequestPart(value = "recibo")ReciboRequest obj){
+        logger.info("RECIBO REQUEST: {}", obj.toString());
+
+        if(Optional.ofNullable(obj.getId()).orElse("").isEmpty()){
+            logger.info("Creando un Recibo...");
+            return reciboService.insert(obj);
+        } else {
+            logger.info("Modificando un Recibo...");
+            return reciboService.update(obj);
+        }
     }
 
     @PutMapping

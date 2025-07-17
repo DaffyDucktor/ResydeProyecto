@@ -1,13 +1,19 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, formatDate } from '@angular/common';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 //Servicios
 import { UsuarioService } from '../../service/usuario.service';
+import { ResidenciaService } from '../../service/residencia.service';
+import { ResidenteService } from '../../service/residente.service';
+import { RolService } from '../../service/rol.service';
 
 //Modelos
 import { Usuario } from '../../model/usuario';
+import { Residencia } from '../../model/residencia';
+import { Residente } from '../../model/residente';
+import { Rol } from '../../model/rol';
 
 //primeng
 import { PrimeNG } from 'primeng/config';
@@ -22,6 +28,8 @@ import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
+import { DatePickerModule } from 'primeng/datepicker';
+import { CalendarModule } from 'primeng/calendar';
 
 //Material
 import { MatTableModule } from '@angular/material/table';
@@ -38,17 +46,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectChange } from '@angular/material/select';
 import { MatNativeDateModule } from '@angular/material/core';
-import { Residencia } from '../../model/residencia';
-import { Residente } from '../../model/residente';
-import { Rol } from '../../model/rol';
-import { ResidenciaService } from '../../service/residencia.service';
-import { ResidenteService } from '../../service/residente.service';
-import { RolService } from '../../service/rol.service';
+
 @Component({
   selector: 'app-usuario',
   imports: [ButtonModule, CardModule, RouterModule,
     ReactiveFormsModule,
     FormsModule,
+    CommonModule,
     // Angular Material
     MatButtonModule,
     MatIconModule,
@@ -69,7 +73,8 @@ import { RolService } from '../../service/rol.service';
     InputNumberModule,
     CardModule,
     FileUploadModule,
-    FluidModule, SelectModule, TextareaModule, DialogModule, DropdownModule,
+    DatePickerModule,
+    FluidModule, SelectModule, TextareaModule, DialogModule, DropdownModule, CalendarModule
   ],
   templateUrl: './usuario.component.html',
   styleUrl: './usuario.component.scss'
@@ -84,6 +89,7 @@ export class UsuarioComponent {
   residentes: Residente[] = [];
   roles: Rol[] = [];
 
+  idResidenciaSelect: any;
   dropdownItemsRes = [
     { name: '', code: '' }
   ];
@@ -96,6 +102,7 @@ export class UsuarioComponent {
     { name: '', code: '' }
   ];
   display: boolean = false;
+  editable: boolean = true;
 
   constructor(
     private usuarioService: UsuarioService,
@@ -106,34 +113,61 @@ export class UsuarioComponent {
     private fb: FormBuilder,
     private router: Router,
     private dialog: MatDialog,
-
+    private primeng: PrimeNG
   ) {
     this.formulario = this.fb.group({
-      id: [null],
-      user: [null, Validators.required],
-      password: [null, Validators.required],
-      idResidencia: [null, Validators.required],
-      idResidente: [null, Validators.required],
-      idRol: [null, Validators.required],
+      id: [''],
+      user: ['', Validators.required],
+      password: ['', Validators.required],
+      idResidencia: ['', Validators.required],
+      idResidente: [''],
+      idRol: ['', Validators.required],
     })
   }
 
   ngOnInit(): void {
-    this.getAllUsuarios();
+    this.primeng.ripple.set(true);
     this.getAllResidencias();
     this.getAllResidentes();
     this.getAllRoles();
   }
+  getResidencia() {
+    this.getAllUsuarios(this.idResidenciaSelect);
+  }
 
-  getAllUsuarios() {
-    this.usuarioService.getUsuarios().subscribe((data) => {
-      this.usuarios = data;
+  getAllUsuarios(idResidencia: number) {
+    this.usuarioService.getUsuariosByResidence(idResidencia).subscribe({
+      next: (data) => {
+        if (data.length > 0) {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Correcto',
+            detail: 'Incidencias encontradas',
+          });
+        } else {
+          this.messageService.add({
+            severity: 'information',
+            summary: 'Aviso',
+            detail: 'No hay Incidencias creados para esta residencia',
+          });
+        }
+        this.isDeleteInProgress = false;
+        this.usuarios = data;
+      },
+      error: () => {
+        this.isDeleteInProgress = false;
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No se pudo encontrar incidencias',
+        });
+      },
     });
   }
 
   getAllResidencias() {
     this.residenciaService.getResidencias().subscribe((data) => {
-            this.dropdownItemsRes.length = 0;
+      this.dropdownItemsRes.length = 0;
       data.forEach(element => {
         this.dropdownItemsRes.push({ name: element.direccion, code: element.id.toString() });
       });
@@ -142,7 +176,7 @@ export class UsuarioComponent {
 
   getAllResidentes() {
     this.residenteService.getResidentes().subscribe((data) => {
-            this.dropdownItemsResi.length = 0;
+      this.dropdownItemsResi.length = 0;
       data.forEach(element => {
         this.dropdownItemsResi.push({ name: (element.nombre + " " + element.apellido), code: element.id.toString() });
       });
@@ -151,7 +185,7 @@ export class UsuarioComponent {
 
   getAllRoles() {
     this.rolService.getRols().subscribe((data) => {
-            this.dropdownItemsRol.length = 0;
+      this.dropdownItemsRol.length = 0;
       data.forEach(element => {
         this.dropdownItemsRol.push({ name: element.nombre, code: element.id.toString() });
       });
@@ -168,7 +202,7 @@ export class UsuarioComponent {
           detail: 'Usuario eliminado',
         });
         this.isDeleteInProgress = false;
-        this.getAllUsuarios();
+        this.getAllUsuarios(this.idResidenciaSelect);
       },
       error: () => {
         this.isDeleteInProgress = false;
@@ -181,35 +215,38 @@ export class UsuarioComponent {
     });
   }
 
-  createUsuario() {
+  submitForm() {
     if (this.formulario.invalid) {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
         detail: 'Revise los campos e intente nuevamente',
       });
-      return
+      return;
     }
-    this.usuarioService.createUsuario(this.formulario.value).subscribe({
-      next: () => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Guardado',
-          detail: 'Usuario guardado correctamente',
-        });
-        this.router.navigateByUrl('/')
-      },
-      error: () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Revise los campos e intente nuevamente',
-        });
-      }
-    })
-  }
-  submitForm() {
 
+    this.isSaveInProgress = true;
+    this.usuarioService.createUsuario(this.formulario.value)
+      .subscribe({
+        next: () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Guardado',
+            detail: 'Incidencia guardada correctamente',
+          });
+          this.isSaveInProgress = false;
+          this.close();
+          this.getAllUsuarios(this.idResidenciaSelect);
+        },
+        error: () => {
+          this.isSaveInProgress = false;
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Revise los campos e intente nuevamente',
+          });
+        }
+      });
   }
 
   openAddForm(): void {
@@ -222,17 +259,65 @@ export class UsuarioComponent {
     this.display = true;
   }
 
-  edit() {
+  edit(id: number) {
+    this.usuarioService.getUsuarioById(id).subscribe({
+      next: (data) => {
+        console.log(JSON.stringify(data))
+
+        this.formulario.patchValue({
+          id: data.id,
+          user: data.user,
+          password: data.password,
+          idResidencia: data.idResidencia.toString(),
+          idResidente: data.idResidente.toString(),
+          idRol: data.idRol.toString()
+        });
+      },
+      error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No encontrado',
+        });
+      }
+    })
     this.formulario.enable();
+    this.editable = true;
     this.display = true;
   }
 
-  view() {
+  view(id: number) {
+    this.usuarioService.getUsuarioById(id).subscribe({
+      next: (data) => {
+
+        this.formulario.patchValue({
+          id: data.id,
+          user: data.user,
+          password: data.password,
+          idResidencia: data.idResidencia.toString(),
+          idResidente: data.idResidente.toString(),
+          idRol: data.idRol.toString()
+        });
+      },
+      error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No encontrado',
+        });
+      }
+    })
     this.formulario.disable();
+    this.editable = false;
     this.display = true;
   }
-
   close() {
     this.display = false;
+    this.formulario.reset();
+  }
+
+  deleteResidencia() {
+    this.usuarios = [];
+    this.idResidenciaSelect = null;
   }
 }

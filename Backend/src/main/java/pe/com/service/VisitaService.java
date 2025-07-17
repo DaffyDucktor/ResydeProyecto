@@ -9,6 +9,8 @@ public interface VisitaService {
 
     List<Visita> listAll();
 
+    List<Visita> listAllByResidencia(Integer idResidencia);
+
     Visita listOne(Integer id);
 
     Visita insert (VisitaRequest obj);

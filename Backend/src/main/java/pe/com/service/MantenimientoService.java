@@ -9,6 +9,8 @@ import java.util.List;
 public interface MantenimientoService {
     List<Mantenimiento> listAll();
 
+    List<Mantenimiento> listAllByResidencia(Integer idResidencia);
+
     Mantenimiento listOne(Integer id);
 
     Mantenimiento insert (MantenimientoRequest obj);

@@ -2,12 +2,22 @@
   <div class="card mb-0">
     <h2>Mantenimiento</h2>
     <div class="row">
+      <p-select *ngIf="!idResidenciaSelect" (onChange)="getResidencia()" [(ngModel)]="idResidenciaSelect"
+        [options]="dropdownItemsRes" optionValue="code" optionLabel="name" placeholder="Seleccionar Residencia"
+        [autoDisplayFirst]="false" appendTo="body">
+      </p-select>
+    </div>
+
+    <div class="row" *ngIf="idResidenciaSelect">
       <p-button (onClick)="open()" class="font-bold w-max">
         Crear nuevo mantenimiento
+      </p-button> |
+      <p-button class="font-bold w-max" (onClick)="deleteResidencia()">
+        Volver
       </p-button>
     </div>
     <br>
-    <div class="row">
+    <div class="row" *ngIf="idResidenciaSelect">
       <div class="col">
         <table style="width: 100%;">
           <thead>
@@ -26,8 +36,8 @@
               <td>{{mantenimiento.fechaIni}}</td>
               <td>{{mantenimiento.fechaFin}}</td>
               <td>{{mantenimiento.idEstadoMantenimiento.estado}}</td>
-              <td><p-button>Ver</p-button></td>
-              <td><p-button>Modificar</p-button></td>
+              <td><p-button (click)="view(mantenimiento.id)">Ver</p-button></td>
+              <td><p-button (click)="edit(mantenimiento.id)">Modificar</p-button></td>
             </tr>
             }@empty {
             <tr>
@@ -43,7 +53,7 @@
 
 
 <p-dialog header="Añadir Mantenimiento" [(visible)]="display" [breakpoints]="{ '960px': '75vw' }"
-  [style]="{ width: '30vw' }" [modal]="true">
+  [style]="{ width: '30vw' }" [modal]="true" (onHide)="close()">
   <form [formGroup]="formulario" (ngSubmit)="this.submitForm()">
     <mat-dialog-content>
       <div class="card flex flex-col gap-4">
@@ -53,34 +63,26 @@
         </div>
         <div class="flex flex-col gap-2">
           <label>Fecha Inicio</label>
-          <input type="text" pInputText formControlName="fechaIni" [placeholder]="'Ingrese nombre de Direccion'" />
+          <p-datepicker [showIcon]="true" [showButtonBar]="true" formControlName="fechaIniInput" [dateFormat]="'dd/mm/yyyy'" placeholder="dd/mm/aaaa"></p-datepicker>
+          <input type="text" pInputText formControlName="fechaIni"/>
         </div>
         <div class="flex flex-col gap-2">
           <label>Fecha Finalizacion</label>
-          <input type="text" pInputText formControlName="fechaFin" [placeholder]="'Ingrese Cantidad de Departamentos'" />
+          <p-datepicker [showIcon]="true" [showButtonBar]="true" formControlName="fechaFinInput" [dateFormat]="'dd/mm/yyyy'" placeholder="dd/mm/aaaa"></p-datepicker>
+          <input type="text" pInputText formControlName="fechaFin"/>
         </div>
         <div class="flex flex-col gap-2">
           <label>Departamento</label>
 
-          <p-select 
-            formControlName="idDepartamento" 
-            [options]="dropdownItemsDep" 
-            optionValue="code"  
-            optionLabel="name" 
-            placeholder="Seleccionar Tipo"
-            [autoDisplayFirst]="false" appendTo="body">
+          <p-select formControlName="idDepartamento" [options]="dropdownItemsDep" optionValue="code" optionLabel="name"
+            placeholder="Seleccionar Tipo" [autoDisplayFirst]="false" appendTo="body">
           </p-select>
         </div>
         <div class="flex flex-col gap-2">
           <label>Estado Mantenimiento</label>
 
-          <p-select 
-            formControlName="idEstadoMantenimiento" 
-            [options]="dropdownItemsEstMant" 
-            optionValue="code"  
-            optionLabel="name" 
-            placeholder="Seleccionar Tipo"
-            [autoDisplayFirst]="false" appendTo="body">
+          <p-select formControlName="idEstadoMantenimiento" [options]="dropdownItemsEstMant" optionValue="code"
+            optionLabel="name" placeholder="Seleccionar Tipo" [autoDisplayFirst]="false" appendTo="body">
           </p-select>
         </div>
       </div>

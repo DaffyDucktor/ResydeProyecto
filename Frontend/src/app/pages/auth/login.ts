@@ -78,7 +78,7 @@ export class Login {
     login() {
         const user = { email: this.email, password: this.password };
         this.usuarioService.login(user).subscribe((data) => {
-            this.usuarioService.setToken(data.token);
+            this.usuarioService.setTokens(data);
             this.router.navigateByUrl("/");
         });
     }

@@ -24,7 +24,7 @@ import java.util.List;
 @SuppressWarnings({"deprecation","unused"})
 public class PagoServiceImpl implements PagoService {
 
-    private static final Logger log = LoggerFactory.getLogger(PagoServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(PagoServiceImpl.class);
     @Autowired
     PagoRepository pagoRepository;
 
@@ -34,6 +34,12 @@ public class PagoServiceImpl implements PagoService {
     @Override
     public List<Pago> listAll() {
         return pagoRepository.findAll();
+    }
+
+    @Override
+    public List<Pago> listAllByResidencia(Integer idResidencia) {
+        logger.info("IdResidencia: {}", idResidencia);
+        return pagoRepository.getAllByResidencia(idResidencia);
     }
 
     @Override
@@ -81,7 +87,7 @@ public class PagoServiceImpl implements PagoService {
     public Integer cargaMasiva(List<PagoRequest> obj) {
 
         obj.forEach(pagoRequest -> {
-            log.info(obj.toString());
+            logger.info(obj.toString());
 
         });
 
@@ -110,7 +116,7 @@ public class PagoServiceImpl implements PagoService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        log.info("Archivo creado exitosamente.");
+        logger.info("Archivo creado exitosamente.");
     }
 
     @Override

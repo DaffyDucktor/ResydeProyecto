@@ -19,6 +19,10 @@ export class UsuarioService {
     return this.http.get<Usuario[]>(this.apiUrl);
   }
 
+  getUsuariosByResidence(idResidencia: number): Observable<Usuario[]> {
+    return this.http.get<Usuario[]>(`${this.apiUrl}/listAllByResidencia/${idResidencia}`);
+  }
+
   getUsuarioById(id: number): Observable<Usuario> {
     return this.http.get<Usuario>(`${this.apiUrl}/${id}`);
   }
@@ -39,19 +43,15 @@ export class UsuarioService {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
-  login(user: any): Observable<any> {
-    return this.http.post(this.apiUrl + "/login", user);
+  login(user: any): Observable<Usuario> {
+    return this.http.post<Usuario>(this.apiUrl + "/login", user);
   }
 
-  setToken(token: string) {
-    this.cookieService.set("token", token);
-  }
-  getToken() {
-    return this.cookieService.get("token");
-  }
-
-  getUserLogged() {
-    const token = this.getToken();
-    // Aquí iría el endpoint para devolver el usuario para un token
+  setTokens(object: Usuario) {
+    this.cookieService.set("usuario", object.user);
+    this.cookieService.set("contra", object.password);
+    this.cookieService.set("idRol", object.idRol.id.toString());
+    this.cookieService.set("idResidencia", object.idResidencia.id.toString())
   }
 }
+

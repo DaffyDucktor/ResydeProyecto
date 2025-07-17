@@ -4,11 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pe.com.model.Incidencia;
 import pe.com.model.Paquete;
 import pe.com.model.request.PaqueteRequest;
 import pe.com.service.PaqueteService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/resyde/paquete")
@@ -27,6 +29,12 @@ public class PaqueteController {
         return paqueteService.listAll();
     }
 
+    @GetMapping("/listAllByResidencia/{idResidencia}")
+    private List<Paquete> listAllByResidencia(@PathVariable(required = false) Integer idResidencia){
+        logger.info("Listando paquetes por la residencia...: {}", idResidencia);
+        return paqueteService.listAllByResidencia(idResidencia);
+    }
+
     @GetMapping("/{id}")
     private Paquete listOne(@PathVariable Integer id){
         logger.info("Listando un Paquete...");
@@ -34,9 +42,16 @@ public class PaqueteController {
     }
 
     @PostMapping
-    private Paquete insert(PaqueteRequest obj){
-        logger.info("Creando un Paquete...");
-        return paqueteService.insert(obj);
+    private Paquete insert(@RequestPart(value = "paquete")PaqueteRequest obj){
+        logger.info("PAQUETE REQUEST: {}", obj.toString());
+
+        if(Optional.ofNullable(obj.getId()).orElse("").isEmpty()){
+            logger.info("Creando un Paquete...");
+            return paqueteService.insert(obj);
+        } else {
+            logger.info("Modificando un Paquete...");
+            return paqueteService.update(obj);
+        }
     }
 
     @PutMapping

@@ -15,6 +15,10 @@ export class MantenimientoService {
     return this.http.get<Mantenimiento[]>(this.apiUrl);
   }
 
+  getMantenimientosByResidence(idResidencia: number): Observable<Mantenimiento[]> {
+    return this.http.get<Mantenimiento[]>(`${this.apiUrl}/listAllByResidencia/${idResidencia}`);
+  }
+
   getMantenimientoById(id: number): Observable<Mantenimiento> {
     return this.http.get<Mantenimiento>(`${this.apiUrl}/${id}`);
   }

@@ -9,6 +9,8 @@ import java.util.List;
 public interface PaqueteService {
     List<Paquete> listAll();
 
+    List<Paquete> listAllByResidencia(Integer idResidencia);
+
     Paquete listOne(Integer id);
 
     Paquete insert (PaqueteRequest obj);

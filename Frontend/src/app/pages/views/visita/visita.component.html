@@ -2,12 +2,21 @@
   <div class="card mb-0">
     <h2>Visita</h2>
     <div class="row">
+      <p-select *ngIf="!idResidenciaSelect" (onChange)="getResidencia()" [(ngModel)]="idResidenciaSelect"
+        [options]="dropdownItemsRes" optionValue="code" optionLabel="name" placeholder="Seleccionar Residencia"
+        [autoDisplayFirst]="false" appendTo="body">
+      </p-select>
+    </div>
+    <div class="row" *ngIf="idResidenciaSelect">
       <p-button (click)="open()" class="font-bold w-max">
         Crear nueva Visita
+      </p-button> |
+      <p-button class="font-bold w-max" (onClick)="deleteResidencia()">
+        Volver
       </p-button>
     </div>
     <br>
-    <div class="row">
+    <div class="row" *ngIf="idResidenciaSelect">
       <div class="col">
         <table style="width: 100%;">
           <thead>
@@ -26,8 +35,8 @@
               <td>{{visita.fecha}}</td>
               <td>{{visita.hora}}</td>
               <td>{{visita.comentario}}</td>
-              <td><p-button>Ver</p-button></td>
-              <td><p-button>Modificar</p-button></td>
+              <td><p-button (click)="view(visita.id)">Ver</p-button></td>
+              <td><p-button (click)="edit(visita.id)">Modificar</p-button></td>
             </tr>
             }@empty {
             <tr>
@@ -40,7 +49,7 @@
     </div>
 
     <p-dialog header="Añadir Visita" [(visible)]="display" [breakpoints]="{ '960px': '75vw' }"
-      [style]="{ width: '30vw' }" [modal]="true">
+      [style]="{ width: '30vw' }" [modal]="true" (onHide)="close()">
       <form [formGroup]="formulario" (ngSubmit)="this.submitForm()">
         <mat-dialog-content>
           <div class="card flex flex-col gap-4">
@@ -61,16 +70,19 @@
             </div>
             <div class="flex flex-col gap-2">
               <label>Fecha</label>
-              <p-datepicker [showIcon]="true" [showButtonBar]="true" formControlName="fecha"></p-datepicker>
+              <p-datepicker [showIcon]="true" [showButtonBar]="true" formControlName="fechaInput"
+                [dateFormat]="'dd/mm/yy'" placeholder="dd/mm/aaaa"></p-datepicker>
+              <input type="text" pInputText formControlName="fecha" hidden />
             </div>
             <div class="flex flex-col gap-2">
               <label>Hora</label>
-              <p-datepicker formControlName="hora" [iconDisplay]="'input'" [showIcon]="true" [timeOnly]="true"
-                inputId="templatedisplay">
+              <p-calendar formControlName="horaInput" [iconDisplay]="'input'" [showIcon]="true" [timeOnly]="true"
+                hourFormat="12" inputId="templatedisplay">
                 <ng-template #inputicon let-clickCallBack="clickCallBack">
                   <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
                 </ng-template>
-              </p-datepicker>
+              </p-calendar>
+              <input type="text" pInputText formControlName="hora" hidden />
             </div>
             <div class="flex flex-col gap-2">
               <label>Departamento</label>

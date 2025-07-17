@@ -1,5 +1,7 @@
 package pe.com.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.com.model.Visita;
@@ -14,6 +16,8 @@ import java.util.List;
 @SuppressWarnings({"deprecation","unused"})
 public class VisitaServiceImpl implements VisitaService {
 
+    private static final Logger logger = LoggerFactory.getLogger(VisitaServiceImpl.class);
+
     @Autowired
     VisitaRepository visitaRepository;
 
@@ -23,6 +27,12 @@ public class VisitaServiceImpl implements VisitaService {
     @Override
     public List<Visita> listAll() {
         return visitaRepository.findAll();
+    }
+
+    @Override
+    public List<Visita> listAllByResidencia(Integer idResidencia) {
+        logger.info("IdResidencia: {}", idResidencia);
+        return visitaRepository.getAllByResidencia(idResidencia);
     }
 
     @Override

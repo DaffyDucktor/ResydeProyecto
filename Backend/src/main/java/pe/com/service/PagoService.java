@@ -8,6 +8,8 @@ import java.util.List;
 public interface PagoService {
     List<Pago> listAll();
 
+    List<Pago> listAllByResidencia(Integer idResidencia);
+
     Pago listOne(Integer id);
 
     Pago insert (PagoRequest obj);

@@ -2,12 +2,21 @@
   <div class="card mb-0">
     <h2>Paquete</h2>
     <div class="row">
+      <p-select *ngIf="!idResidenciaSelect" (onChange)="getResidencia()" [(ngModel)]="idResidenciaSelect"
+        [options]="dropdownItemsRes" optionValue="code" optionLabel="name" placeholder="Seleccionar Residencia"
+        [autoDisplayFirst]="false" appendTo="body">
+      </p-select>
+    </div>
+    <div class="row">
       <p-button (onClick)="open()" class="font-bold w-max">
         Crear nuevo paquete
+      </p-button> |
+      <p-button class="font-bold w-max" (onClick)="deleteResidencia()">
+        Volver
       </p-button>
     </div>
     <br>
-    <div class="row">
+    <div class="row" *ngIf="idResidenciaSelect">
       <div class="col">
         <table style="width: 100%;">
           <thead>
@@ -26,8 +35,8 @@
               <td>{{paquete.idDepartamento.codigo}}</td>
               <td>{{paquete.idEstadoPaquete.estado}}</td>
               <td>{{paquete.codigo}}</td>
-              <td><p-button>Ver</p-button></td>
-              <td><p-button>Modificar</p-button></td>
+              <td><p-button (click)="view(paquete.id)">Ver</p-button></td>
+              <td><p-button (click)="edit(paquete.id)">Modificar</p-button></td>
             </tr>
             }@empty {
             <tr>
@@ -43,7 +52,7 @@
 
 
 <p-dialog header="Añadir Paquete" [(visible)]="display" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '30vw' }"
-  [modal]="true">
+  [modal]="true" (onHide)="close()">
   <form [formGroup]="formulario" (ngSubmit)="this.submitForm()">
     <mat-dialog-content>
       <div class="card flex flex-col gap-4">
@@ -57,12 +66,18 @@
         </div>
         <div class="flex flex-col gap-2">
           <label>Fecha</label>
-          <input type="text" pInputText formControlName="fecha"
-            [placeholder]="'Ingrese Cantidad de Departamentos'" />
+          <p-datepicker [showIcon]="true" [showButtonBar]="true" formControlName="fechaInput" [dateFormat]="'dd/mm/yyyy'" placeholder="dd/mm/aaaa"></p-datepicker>
+          <input type="text" pInputText formControlName="fecha" hidden/>
         </div>
         <div class="flex flex-col gap-2">
           <label>Hora</label>
-          <input type="text" pInputText formControlName="hora" [placeholder]="'Ingrese Cantidad de Edificios'" />
+          <p-calendar formControlName="horaInput" [iconDisplay]="'input'" [showIcon]="true" [timeOnly]="true" hourFormat="12"
+            inputId="templatedisplay">
+            <ng-template #inputicon let-clickCallBack="clickCallBack">
+              <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
+            </ng-template>
+          </p-calendar>
+          <input type="text" pInputText formControlName="hora" hidden/>
         </div>
         <div class="flex flex-col gap-2">
           <label>Codigo</label>
@@ -78,8 +93,8 @@
         <div class="flex flex-col gap-2">
           <label>Estado Paquete</label>
 
-          <p-select formControlName="idEstadoPaquete" [options]="dropdownItemsEstPaq" optionValue="code" optionLabel="name"
-            placeholder="Seleccionar Tipo" [autoDisplayFirst]="false" appendTo="body">
+          <p-select formControlName="idEstadoPaquete" [options]="dropdownItemsEstPaq" optionValue="code"
+            optionLabel="name" placeholder="Seleccionar Tipo" [autoDisplayFirst]="false" appendTo="body">
           </p-select>
         </div>
       </div>
@@ -90,60 +105,3 @@
     </mat-dialog-actions>
   </form>
 </p-dialog>
-
-<ng-template #modalTemplate>
-  <h2 mat-dialog-title>Añadir Paquete</h2>
-  <form [formGroup]="formulario" (ngSubmit)="this.submitForm()">
-    <mat-dialog-content>
-      <div>
-        <label>Remitente</label>
-        <ng-container>
-          <input type="text" formControlName="remitente" class="form-control" />
-        </ng-container>
-
-        <label>Descripcion</label>
-        <ng-container>
-          <input type="text" formControlName="descripcion" class="form-control" />
-        </ng-container>
-
-        <label>Fecha</label>
-        <ng-container>
-          <input type="date" formControlName="fecha" class="form-control" />
-        </ng-container>
-
-        <label>Hora</label>
-        <ng-container>
-          <input type="text" formControlName="hora" class="form-control" />
-        </ng-container>
-
-        <label>Codigo</label>
-        <ng-container>
-          <input type="text" formControlName="codigo" class="form-control" />
-        </ng-container>
-
-
-        <label>Departamento</label>
-        <ng-container>
-          <select formControlName="idDepartamento" class="form-control">
-            <option *ngFor="let tablaItem of departamentos" [value]="tablaItem.id">
-              {{ tablaItem.codigo }}
-            </option>
-          </select>
-        </ng-container>
-
-        <label>Estado Paquete</label>
-        <ng-container>
-          <select formControlName="idEstadoPaquete" class="form-control">
-            <option *ngFor="let tablaItem of estadosPaquete" [value]="tablaItem.id">
-              {{ tablaItem.estado }}
-            </option>
-          </select>
-        </ng-container>
-      </div>
-    </mat-dialog-content>
-    <mat-dialog-actions>
-      <button mat-button mat-dialog-close type="button">Cancel</button>
-      <button mat-raised-button color="primary" type="submit">Guardar</button>
-    </mat-dialog-actions>
-  </form>
-</ng-template>

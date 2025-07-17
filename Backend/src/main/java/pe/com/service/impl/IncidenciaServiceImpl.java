@@ -32,7 +32,7 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 
     @Override
     public List<Incidencia> listAllByResidencia(Integer idResidencia) {
-        logger.info("IdResidencia: " + idResidencia);
+        logger.info("IdResidencia: {}", idResidencia);
         return incidenciaRepository.getAllByResidencia(idResidencia);
     }
 

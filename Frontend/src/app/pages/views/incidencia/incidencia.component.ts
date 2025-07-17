@@ -26,7 +26,6 @@ import { TextareaModule } from 'primeng/textarea';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { DatePickerModule } from 'primeng/datepicker';
-import { Fluid } from 'primeng/fluid';
 import { CalendarModule } from 'primeng/calendar';
 
 //Material
@@ -72,7 +71,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     CardModule,
     FileUploadModule,
     DatePickerModule,
-    FluidModule, SelectModule, TextareaModule, DialogModule, DropdownModule, Fluid, CalendarModule
+    FluidModule, SelectModule, TextareaModule, DialogModule, DropdownModule, CalendarModule
   ],
 
   templateUrl: './incidencia.component.html',
@@ -158,7 +157,6 @@ export class IncidenciaComponent {
     });
   }
 
-
   getAllResidencias() {
     this.residenciaService.getResidencias().subscribe((data) => {
       this.dropdownItemsRes.length = 0;
@@ -200,34 +198,6 @@ export class IncidenciaComponent {
       },
     });
   }
-  createIncidencia() {
-    if (this.formulario.invalid) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Revise los campos e intente nuevamente',
-      });
-      return
-    }
-    this.incidenciaService.createIncidencia(this.formulario.value).subscribe({
-      next: () => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Guardado',
-          detail: 'Incidencia guardada correctamente',
-        });
-        this.router.navigateByUrl('/')
-      },
-      error: () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Revise los campos e intente nuevamente',
-        });
-      }
-    })
-  }
-
 
   submitForm() {
     const fecha = this.formulario.get('fechaInput')?.value;
@@ -266,7 +236,7 @@ export class IncidenciaComponent {
             summary: 'Error',
             detail: 'Revise los campos e intente nuevamente',
           });
-        },
+        }
       });
   }
 
@@ -284,23 +254,22 @@ export class IncidenciaComponent {
     this.incidenciaService.getIncidenciaById(id).subscribe({
       next: (data) => {
         console.log(JSON.stringify(data))
-                  const [dia, mes, anio] = data.fecha.split('/').map(Number);
-const fechaDate = new Date(anio, mes - 1, dia);
-const [horas, minutos] = data.hora.split(':').map(Number);
-const horaDate = new Date();
-horaDate.setHours(horas);
-horaDate.setMinutes(minutos);
-horaDate.setSeconds(0);
+        const [dd, mm, yyyy] = data.fecha.split('-').map(Number);
+        const fechaDate = new Date(yyyy, mm - 1, dd); // Recuerda: los meses empiezan desde 0
+        const [horas, minutos] = data.hora.split(':').map(Number);
+        const horaDate = new Date();
+        horaDate.setHours(horas);
+        horaDate.setMinutes(minutos);
+        horaDate.setSeconds(0);
 
         this.formulario.patchValue({
           id: data.id,
           detalle: data.detalle,
-
           fechaInput: fechaDate,
           horaInput: horaDate,
           fecha: data.fecha,
           hora: data.hora,
-          idDepartamento: { name: data.idDepartamento.codigo, code: data.idDepartamento.id.toString() }
+          idDepartamento: data.idDepartamento.id.toString()
         });
       },
       error: () => {
@@ -320,7 +289,24 @@ horaDate.setSeconds(0);
     this.incidenciaService.getIncidenciaById(id).subscribe({
       next: (data) => {
         console.log(JSON.stringify(data))
-        this.formulario.patchValue(data);
+        const [dd, mm, yyyy] = data.fecha.split('-').map(Number);
+        const fechaDate = new Date(yyyy, mm - 1, dd); // Recuerda: los meses empiezan desde 0
+        const [horas, minutos] = data.hora.split(':').map(Number);
+        const horaDate = new Date();
+        horaDate.setHours(horas);
+        horaDate.setMinutes(minutos);
+        horaDate.setSeconds(0);
+
+        this.formulario.patchValue({
+          id: data.id,
+          detalle: data.detalle,
+
+          fechaInput: fechaDate,
+          horaInput: horaDate,
+          fecha: data.fecha,
+          hora: data.hora,
+          idDepartamento: data.idDepartamento.id.toString()
+        });
       },
       error: () => {
         this.messageService.add({
@@ -339,6 +325,7 @@ horaDate.setSeconds(0);
     this.display = false;
     this.formulario.reset();
   }
+  
   deleteResidencia() {
     this.incidencias = [];
     this.idResidenciaSelect = null;

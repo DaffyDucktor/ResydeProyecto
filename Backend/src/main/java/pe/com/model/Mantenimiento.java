@@ -46,7 +46,7 @@ public class Mantenimiento {
     private Departamento idDepartamento;
 
     @ManyToOne
-    @JoinColumn(name = "id_estado_departamento", nullable=false)
+    @JoinColumn(name = "id_estado_mantenimiento", nullable=false)
     private EstadoMantenimiento idEstadoMantenimiento;
 
 }

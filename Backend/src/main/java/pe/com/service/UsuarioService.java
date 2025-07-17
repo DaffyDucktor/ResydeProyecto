@@ -9,6 +9,8 @@ public interface UsuarioService {
 
     List<Usuario> listAll();
 
+    List<Usuario> listAllByResidencia(Integer idResidencia);
+
     Usuario listOne(Integer id);
 
     Usuario insert (UsuarioRequest obj);

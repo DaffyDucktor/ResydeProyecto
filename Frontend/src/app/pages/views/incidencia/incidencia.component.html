@@ -7,7 +7,6 @@
         [autoDisplayFirst]="false" appendTo="body">
       </p-select>
     </div>
-
     <div class="row" *ngIf="idResidenciaSelect">
       <p-button (onClick)="open()" class="font-bold w-max">
         Crear nueva incidencia
@@ -52,9 +51,6 @@
 <p-dialog header="Añadir Residencia" [(visible)]="display" [breakpoints]="{ '960px': '75vw' }"
   [style]="{ width: '30vw' }" [modal]="true" (onHide)="close()">
   <form [formGroup]="formulario" (ngSubmit)="this.submitForm()">
-    <input type="hidden" formControlName="id" />
-    <input type="hidden" formControlName="usuario" />
-    <input type="hidden" formControlName="idResidencia" />
     <mat-dialog-content>
       <div class="card flex flex-col gap-4">
         <div class="flex flex-col gap-2">

@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pe.com.model.Pago;
 import pe.com.model.Recibo;
 import pe.com.model.request.ReciboRequest;
 import pe.com.repository.DepartamentoRepository;
@@ -26,7 +25,8 @@ import java.util.List;
 @SuppressWarnings({"deprecation","unused"})
 public class ReciboServiceImpl implements ReciboService {
 
-    private static final Logger log = LoggerFactory.getLogger(ReciboServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(ReciboServiceImpl.class);
+
     @Autowired
     ReciboRepository reciboRepository;
 
@@ -40,6 +40,12 @@ public class ReciboServiceImpl implements ReciboService {
     @Override
     public List<Recibo> listAll() {
         return reciboRepository.findAll();
+    }
+
+    @Override
+    public List<Recibo> listAllByResidencia(Integer idResidencia) {
+        logger.info("IdResidencia: {}", idResidencia);
+        return reciboRepository.getAllByResidencia(idResidencia);
     }
 
     @Override
@@ -91,7 +97,7 @@ public class ReciboServiceImpl implements ReciboService {
         List<String> objCodigos = departamentoRepository.getAllCodigo(residence);
 
         objCodigos.forEach(s -> {
-            log.info(s);
+            logger.info(s);
         });
 
         return null;
@@ -119,7 +125,7 @@ public class ReciboServiceImpl implements ReciboService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        log.info("Archivo creado exitosamente.");
+        logger.info("Archivo creado exitosamente.");
     }
 
     @Override

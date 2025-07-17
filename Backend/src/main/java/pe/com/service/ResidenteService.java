@@ -9,6 +9,8 @@ import java.util.List;
 public interface ResidenteService {
     List<Residente> listAll();
 
+    List<Residente> listAllByResidencia(Integer idResidencia);
+
     Residente listOne(Integer id);
 
     Residente insert (ResidenteRequest obj);

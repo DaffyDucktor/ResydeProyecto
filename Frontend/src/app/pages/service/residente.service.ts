@@ -18,6 +18,10 @@ export class ResidenteService {
     return this.http.get<Residente[]>(this.apiUrl);
   }
 
+  getResidentesByResidence(idResidencia: number): Observable<Residente[]> {
+    return this.http.get<Residente[]>(`${this.apiUrl}/listAllByResidencia/${idResidencia}`);
+  }
+
   getResidenteById(id: number): Observable<Residente> {
     return this.http.get<Residente>(`${this.apiUrl}/${id}`);
   }

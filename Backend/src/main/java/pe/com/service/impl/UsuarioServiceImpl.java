@@ -1,5 +1,7 @@
 package pe.com.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.com.model.Usuario;
@@ -16,6 +18,8 @@ import java.util.List;
 @SuppressWarnings({"deprecation","unused"})
 public class UsuarioServiceImpl implements UsuarioService {
 
+    private static final Logger logger = LoggerFactory.getLogger(UsuarioServiceImpl.class);
+
     @Autowired
     UsuarioRepository usuarioRepository;
 
@@ -31,6 +35,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public List<Usuario> listAll() {
         return usuarioRepository.findAll();
+    }
+
+    @Override
+    public List<Usuario> listAllByResidencia(Integer idResidencia) {
+        logger.info("IdResidencia: {}", idResidencia);
+        return usuarioRepository.getAllByResidencia(idResidencia);
     }
 
     @Override

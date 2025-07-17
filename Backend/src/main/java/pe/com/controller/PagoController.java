@@ -4,11 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pe.com.model.Incidencia;
 import pe.com.model.Pago;
 import pe.com.model.request.PagoRequest;
 import pe.com.service.PagoService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/resyde/pago")
@@ -39,6 +41,12 @@ public class PagoController {
         return pagoService.balance();
     }
 
+    @GetMapping("/listAllByResidencia/{idResidencia}")
+    private List<Pago> listAllByResidencia(@PathVariable(required = false) Integer idResidencia){
+        logger.info("Listando pagos por la residencia...: {}", idResidencia);
+        return pagoService.listAllByResidencia(idResidencia);
+    }
+
     @GetMapping("/{id}")
     private Pago listOne(@PathVariable Integer id){
         logger.info("Listando un Pago...");
@@ -46,9 +54,16 @@ public class PagoController {
     }
 
     @PostMapping
-    private Pago insert(PagoRequest obj){
-        logger.info("Creando un Pago...");
-        return pagoService.insert(obj);
+    private Pago insert(@RequestPart(value = "pago")PagoRequest obj){
+        logger.info("PAGO REQUEST: {}", obj.toString());
+
+        if(Optional.ofNullable(obj.getId()).orElse("").isEmpty()){
+            logger.info("Creando un Pago...");
+            return pagoService.insert(obj);
+        } else {
+            logger.info("Modificando un Pago...");
+            return pagoService.update(obj);
+        }
     }
 
     @PutMapping

@@ -1,5 +1,7 @@
 package pe.com.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.com.model.Paquete;
@@ -15,6 +17,8 @@ import java.util.List;
 @SuppressWarnings({"deprecation","unused"})
 public class PaqueteServiceImpl implements PaqueteService {
 
+    private static final Logger logger = LoggerFactory.getLogger(PaqueteServiceImpl.class);
+
     @Autowired
     PaqueteRepository paqueteRepository;
 
@@ -27,6 +31,12 @@ public class PaqueteServiceImpl implements PaqueteService {
     @Override
     public List<Paquete> listAll() {
         return paqueteRepository.findAll();
+    }
+
+    @Override
+    public List<Paquete> listAllByResidencia(Integer idResidencia) {
+        logger.info("IdResidencia: {}", idResidencia);
+        return paqueteRepository.getAllByResidencia(idResidencia);
     }
 
     @Override

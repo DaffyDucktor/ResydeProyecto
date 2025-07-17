@@ -1,8 +1,11 @@
 package pe.com.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.com.model.EstadoMantenimiento;
+import pe.com.model.Incidencia;
 import pe.com.model.Mantenimiento;
 import pe.com.model.request.MantenimientoRequest;
 import pe.com.repository.DepartamentoRepository;
@@ -16,6 +19,8 @@ import java.util.List;
 @SuppressWarnings({"deprecation","unused"})
 public class MantenimientoServiceImpl implements MantenimientoService {
 
+    private static final Logger logger = LoggerFactory.getLogger(MantenimientoServiceImpl.class);
+
     @Autowired
     MantenimientoRepository mantenimientoRepository;
 
@@ -28,6 +33,12 @@ public class MantenimientoServiceImpl implements MantenimientoService {
     @Override
     public List<Mantenimiento> listAll() {
         return mantenimientoRepository.findAll();
+    }
+
+    @Override
+    public List<Mantenimiento> listAllByResidencia(Integer idResidencia) {
+        logger.info("IdResidencia: {}", idResidencia);
+        return mantenimientoRepository.getAllByResidencia(idResidencia);
     }
 
     @Override

@@ -9,6 +9,8 @@ import java.util.List;
 public interface ReciboService {
     List<Recibo> listAll();
 
+    List<Recibo> listAllByResidencia(Integer idResidencia);
+
     Recibo listOne(Integer id);
 
     Recibo insert (ReciboRequest obj);

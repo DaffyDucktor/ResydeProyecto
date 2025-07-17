@@ -1,10 +1,21 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, formatDate } from '@angular/common';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
+//service
 import { MantenimientoService } from '../../service/mantenimiento.service';
+import { DepartamentoService } from '../../service/departamento.service';
+import { EstadoDepartamentoService } from '../../service/estadoDepartamento.service';
+import { EstadoMantenimientoService } from '../../service/estadoMantenimiento.service';
+import { ResidenciaService } from '../../service/residencia.service';
+
+//modelo
 import { Mantenimiento } from '../../model/mantenimiento';
+import { Departamento } from '../../model/departamento';
+import { EstadoDepartamento } from '../../model/estadoDepartamento';
+import { EstadoMantenimiento } from '../../model/estadoMantenimiento';
+import { Residencia } from '../../model/residencia';
 
 //primeng
 import { PrimeNG } from 'primeng/config';
@@ -19,6 +30,8 @@ import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
+import { DatePickerModule } from 'primeng/datepicker';
+import { CalendarModule } from 'primeng/calendar';
 
 //Material
 import { MatTableModule } from '@angular/material/table';
@@ -35,18 +48,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectChange } from '@angular/material/select';
 import { MatNativeDateModule } from '@angular/material/core';
-import { Departamento } from '../../model/departamento';
-import { EstadoDepartamento } from '../../model/estadoDepartamento';
-import { DepartamentoService } from '../../service/departamento.service';
-import { EstadoDepartamentoService } from '../../service/estadoDepartamento.service';
-import { EstadoMantenimiento } from '../../model/estadoMantenimiento';
-import { EstadoMantenimientoService } from '../../service/estadoMantenimiento.service';
 
 @Component({
   selector: 'app-mantenimiento',
   imports: [ButtonModule, CardModule, RouterModule,
     ReactiveFormsModule,
     FormsModule,
+    CommonModule,
     // Angular Material
     MatButtonModule,
     MatIconModule,
@@ -67,7 +75,8 @@ import { EstadoMantenimientoService } from '../../service/estadoMantenimiento.se
     InputNumberModule,
     CardModule,
     FileUploadModule,
-    FluidModule, SelectModule, TextareaModule, DialogModule, DropdownModule
+    DatePickerModule,
+    FluidModule, SelectModule, TextareaModule, DialogModule, DropdownModule, CalendarModule
   ],
   templateUrl: './mantenimiento.component.html',
   styleUrl: './mantenimiento.component.scss'
@@ -82,6 +91,8 @@ export class MantenimientoComponent {
   departamentos: Departamento[] = [];
   estadosMantenimiento: EstadoMantenimiento[] = [];
 
+  idResidenciaSelect: any;
+
   dropdownItemsDep = [
     { name: '', code: '' }
   ];
@@ -89,40 +100,86 @@ export class MantenimientoComponent {
   dropdownItemsEstMant = [
     { name: '', code: '' }
   ];
+
+  dropdownItemsRes = [
+    { name: '', code: '' }
+  ];
+
   display: boolean = false;
+  editable: boolean = true;
 
   constructor(
     private mantenimientoService: MantenimientoService,
+    private residenciaService: ResidenciaService,
     private messageService: MessageService,
     private departamentoService: DepartamentoService,
     private estadosMantenimientoService: EstadoMantenimientoService,
     private fb: FormBuilder,
     private router: Router,
     private dialog: MatDialog,
+    private primeng: PrimeNG
 
   ) {
     this.formulario = this.fb.group({
-      id: [null],
-      descripcion: [null, Validators.required],
-      fechaIni: [null, Validators.required],
-      fechaFin: [null, Validators.required],
-      idDepartamento: [null, Validators.required],
-      idEstadoMantenimiento: [null, Validators.required],
+      id: [''],
+      descripcion: ['', Validators.required],
+      fechaIni: ['', Validators.required],
+      fechaFin: ['', Validators.required],
+      idDepartamento: ['', Validators.required],
+      idEstadoMantenimiento: ['', Validators.required],
     })
   }
 
   ngOnInit(): void {
-    this.getAllMantenimientos();
+    this.primeng.ripple.set(true);
+    this.getAllResidencias();
     this.getAllDepartamentos();
     this.getAllEstadoMantenimientos();
   }
 
-  getAllMantenimientos() {
-    this.mantenimientoService.getMantenimientos().subscribe((data) => {
-      this.mantenimientos = data;
+  getResidencia() {
+    this.getAllMantenimientos(this.idResidenciaSelect);
+  }
+
+  getAllMantenimientos(idResidencia: number) {
+    this.mantenimientoService.getMantenimientosByResidence(idResidencia).subscribe({
+      next: (data) => {
+        if (data.length > 0) {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Correcto',
+            detail: 'Mantenimientos encontrados',
+          });
+        } else {
+          this.messageService.add({
+            severity: 'information',
+            summary: 'Aviso',
+            detail: 'No hay Mantenimientos creados para esta residencia',
+          });
+        }
+        this.isDeleteInProgress = false;
+        this.mantenimientos = data;
+      },
+      error: () => {
+        this.isDeleteInProgress = false;
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No se pudo encontrar Mantenimientos',
+        });
+      },
     });
   }
 
+
+  getAllResidencias() {
+    this.residenciaService.getResidencias().subscribe((data) => {
+      this.dropdownItemsRes.length = 0;
+      data.forEach(element => {
+        this.dropdownItemsRes.push({ name: element.nombre, code: element.id.toString() });
+      });
+    });
+  }
   getAllDepartamentos() {
     this.departamentoService.getDepartamentos().subscribe((data) => {
       this.dropdownItemsDep.length = 0;
@@ -151,7 +208,7 @@ export class MantenimientoComponent {
           detail: 'mantenimiento eliminado',
         });
         this.isDeleteInProgress = false;
-        this.getAllMantenimientos();
+        this.getAllMantenimientos(this.idResidenciaSelect);
       },
       error: () => {
         this.isDeleteInProgress = false;
@@ -179,7 +236,7 @@ export class MantenimientoComponent {
           summary: 'Guardado',
           detail: 'Mantenimiento guardado correctamente',
         });
-        this.router.navigateByUrl('/')
+        this.getAllMantenimientos(this.idResidenciaSelect);
       },
       error: () => {
         this.messageService.add({
@@ -192,7 +249,44 @@ export class MantenimientoComponent {
   }
 
   submitForm() {
+    const fechaIni = this.formulario.get('fechaIniInput')?.value;
+    const fechaFin = this.formulario.get('fechaFinInput')?.value;
+    this.formulario.patchValue({
+      fechaIni: formatDate(fechaIni, 'dd-MM-yyyy', 'en-US'),
+      fechaFin: formatDate(fechaFin, 'dd-MM-yyyy', 'en-US'),
+    });
 
+    if (this.formulario.invalid) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Revise los campos e intente nuevamente',
+      });
+      return;
+    }
+
+    this.isSaveInProgress = true;
+    this.mantenimientoService.createMantenimiento(this.formulario.value)
+      .subscribe({
+        next: () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Guardado',
+            detail: 'Mantenimiento guardado correctamente',
+          });
+          this.isSaveInProgress = false;
+          this.close();
+          this.getAllMantenimientos(this.idResidenciaSelect);
+        },
+        error: () => {
+          this.isSaveInProgress = false;
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Revise los campos e intente nuevamente',
+          });
+        }
+      });
   }
 
   openAddForm(): void {
@@ -205,17 +299,78 @@ export class MantenimientoComponent {
     this.display = true;
   }
 
-  edit() {
+  edit(id: number) {
+    this.mantenimientoService.getMantenimientoById(id).subscribe({
+      next: (data) => {
+        console.log(JSON.stringify(data))
+        const [ddIni, mmIni, yyyyIni] = data.fechaIni.split('-').map(Number);
+        const fechaIniDate = new Date(yyyyIni, mmIni - 1, ddIni); // Recuerda: los meses empiezan desde 0
+        const [ddFin, mmFin, yyyyFin] = data.fechaFin.split('-').map(Number);
+        const fechaFinDate = new Date(yyyyFin, mmFin - 1, ddFin); // Recuerda: los meses empiezan desde 0
+
+        this.formulario.patchValue({
+          id: data.id,
+          descripcion: data.descripcion,
+          fechaIniInput: fechaIniDate,
+          fechaFinInput: fechaFinDate,
+          fechaIni: data.fechaIni,
+          fechaFin: data.fechaFin,
+          idDepartamento: data.idDepartamento.id.toString(),
+          idEstadoMantenimiento: data.idEstadoMantenimiento.id.toString()
+        });
+      },
+      error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No encontrado',
+        });
+      }
+    })
     this.formulario.enable();
+    this.editable = true;
     this.display = true;
   }
 
-  view() {
+  view(id: number) {
+    this.mantenimientoService.getMantenimientoById(id).subscribe({
+      next: (data) => {
+        console.log(JSON.stringify(data))
+        const [ddIni, mmIni, yyyyIni] = data.fechaIni.split('-').map(Number);
+        const fechaIniDate = new Date(yyyyIni, mmIni - 1, ddIni); // Recuerda: los meses empiezan desde 0
+        const [ddFin, mmFin, yyyyFin] = data.fechaFin.split('-').map(Number);
+        const fechaFinDate = new Date(yyyyFin, mmFin - 1, ddFin); // Recuerda: los meses empiezan desde 0
+
+        this.formulario.patchValue({
+          id: data.id,
+          descripcion: data.descripcion,
+          fechaIniInput: fechaIniDate,
+          fechaFinInput: fechaFinDate,
+          fechaIni: data.fechaIni,
+          fechaFin: data.fechaFin,
+          idDepartamento: data.idDepartamento.id.toString(),
+          idEstadoMantenimiento: data.idEstadoMantenimiento.id.toString()
+        });
+      },
+      error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No encontrado',
+        });
+      }
+    })
     this.formulario.disable();
+    this.editable = false;
     this.display = true;
   }
 
   close() {
     this.display = false;
+    this.formulario.reset();
+  }
+  deleteResidencia() {
+    this.mantenimientos = [];
+    this.idResidenciaSelect = null;
   }
 }

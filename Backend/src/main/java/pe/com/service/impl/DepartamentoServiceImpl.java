@@ -38,7 +38,7 @@ public class DepartamentoServiceImpl implements DepartamentoService {
 
     @Override
     public List<Departamento> listAllByResidencia(Integer idResidencia) {
-        logger.info("IDResidencia: " + idResidencia);
+        logger.info("IDResidencia: {}", idResidencia);
         return departamentoRepository.getAllByResidencia(idResidencia);
     }
 
@@ -50,18 +50,17 @@ public class DepartamentoServiceImpl implements DepartamentoService {
 
     @Override
     public List<Departamento> insertAll(String idResidencia) {
-            Residencia obj = residenciaRepository.getById(Integer.parseInt(idResidencia));
-        logger.info("HOMERO: " + obj.toString());
+        Residencia obj = residenciaRepository.getById(Integer.parseInt(idResidencia));
 
-            List<Departamento> depList = new ArrayList<>();
-            for (int i = 0; i < Integer.parseInt(obj.getNDepartamento()); i++) {
-                Departamento objDep = new Departamento();
-                objDep.setIdResidencia(obj);
-                objDep.setIdEstadoDepartamento(estadoDepartamentoRepository.getById(1));
-                objDep.setUsuCreacion("Admin");
-                depList.add(objDep);
-            }
-            return departamentoRepository.saveAll(depList);
+        List<Departamento> depList = new ArrayList<>();
+        for (int i = 0; i < Integer.parseInt(obj.getNDepartamento()); i++) {
+            Departamento objDep = new Departamento();
+            objDep.setIdResidencia(obj);
+            objDep.setIdEstadoDepartamento(estadoDepartamentoRepository.getById(1));
+            objDep.setUsuCreacion("Admin");
+            depList.add(objDep);
+        }
+        return departamentoRepository.saveAll(depList);
 
     }
 
