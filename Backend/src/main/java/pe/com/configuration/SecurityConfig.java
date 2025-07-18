@@ -24,7 +24,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("https://vercel-resyde-mauve.vercel.app/"); // frontend
+        config.addAllowedOrigin("https://vercel-resyde-mauve.vercel.app"); // frontend
         config.addAllowedMethod("*");
         config.addAllowedHeader("*");
         config.setAllowCredentials(true);

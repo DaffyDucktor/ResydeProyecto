@@ -13,7 +13,7 @@ public class CORSConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // todos los endpoints
-                        .allowedOrigins("https://vercel-resyde-mauve.vercel.app/") // tu frontend
+                        .allowedOrigins("https://vercel-resyde-mauve.vercel.app") // tu frontend
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
