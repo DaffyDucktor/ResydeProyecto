@@ -7,7 +7,7 @@ import { Residente } from '../model/residente';
   providedIn: 'root'
 })
 export class ResidenteService {
-  private apiUrl = 'https://resydeproyecto.onrender.com/resyde/residente';
+  private apiUrl = 'http://localhost:8080/resyde/residente';
 
   constructor(private http: HttpClient) { }
 
@@ -29,7 +29,7 @@ export class ResidenteService {
   createResidente(residente: Residente): Observable<Residente> {
     const formData = new FormData();
 
-    formData.append('residencia', new Blob([JSON.stringify(residente)], { type: 'application/json' }));
+    formData.append('residente', new Blob([JSON.stringify(residente)], { type: 'application/json' }));
 
     return this.http.post<Residente>(this.apiUrl, formData);
   }

@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer> {
 
-    @Query("SELECT i FROM Incidencia i WHERE i.idDepartamento.id IN (SELECT d FROM Departamento d WHERE d.idResidencia.id= ?1)")
+    @Query("SELECT i FROM Incidencia i WHERE i.idResidencia.id = ?1")
     List<Incidencia> getAllByResidencia(Integer idResidencia);
 
 }

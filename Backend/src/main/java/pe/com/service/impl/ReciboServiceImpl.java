@@ -64,7 +64,7 @@ public class ReciboServiceImpl implements ReciboService {
         objRecibo.setComments(obj.getComments());
         objRecibo.setUsuCreacion(obj.getUsuario());
         objRecibo.setIdDepartamento(departamentoRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
-        objRecibo.setIdEstadoRecibo(estadoReciboRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
+        objRecibo.setIdEstadoRecibo(estadoReciboRepository.getById(Integer.parseInt(obj.getIdEstadoRecibo())));
 
         return reciboRepository.save(objRecibo);
     }

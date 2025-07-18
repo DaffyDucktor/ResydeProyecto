@@ -7,7 +7,7 @@ import { Pago } from '../model/pago';
   providedIn: 'root'
 })
 export class PagoService {
-  private apiUrl = 'https://resydeproyecto.onrender.com/resyde/pago';
+  private apiUrl = 'http://localhost:8080/resyde/pago';
 
   constructor(private http: HttpClient) { }
 
@@ -16,6 +16,9 @@ export class PagoService {
   }
   getBalance(): Observable<Number> {
     return this.http.get<Number>(this.apiUrl + "/balance");
+  } 
+  getPagosByResidence(idResidencia: number): Observable<Pago[]> {
+    return this.http.get<Pago[]>(`${this.apiUrl}/listAllByResidencia/${idResidencia}`);
   }
   getPagos(): Observable<Pago[]> {
     return this.http.get<Pago[]>(this.apiUrl);
@@ -25,8 +28,12 @@ export class PagoService {
     return this.http.get<Pago>(`${this.apiUrl}/${id}`);
   }
 
-  createPago(dep: Pago): Observable<Pago> {
-    return this.http.post<Pago>(this.apiUrl, dep);
+  createPago(pag: Pago): Observable<Pago> {
+    const formData = new FormData();
+
+    formData.append('pago', new Blob([JSON.stringify(pag)], { type: 'application/json' }));
+
+    return this.http.post<Pago>(this.apiUrl, formData);
   }
 
   updatePago(dep: Pago) {

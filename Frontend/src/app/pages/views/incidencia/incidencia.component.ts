@@ -108,19 +108,18 @@ export class IncidenciaComponent {
   ) {
     this.formulario = this.fb.group({
       id: [''],
-      detalle: ['', Validators.required],
-      fecha: ['', Validators.required],
-      fechaInput: ['', Validators.required],
-      hora: ['', Validators.required],
-      horaInput: ['', Validators.required],
-      idDepartamento: ['', Validators.required],
+      detalle: [''],
+      fecha: [''],
+      fechaInput: [''],
+      hora: [''],
+      horaInput: [''],
+      idResidencia: [''],
     })
   }
 
   ngOnInit(): void {
     this.primeng.ripple.set(true);
     this.getAllResidencias();
-    this.getDepartamento();
   }
 
   getResidencia() {
@@ -166,16 +165,6 @@ export class IncidenciaComponent {
     });
   }
 
-  getDepartamento() {
-    this.departamentoService.getDepartamentos().subscribe((data) => {
-      this.dropdownItemsDep.length = 0;
-      this.dropdownItemsDep.push({ name: 'Residencia', code: '' });
-      data.forEach(element => {
-        this.dropdownItemsDep.push({ name: element.codigo, code: element.id.toString() });
-      });
-    });
-  }
-
   deleteIncidencia(id: number) {
     this.isDeleteInProgress = true;
     this.incidenciaService.deleteIncidencia(id).subscribe({
@@ -204,7 +193,8 @@ export class IncidenciaComponent {
     const hora = this.formulario.get('horaInput')?.value;
     this.formulario.patchValue({
       fecha: formatDate(fecha, 'dd-MM-yyyy', 'en-US'),
-      hora: formatDate(hora, 'HH:mm', 'en-US')
+      hora: formatDate(hora, 'HH:mm', 'en-US'),
+      idResidencia: this.idResidenciaSelect
     });
 
     if (this.formulario.invalid) {
@@ -269,7 +259,7 @@ export class IncidenciaComponent {
           horaInput: horaDate,
           fecha: data.fecha,
           hora: data.hora,
-          idDepartamento: data.idDepartamento.id.toString()
+          idResidencia: data.idResidencia.id.toString()
         });
       },
       error: () => {
@@ -305,7 +295,7 @@ export class IncidenciaComponent {
           horaInput: horaDate,
           fecha: data.fecha,
           hora: data.hora,
-          idDepartamento: data.idDepartamento.id.toString()
+          idResidencia: data.idResidencia.id.toString()
         });
       },
       error: () => {

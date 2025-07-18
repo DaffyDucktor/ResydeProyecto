@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
-    @Query("SELECT u FROM Usuario u WHERE u.idResidencia = ?1")
+    @Query("SELECT u FROM Usuario u WHERE u.idResidencia.id = ?1")
     List<Usuario> getAllByResidencia(Integer idResidencia);
 
 }

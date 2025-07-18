@@ -9,6 +9,7 @@ import pe.com.model.Incidencia;
 import pe.com.model.request.IncidenciaRequest;
 import pe.com.repository.DepartamentoRepository;
 import pe.com.repository.IncidenciaRepository;
+import pe.com.repository.ResidenciaRepository;
 import pe.com.service.IncidenciaService;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class IncidenciaServiceImpl implements IncidenciaService {
     IncidenciaRepository incidenciaRepository;
 
     @Autowired
-    DepartamentoRepository departamentoRepository;
+    ResidenciaRepository residenciaRepository;
 
     @Override
     public List<Incidencia> listAll() {
@@ -52,7 +53,7 @@ public class IncidenciaServiceImpl implements IncidenciaService {
         objIncidencia.setFecha(obj.getFecha());
         objIncidencia.setHora(obj.getHora());
         objIncidencia.setUsuCreacion(obj.getUsuario());
-        objIncidencia.setIdDepartamento(departamentoRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
+        objIncidencia.setIdResidencia(residenciaRepository.getById(Integer.parseInt(obj.getIdResidencia())));
 
         return incidenciaRepository.save(objIncidencia);
     }
@@ -66,7 +67,7 @@ public class IncidenciaServiceImpl implements IncidenciaService {
         objIncidencia.setFecha(obj.getFecha());
         objIncidencia.setHora(obj.getHora());
         objIncidencia.setUsuModifica(obj.getUsuario());
-        objIncidencia.setIdDepartamento(departamentoRepository.getById(Integer.parseInt(obj.getId())));
+        objIncidencia.setIdResidencia(residenciaRepository.getById(Integer.parseInt(obj.getIdResidencia())));
 
         return incidenciaRepository.save(objIncidencia);
     }

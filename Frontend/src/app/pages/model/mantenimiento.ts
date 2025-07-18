@@ -1,5 +1,5 @@
-import { Departamento } from "./departamento";
 import { EstadoMantenimiento } from "./estadoMantenimiento";
+import { Residencia } from "./residencia";
 
 export interface Mantenimiento {
     id:number,
@@ -10,6 +10,6 @@ export interface Mantenimiento {
     usuCreacion:string,
     fecModifica:string,
     usuModifica:string,
-    idDepartamento:Departamento,
+    idResidencia:Residencia,
     idEstadoMantenimiento:EstadoMantenimiento,
 }

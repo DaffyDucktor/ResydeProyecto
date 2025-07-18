@@ -7,7 +7,7 @@ import { Paquete } from '../model/paquete';
   providedIn: 'root'
 })
 export class PaqueteService {
-  private apiUrl = 'https://resydeproyecto.onrender.com/resyde/paquete';
+  private apiUrl = 'http://localhost:8080/resyde/paquete';
 
   constructor(private http: HttpClient) { }
 
@@ -26,7 +26,7 @@ export class PaqueteService {
   createPaquete(paq: Paquete): Observable<Paquete> {
     const formData = new FormData();
 
-    formData.append('residencia', new Blob([JSON.stringify(paq)], { type: 'application/json' }));
+    formData.append('paquete', new Blob([JSON.stringify(paq)], { type: 'application/json' }));
 
     return this.http.post<Paquete>(this.apiUrl, formData);
   }

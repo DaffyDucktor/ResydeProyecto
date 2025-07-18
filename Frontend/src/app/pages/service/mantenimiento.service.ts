@@ -7,7 +7,7 @@ import { Mantenimiento } from '../model/mantenimiento';
   providedIn: 'root'
 })
 export class MantenimientoService {
-  private apiUrl = 'https://resydeproyecto.onrender.com/resyde/mantenimiento';
+  private apiUrl = 'http://localhost:8080/resyde/mantenimiento';
 
   constructor(private http: HttpClient) { }
 
@@ -26,7 +26,7 @@ export class MantenimientoService {
   createMantenimiento(mant: Mantenimiento): Observable<Mantenimiento> {
     const formData = new FormData();
 
-    formData.append('residencia', new Blob([JSON.stringify(mant)], { type: 'application/json' }));
+    formData.append('mantenimiento', new Blob([JSON.stringify(mant)], { type: 'application/json' }));
 
     return this.http.post<Mantenimiento>(this.apiUrl, formData);
   }

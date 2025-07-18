@@ -128,11 +128,11 @@ export class UsuarioComponent {
   ngOnInit(): void {
     this.primeng.ripple.set(true);
     this.getAllResidencias();
-    this.getAllResidentes();
     this.getAllRoles();
   }
   getResidencia() {
     this.getAllUsuarios(this.idResidenciaSelect);
+    this.getAllResidentes(this.idResidenciaSelect);
   }
 
   getAllUsuarios(idResidencia: number) {
@@ -169,13 +169,13 @@ export class UsuarioComponent {
     this.residenciaService.getResidencias().subscribe((data) => {
       this.dropdownItemsRes.length = 0;
       data.forEach(element => {
-        this.dropdownItemsRes.push({ name: element.direccion, code: element.id.toString() });
+        this.dropdownItemsRes.push({ name: element.nombre, code: element.id.toString() });
       });
     });
   }
 
-  getAllResidentes() {
-    this.residenteService.getResidentes().subscribe((data) => {
+  getAllResidentes(idResidencia: number) {
+    this.residenteService.getResidentesByResidence(idResidencia).subscribe((data) => {
       this.dropdownItemsResi.length = 0;
       data.forEach(element => {
         this.dropdownItemsResi.push({ name: (element.nombre + " " + element.apellido), code: element.id.toString() });
@@ -216,6 +216,9 @@ export class UsuarioComponent {
   }
 
   submitForm() {
+    this.formulario.patchValue({
+      idResidente: this.idResidenciaSelect.toString()
+    });
     if (this.formulario.invalid) {
       this.messageService.add({
         severity: 'error',

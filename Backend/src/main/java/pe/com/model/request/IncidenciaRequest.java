@@ -19,7 +19,7 @@ public class IncidenciaRequest {
     private String fecha;
     private String hora;
     private String usuario;
-    private String idDepartamento;
+    private String idResidencia;
 
     @Override
     public String toString() {
@@ -30,7 +30,7 @@ public class IncidenciaRequest {
                 ", fecha='" + fecha + '\'' +
                 ", hora='" + hora + '\'' +
                 ", usuario='" + usuario + '\'' +
-                ", idDepartamento='" + idDepartamento + '\'' +
+                ", idResidencia='" + idResidencia + '\'' +
                 '}';
     }
 }

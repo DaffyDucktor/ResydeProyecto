@@ -21,7 +21,6 @@
       <div class="col">
         <table style="width: 100%;">
           <thead>
-            <th>N° Mantenimiento</th>
             <th>Descripcion</th>
             <th>Fecha Inicio</th>
             <th>Fecha Fin</th>
@@ -31,7 +30,6 @@
           <tbody style="text-align: center;">
             @for (mantenimiento of this.mantenimientos; track mantenimiento.id) {
             <tr>
-              <td>{{mantenimiento.id}}</td>
               <td>{{mantenimiento.descripcion}}</td>
               <td>{{mantenimiento.fechaIni}}</td>
               <td>{{mantenimiento.fechaFin}}</td>
@@ -63,20 +61,13 @@
         </div>
         <div class="flex flex-col gap-2">
           <label>Fecha Inicio</label>
-          <p-datepicker [showIcon]="true" [showButtonBar]="true" formControlName="fechaIniInput" [dateFormat]="'dd/mm/yyyy'" placeholder="dd/mm/aaaa"></p-datepicker>
-          <input type="text" pInputText formControlName="fechaIni"/>
+          <p-datepicker [showIcon]="true" [showButtonBar]="true" formControlName="fechaIniInput" [dateFormat]="'dd/mm/yy'" placeholder="dd/mm/aaaa"></p-datepicker>
+          <input type="hidden" pInputText formControlName="fechaIni"/>
         </div>
         <div class="flex flex-col gap-2">
           <label>Fecha Finalizacion</label>
-          <p-datepicker [showIcon]="true" [showButtonBar]="true" formControlName="fechaFinInput" [dateFormat]="'dd/mm/yyyy'" placeholder="dd/mm/aaaa"></p-datepicker>
-          <input type="text" pInputText formControlName="fechaFin"/>
-        </div>
-        <div class="flex flex-col gap-2">
-          <label>Departamento</label>
-
-          <p-select formControlName="idDepartamento" [options]="dropdownItemsDep" optionValue="code" optionLabel="name"
-            placeholder="Seleccionar Tipo" [autoDisplayFirst]="false" appendTo="body">
-          </p-select>
+          <p-datepicker [showIcon]="true" [showButtonBar]="true" formControlName="fechaFinInput" [dateFormat]="'dd/mm/yy'" placeholder="dd/mm/aaaa"></p-datepicker>
+          <input type="hidden" pInputText formControlName="fechaFin"/>
         </div>
         <div class="flex flex-col gap-2">
           <label>Estado Mantenimiento</label>

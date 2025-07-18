@@ -122,7 +122,9 @@ export class PaqueteComponent {
       remitente: ['', Validators.required],
       descripcion: ['', Validators.required],
       fecha: ['', Validators.required],
+      fechaInput: ['', Validators.required],
       hora: ['', Validators.required],
+      horaInput: ['', Validators.required],
       codigo: ['', Validators.required],
       idDepartamento: ['', Validators.required],
       idEstadoPaquete: ['', Validators.required],
@@ -132,12 +134,12 @@ export class PaqueteComponent {
   ngOnInit(): void {
     this.primeng.ripple.set(true);
     this.getAllResidencias();
-    this.getAllDepartamentos();
     this.getAllEstados();
   }
 
   getResidencia() {
     this.getAllPaquetes(this.idResidenciaSelect);
+    this.getAllDepartamentos(this.idResidenciaSelect);
   }
 
   getAllPaquetes(idResidencia: number) {
@@ -178,9 +180,9 @@ export class PaqueteComponent {
       });
     });
   }
-  
-  getAllDepartamentos() {
-    this.departamentoService.getDepartamentos().subscribe((data) => {
+
+  getAllDepartamentos(idResidencia: number) {
+    this.departamentoService.getDepartamentosByResidence(idResidencia).subscribe((data) => {
       this.dropdownItemsDep.length = 0;
       data.forEach(element => {
         this.dropdownItemsDep.push({ name: element.codigo, code: element.id.toString() });

@@ -1,4 +1,4 @@
-import { Departamento } from "./departamento";
+import { Residencia } from "./residencia";
 
 export interface Incidencia {
     id:number,
@@ -10,5 +10,5 @@ export interface Incidencia {
     usuCreacion:string,
     fecModifica:string,
     usuModifica:string,
-    idDepartamento:Departamento,
+    idResidencia:Residencia,
 }

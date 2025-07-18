@@ -7,7 +7,7 @@ import { Rol } from '../model/rol';
   providedIn: 'root'
 })
 export class RolService {
-  private apiUrl = 'https://resydeproyecto.onrender.com/resyde/rol';
+  private apiUrl = 'http://localhost:8080/resyde/rol';
 
   constructor(private http: HttpClient) { }
 

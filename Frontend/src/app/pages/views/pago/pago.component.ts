@@ -1,10 +1,11 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, formatDate } from '@angular/common';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 import { Pago } from '../../model/pago';
 import { PagoService } from '../../service/pago.service';
+import { ResidenciaService } from '../../service/residencia.service';
 
 //primeng
 import { PrimeNG } from 'primeng/config';
@@ -19,6 +20,8 @@ import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
+import { DatePickerModule } from 'primeng/datepicker';
+import { CalendarModule } from 'primeng/calendar';
 
 //Material
 import { MatTableModule } from '@angular/material/table';
@@ -43,6 +46,7 @@ import { ReciboService } from '../../service/recibo.service';
   imports: [ButtonModule, CardModule, RouterModule,
     ReactiveFormsModule,
     FormsModule,
+    CommonModule,
     // Angular Material
     MatButtonModule,
     MatIconModule,
@@ -63,7 +67,8 @@ import { ReciboService } from '../../service/recibo.service';
     InputNumberModule,
     CardModule,
     FileUploadModule,
-    FluidModule, SelectModule, TextareaModule, DialogModule, DropdownModule
+    DatePickerModule,
+    FluidModule, SelectModule, TextareaModule, DialogModule, DropdownModule, CalendarModule
   ],
   templateUrl: './pago.component.html',
   styleUrl: './pago.component.scss'
@@ -74,46 +79,89 @@ export class PagoComponent {
   isDeleteInProgress: boolean = false;
   formulario!: FormGroup;
   isSaveInProgress: boolean = false;
-
+  dropdownItemsRes = [
+    { name: '', code: '' }
+  ];
   recibos: Recibo[] = [];
+  idResidenciaSelect: any;
 
   dropdownItemsRec = [
     { name: '', code: '' }
   ];
   display: boolean = false;
+  editable: boolean = true;
 
   constructor(
     private pagoService: PagoService,
+    private residenciaService: ResidenciaService,
     private messageService: MessageService,
     private reciboService: ReciboService,
     private fb: FormBuilder,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private primeng: PrimeNG
+
   ) {
     this.formulario = this.fb.group({
-      id: [null],
-      paidAmount: [null, Validators.required],
-      balance: [null, Validators.required],
-      mora: [null, Validators.required],
-      fecha: [null, Validators.required],
-      comments: [null, Validators.required],
-      idRecibo: [null, Validators.required],
+      id: [""],
+      paidAmount: ["", Validators.required],
+      balance: ["", Validators.required],
+      mora: ["", Validators.required],
+      fechaInput: ["", Validators.required],
+      fecha: ["", Validators.required],
+      comments: ["", Validators.required],
+      idRecibo: ["", Validators.required],
     })
   }
 
   ngOnInit(): void {
-    this.getAllPagos();
-    this.getAllRecibos();
+    this.primeng.ripple.set(true);
+    this.getAllResidencias();
   }
-
-  getAllPagos() {
-    this.pagoService.getPagos().subscribe((data) => {
-      this.pagos = data;
+  getResidencia() {
+    this.getAllPagos(this.idResidenciaSelect);
+    this.getAllRecibos(this.idResidenciaSelect);
+  }
+  getAllResidencias() {
+    this.residenciaService.getResidencias().subscribe((data) => {
+      this.dropdownItemsRes.length = 0;
+      data.forEach(element => {
+        this.dropdownItemsRes.push({ name: element.nombre, code: element.id.toString() });
+      });
+    });
+  }
+  getAllPagos(idResidencia: number) {
+    this.pagoService.getPagosByResidence(idResidencia).subscribe({
+      next: (data) => {
+        if (data.length > 0) {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Correcto',
+            detail: 'Incidencias encontradas',
+          });
+        } else {
+          this.messageService.add({
+            severity: 'information',
+            summary: 'Aviso',
+            detail: 'No hay Incidencias creados para esta residencia',
+          });
+        }
+        this.isDeleteInProgress = false;
+        this.pagos = data;
+      },
+      error: () => {
+        this.isDeleteInProgress = false;
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No se pudo encontrar incidencias',
+        });
+      },
     });
   }
 
-  getAllRecibos() {
-    this.reciboService.getRecibos().subscribe((data) => {
+  getAllRecibos(idResidencia: number) {
+    this.reciboService.getRecibosByResidence(idResidencia).subscribe((data) => {
       this.dropdownItemsRec.length = 0;
       data.forEach(element => {
         this.dropdownItemsRec.push({ name: (element.year + "|" + element.month), code: element.id.toString() });
@@ -131,7 +179,7 @@ export class PagoComponent {
           detail: 'Pago eliminado',
         });
         this.isDeleteInProgress = false;
-        this.getAllPagos();
+        //this.getAllPagos();
       },
       error: () => {
         this.isDeleteInProgress = false;
@@ -143,37 +191,45 @@ export class PagoComponent {
       },
     });
   }
-  createPago() {
+
+
+  submitForm() {
+    const fecha = this.formulario.get('fechaInput')?.value;
+    this.formulario.patchValue({
+      fecha: formatDate(fecha, 'dd-MM-yyyy', 'en-US'),
+    });
+    
     if (this.formulario.invalid) {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
         detail: 'Revise los campos e intente nuevamente',
       });
-      return
+      return;
     }
-    this.pagoService.createPago(this.formulario.value).subscribe({
-      next: () => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Guardado',
-          detail: 'Pago guardado correctamente',
-        });
-        this.router.navigateByUrl('/')
-      },
-      error: () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Revise los campos e intente nuevamente',
-        });
-      }
-    })
-  }
 
-
-  submitForm() {
-
+    this.isSaveInProgress = true;
+    this.pagoService.createPago(this.formulario.value)
+      .subscribe({
+        next: () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Guardado',
+            detail: 'Incidencia guardada correctamente',
+          });
+          this.isSaveInProgress = false;
+          this.close();
+          this.getAllPagos(this.idResidenciaSelect);
+        },
+        error: () => {
+          this.isSaveInProgress = false;
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Revise los campos e intente nuevamente',
+          });
+        }
+      });
   }
 
   openAddForm(): void {
@@ -186,17 +242,67 @@ export class PagoComponent {
     this.display = true;
   }
 
-  edit() {
+  edit(id: number) {
+    this.pagoService.getPagoById(id).subscribe({
+      next: (data) => {
+        console.log(JSON.stringify(data))
+
+        this.formulario.patchValue({
+          id: data.id,
+          paidAmount: data.paidAmount,
+          balance: data.balance,
+          mora: data.mora.toString(),
+          fecha: data.fecha.toString(),
+          comments: data.comments.toString(),
+          idRecibo: data.idRecibo.toString(),
+        });
+      },
+      error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No encontrado',
+        });
+      }
+    })
     this.formulario.enable();
+    this.editable = true;
     this.display = true;
   }
 
-  view() {
+  view(id: number) {
+    this.pagoService.getPagoById(id).subscribe({
+      next: (data) => {
+
+        this.formulario.patchValue({
+          id: data.id,
+          paidAmount: data.paidAmount,
+          balance: data.balance,
+          mora: data.mora.toString(),
+          fecha: data.fecha.toString(),
+          comments: data.comments.toString(),
+          idRecibo: data.idRecibo.toString(),
+        });
+      },
+      error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No encontrado',
+        });
+      }
+    })
     this.formulario.disable();
+    this.editable = false;
     this.display = true;
   }
-
   close() {
     this.display = false;
+    this.formulario.reset();
+  }
+
+  deleteResidencia() {
+    this.pagos = [];
+    this.idResidenciaSelect = "";
   }
 }

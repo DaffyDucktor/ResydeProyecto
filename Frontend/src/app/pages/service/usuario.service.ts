@@ -8,7 +8,7 @@ import { CookieService } from 'ngx-cookie-service';
   providedIn: 'root'
 })
 export class UsuarioService {
-  private apiUrl = 'https://resydeproyecto.onrender.com/resyde/usuario';
+  private apiUrl = 'http://localhost:8080/resyde/usuario';
 
   constructor(
     private http: HttpClient,

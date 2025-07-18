@@ -7,7 +7,7 @@ import { EstadoDepartamento } from '../model/estadoDepartamento';
   providedIn: 'root'
 })
 export class EstadoDepartamentoService {
-  private apiUrl = 'https://resydeproyecto.onrender.com/resyde/estadoDepartamento';
+  private apiUrl = 'http://localhost:8080/resyde/estadoDepartamento';
 
   constructor(private http: HttpClient) { }
 

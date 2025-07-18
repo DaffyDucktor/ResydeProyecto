@@ -42,8 +42,8 @@ public class Incidencia {
     private String usuModifica;
 
     @ManyToOne
-    @JoinColumn(name = "id_departamento", nullable=false)
-    private Departamento idDepartamento;
+    @JoinColumn(name = "id_residencia", nullable=false)
+    private Residencia idResidencia;
 
     @Override
     public String toString() {
@@ -56,7 +56,7 @@ public class Incidencia {
                 ", usuCreacion='" + usuCreacion + '\'' +
                 ", fecModifica='" + fecModifica + '\'' +
                 ", usuModifica='" + usuModifica + '\'' +
-                ", idDepartamento=" + idDepartamento +
+                ", idResidencia=" + idResidencia +
                 '}';
     }
 }

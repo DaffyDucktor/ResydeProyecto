@@ -11,6 +11,7 @@ import pe.com.model.request.MantenimientoRequest;
 import pe.com.repository.DepartamentoRepository;
 import pe.com.repository.EstadoMantenimientoRepository;
 import pe.com.repository.MantenimientoRepository;
+import pe.com.repository.ResidenciaRepository;
 import pe.com.service.MantenimientoService;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class MantenimientoServiceImpl implements MantenimientoService {
     MantenimientoRepository mantenimientoRepository;
 
     @Autowired
-    DepartamentoRepository departamentoRepository;
+    ResidenciaRepository residenciaRepository;
 
     @Autowired
     EstadoMantenimientoRepository estadoMantenimientoRepository;
@@ -54,8 +55,8 @@ public class MantenimientoServiceImpl implements MantenimientoService {
         objMantenimiento.setFechaFin(obj.getFechaFin());
         objMantenimiento.setFechaIni(obj.getFechaIni());
         objMantenimiento.setUsuCreacion(obj.getUsuario());
-        objMantenimiento.setIdDepartamento(departamentoRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
-        objMantenimiento.setIdEstadoMantenimiento(estadoMantenimientoRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
+        objMantenimiento.setIdResidencia(residenciaRepository.getById(Integer.parseInt(obj.getIdResidencia())));
+        objMantenimiento.setIdEstadoMantenimiento(estadoMantenimientoRepository.getById(Integer.parseInt(obj.getIdEstadoMantenimiento())));
 
         return mantenimientoRepository.save(objMantenimiento);
     }
@@ -69,8 +70,8 @@ public class MantenimientoServiceImpl implements MantenimientoService {
         objMantenimiento.setFechaFin(obj.getFechaFin());
         objMantenimiento.setFechaIni(obj.getFechaIni());
         objMantenimiento.setUsuCreacion(obj.getUsuario());
-        objMantenimiento.setIdDepartamento(departamentoRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
-        objMantenimiento.setIdEstadoMantenimiento(estadoMantenimientoRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
+        objMantenimiento.setIdResidencia(residenciaRepository.getById(Integer.parseInt(obj.getIdResidencia())));
+        objMantenimiento.setIdEstadoMantenimiento(estadoMantenimientoRepository.getById(Integer.parseInt(obj.getIdEstadoMantenimiento())));
 
         return mantenimientoRepository.save(objMantenimiento);
     }

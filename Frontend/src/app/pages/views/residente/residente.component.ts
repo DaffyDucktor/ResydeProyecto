@@ -121,11 +121,11 @@ export class ResidenteComponent {
   ngOnInit(): void {
     this.primeng.ripple.set(true);
     this.getAllResidencias();
-    this.getAllDepartamentos();
   }
 
   getResidencia() {
     this.getAllResidentes(this.idResidenciaSelect);
+    this.getAllDepartamentos(this.idResidenciaSelect);
   }
 
   getAllResidentes(idResidencia: number) {
@@ -167,8 +167,8 @@ export class ResidenteComponent {
     });
   }
 
-  getAllDepartamentos() {
-    this.departamentoService.getDepartamentos().subscribe((data) => {
+  getAllDepartamentos(idResidencia: number) {
+    this.departamentoService.getDepartamentosByResidence(idResidencia).subscribe((data) => {
       this.dropdownItemsDep.length = 0;
       data.forEach(element => {
         this.dropdownItemsDep.push({ name: element.codigo, code: element.id.toString() });
@@ -210,7 +210,7 @@ export class ResidenteComponent {
     }
 
     this.isSaveInProgress = true;
-    this.residenciaService.createResidencia(this.formulario.value)
+    this.residenteService.createResidente(this.formulario.value)
       .subscribe({
         next: () => {
           this.messageService.add({

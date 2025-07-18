@@ -42,8 +42,8 @@ public class Mantenimiento {
     private String usuModifica;
 
     @ManyToOne
-    @JoinColumn(name = "id_departamento", nullable=false)
-    private Departamento idDepartamento;
+    @JoinColumn(name = "id_residencia", nullable=false)
+    private Residencia idResidencia;
 
     @ManyToOne
     @JoinColumn(name = "id_estado_mantenimiento", nullable=false)

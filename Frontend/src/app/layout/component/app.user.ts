@@ -50,7 +50,7 @@ declare type SurfacesType = {
                 </p-button>
             </div>
             <div *ngIf="showMenuModeButton()" class="flex flex-col gap-2">
-                <p-button [ngModel]="menuMode()" (ngModelChange)="onMenuModeChange($event)"size="small">
+                <p-button size="small" (onClick)="logout()">
                     Cerrar Sesión
                 </p-button>
             </div>
@@ -65,7 +65,7 @@ export class AppUser {
     constructor(
         private cookieService: CookieService
     ) { }
-    
+
     logOff() {
         this.cookieService.delete("token");
     }
@@ -136,5 +136,10 @@ export class AppUser {
 
     onMenuModeChange(event: string) {
         this.layoutService.layoutConfig.update((prev) => ({ ...prev, menuMode: event }));
+    }
+
+    logout() {
+        this.cookieService.delete('token');
+        this.router.navigate(['/auth/login']);
     }
 }

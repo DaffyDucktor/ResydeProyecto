@@ -124,8 +124,10 @@ export class MantenimientoComponent {
       id: [''],
       descripcion: ['', Validators.required],
       fechaIni: ['', Validators.required],
+      fechaIniInput: [''],
       fechaFin: ['', Validators.required],
-      idDepartamento: ['', Validators.required],
+      fechaFinInput: [''],
+      idResidencia: ['', Validators.required],
       idEstadoMantenimiento: ['', Validators.required],
     })
   }
@@ -133,7 +135,6 @@ export class MantenimientoComponent {
   ngOnInit(): void {
     this.primeng.ripple.set(true);
     this.getAllResidencias();
-    this.getAllDepartamentos();
     this.getAllEstadoMantenimientos();
   }
 
@@ -177,14 +178,6 @@ export class MantenimientoComponent {
       this.dropdownItemsRes.length = 0;
       data.forEach(element => {
         this.dropdownItemsRes.push({ name: element.nombre, code: element.id.toString() });
-      });
-    });
-  }
-  getAllDepartamentos() {
-    this.departamentoService.getDepartamentos().subscribe((data) => {
-      this.dropdownItemsDep.length = 0;
-      data.forEach(element => {
-        this.dropdownItemsDep.push({ name: element.codigo, code: element.id.toString() });
       });
     });
   }
@@ -254,6 +247,7 @@ export class MantenimientoComponent {
     this.formulario.patchValue({
       fechaIni: formatDate(fechaIni, 'dd-MM-yyyy', 'en-US'),
       fechaFin: formatDate(fechaFin, 'dd-MM-yyyy', 'en-US'),
+      idResidencia: this.idResidenciaSelect
     });
 
     if (this.formulario.invalid) {
@@ -315,7 +309,7 @@ export class MantenimientoComponent {
           fechaFinInput: fechaFinDate,
           fechaIni: data.fechaIni,
           fechaFin: data.fechaFin,
-          idDepartamento: data.idDepartamento.id.toString(),
+          idResidencia: data.idResidencia.id.toString(),
           idEstadoMantenimiento: data.idEstadoMantenimiento.id.toString()
         });
       },
@@ -348,7 +342,7 @@ export class MantenimientoComponent {
           fechaFinInput: fechaFinDate,
           fechaIni: data.fechaIni,
           fechaFin: data.fechaFin,
-          idDepartamento: data.idDepartamento.id.toString(),
+          idResidencia: data.idResidencia.id.toString(),
           idEstadoMantenimiento: data.idEstadoMantenimiento.id.toString()
         });
       },

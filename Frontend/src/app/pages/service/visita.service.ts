@@ -7,7 +7,7 @@ import { Visita } from '../model/visita';
   providedIn: 'root'
 })
 export class VisitaService {
-  private apiUrl = 'https://resydeproyecto.onrender.com/resyde/visita';
+  private apiUrl = 'http://localhost:8080/resyde/visita';
 
   constructor(private http: HttpClient) { }
 

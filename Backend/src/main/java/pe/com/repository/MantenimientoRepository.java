@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface MantenimientoRepository extends JpaRepository<Mantenimiento, Integer> {
 
-    @Query("SELECT m FROM Mantenimiento m WHERE m.idDepartamento.id IN (SELECT d FROM Departamento d WHERE d.idResidencia.id= ?1)")
+    @Query("SELECT m FROM Mantenimiento m WHERE m.idResidencia.id = ?1")
     List<Mantenimiento> getAllByResidencia(Integer idResidencia);
 
 }

@@ -2,12 +2,21 @@
   <div class="card mb-0">
     <h2>Recibo</h2>
     <div class="row">
+      <p-select *ngIf="!idResidenciaSelect" (onChange)="getResidencia()" [(ngModel)]="idResidenciaSelect"
+        [options]="dropdownItemsRes" optionValue="code" optionLabel="name" placeholder="Seleccionar Residencia"
+        [autoDisplayFirst]="false" appendTo="body">
+      </p-select>
+    </div>
+    <div class="row" *ngIf="idResidenciaSelect">
       <p-button (onClick)="open()" class="font-bold w-max">
         Crear nuevo recibo
+      </p-button> |
+      <p-button class="font-bold w-max" (onClick)="deleteResidencia()">
+        Volver
       </p-button>
     </div>
-        <br>
-<div class="row">
+    <br>
+    <div class="row" *ngIf="idResidenciaSelect">
       <div class="col">
         <table style="width: 100%;">
           <thead>
@@ -28,87 +37,68 @@
               <td>{{recibo.particulars}}</td>
               <td>{{recibo.idDepartamento.codigo}}</td>
               <td>{{recibo.idEstadoRecibo.estado}}</td>
-              <td><p-button>Ver</p-button></td>
-              <td><p-button>Modificar</p-button></td>
+              <td><p-button (click)="view(recibo.id)">Ver</p-button></td>
+              <td><p-button (click)="edit(recibo.id)">Modificar</p-button></td>
             </tr>
             }@empty {
-              <tr>
-                <td colspan="7">No se encuentran recibos</td>
-              </tr>
+            <tr>
+              <td colspan="7">No se encuentran recibos</td>
+            </tr>
             }
           </tbody>
         </table>
       </div>
+    </div>
   </div>
-</div>
 
-<p-dialog header="Añadir Recibo" [(visible)]="display" [breakpoints]="{ '960px': '75vw' }"
-  [style]="{ width: '30vw' }" [modal]="true">
-  <form [formGroup]="formulario" (ngSubmit)="this.submitForm()">
-    <mat-dialog-content>
-      <div class="card flex flex-col gap-4">
-        <div class="flex flex-col gap-2">
-          <label>Año</label>
-          <p-select 
-            formControlName="year" 
-            [options]="dropdownItemsYear" 
-            optionValue="code"  
-            optionLabel="name" 
-            placeholder="Seleccionar Año"
-            [autoDisplayFirst]="false" appendTo="body">
-          </p-select>
+  <p-dialog header="Añadir Recibo" [(visible)]="display" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '30vw' }"
+    [modal]="true" (onHide)="close()">
+    <form [formGroup]="formulario" (ngSubmit)="this.submitForm()">
+      <mat-dialog-content>
+        <div class="card flex flex-col gap-4">
+          <div class="flex flex-col gap-2">
+            <label>Año</label>
+            <p-select formControlName="year" [options]="dropdownItemsYear" optionValue="code" optionLabel="name"
+              placeholder="Seleccionar Año" [autoDisplayFirst]="false" appendTo="body">
+            </p-select>
 
+          </div>
+          <div class="flex flex-col gap-2">
+            <label>Mes</label>
+            <p-select formControlName="month" [options]="dropdownItemsMonth" optionValue="code" optionLabel="name"
+              placeholder="Seleccionar Mes" [autoDisplayFirst]="false" appendTo="body">
+            </p-select>
+          </div>
+          <div class="flex flex-col gap-2">
+            <label>Monto</label>
+            <input type="text" pInputText formControlName="particulars"
+              [placeholder]="'Ingrese Monto'" />
+          </div>
+          <div class="flex flex-col gap-2">
+            <label>Total</label>
+            <input type="text" pInputText formControlName="total" [placeholder]="'Ingrese Total'" />
+          </div>
+          <div class="flex flex-col gap-2">
+            <label>Comentarios</label>
+            <input type="text" pInputText formControlName="comments" [placeholder]="'Ingrese Comentario'" />
+          </div>
+          <div class="flex flex-col gap-2">
+            <label>Departamento</label>
+            <p-select formControlName="idDepartamento" [options]="dropdownItemsDep" optionValue="code"
+              optionLabel="name" placeholder="Seleccionar Departamento" [autoDisplayFirst]="false" appendTo="body">
+            </p-select>
+          </div>
+          <div class="flex flex-col gap-2">
+            <label>Estado Recibo</label>
+            <p-select formControlName="idEstadoRecibo" [options]="dropdownItemsEstRec" optionValue="code"
+              optionLabel="name" placeholder="Seleccionar Estado" [autoDisplayFirst]="false" appendTo="body">
+            </p-select>
+          </div>
         </div>
-        <div class="flex flex-col gap-2">
-          <label>Mes</label>
-          <p-select 
-            formControlName="month" 
-            [options]="dropdownItemsMonth" 
-            optionValue="code"  
-            optionLabel="name" 
-            placeholder="Seleccionar Mes"
-            [autoDisplayFirst]="false" appendTo="body">
-          </p-select>
-        </div>
-        <div class="flex flex-col gap-2">
-          <label>Particulars</label>
-          <input type="text" pInputText formControlName="particulars" [placeholder]="'Ingrese Cantidad de Departamentos'" />
-        </div>
-        <div class="flex flex-col gap-2">
-          <label>Total</label>
-          <input type="text" pInputText formControlName="total" [placeholder]="'Ingrese Cantidad de Edificios'" />
-        </div>
-        <div class="flex flex-col gap-2">
-          <label>Comentarios</label>
-          <input type="text" pInputText formControlName="comments" [placeholder]="'Ingrese Cantidad de Edificios'" />
-        </div>
-        <div class="flex flex-col gap-2">
-          <label>Departamento</label>
-          <p-select 
-            formControlName="idDepartamento" 
-            [options]="dropdownItemsDep" 
-            optionValue="code"  
-            optionLabel="name" 
-            placeholder="Seleccionar Departamento"
-            [autoDisplayFirst]="false" appendTo="body">
-          </p-select>
-        </div>
-                <div class="flex flex-col gap-2">
-          <label>Estado Recibo</label>
-          <p-select 
-            formControlName="idEstadoRecibo" 
-            [options]="dropdownItemsEstRec" 
-            optionValue="code"  
-            optionLabel="name" 
-            placeholder="Seleccionar Estado"
-            [autoDisplayFirst]="false" appendTo="body">
-          </p-select>
-        </div>
-      </div>
-    </mat-dialog-content>
-    <mat-dialog-actions>
-      <button mat-button mat-dialog-close type="button" (click)="close()">Cancelar</button>
-      <button mat-raised-button color="primary" type="submit">Guardar</button>
-    </mat-dialog-actions>
-  </form>
-</p-dialog>
+      </mat-dialog-content>
+      <mat-dialog-actions>
+        <button mat-button mat-dialog-close type="button" (click)="close()">Cancelar</button>
+        <button mat-raised-button color="primary" type="submit">Guardar</button>
+      </mat-dialog-actions>
+    </form>
+  </p-dialog>

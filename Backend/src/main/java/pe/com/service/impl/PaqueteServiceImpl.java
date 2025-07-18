@@ -55,7 +55,7 @@ public class PaqueteServiceImpl implements PaqueteService {
         objPaquete.setCodigo(obj.getCodigo());
         objPaquete.setUsuCreacion(obj.getUsuario());
         objPaquete.setIdDepartamento(departamentoRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
-        objPaquete.setIdEstadoPaquete(estadoPaqueteRepository.getById(Integer.parseInt(obj.getIdDepartamento())));
+        objPaquete.setIdEstadoPaquete(estadoPaqueteRepository.getById(Integer.parseInt(obj.getIdEstadoPaquete())));
 
         return paqueteRepository.save(objPaquete);
     }

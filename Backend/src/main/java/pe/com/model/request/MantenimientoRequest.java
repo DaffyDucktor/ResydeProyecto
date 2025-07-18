@@ -18,7 +18,7 @@ public class MantenimientoRequest {
     private String fechaIni;
     private String fechaFin;
     private String usuario;
-    private String idDepartamento;
+    private String idResidencia;
     private String idEstadoMantenimiento;
 
     @Override
@@ -29,7 +29,7 @@ public class MantenimientoRequest {
                 ", fechaIni='" + fechaIni + '\'' +
                 ", fechaFin='" + fechaFin + '\'' +
                 ", usuario='" + usuario + '\'' +
-                ", idDepartamento='" + idDepartamento + '\'' +
+                ", idResidencia='" + idResidencia + '\'' +
                 ", idEstadoMantenimiento='" + idEstadoMantenimiento + '\'' +
                 '}';
     }
